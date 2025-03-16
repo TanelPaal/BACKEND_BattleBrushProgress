@@ -60,11 +60,128 @@ namespace Base.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Brand.
+        /// </summary>
+        public static string Brand {
+            get {
+                return ResourceManager.GetString("Brand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Miniature.
+        /// </summary>
+        public static string Miniature {
+            get {
+                return ResourceManager.GetString("Miniature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Miniature Collection.
+        /// </summary>
+        public static string MiniatureCollection {
+            get {
+                return ResourceManager.GetString("MiniatureCollection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mini Faction.
+        /// </summary>
+        public static string MiniFaction {
+            get {
+                return ResourceManager.GetString("MiniFaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mini Manufacturer.
+        /// </summary>
+        public static string MiniManufacturer {
+            get {
+                return ResourceManager.GetString("MiniManufacturer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paint Swatch.
+        /// </summary>
+        public static string MiniPaintSwatch {
+            get {
+                return ResourceManager.GetString("MiniPaintSwatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mini Properties.
+        /// </summary>
+        public static string MiniProperties {
+            get {
+                return ResourceManager.GetString("MiniProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mini State.
+        /// </summary>
+        public static string MiniState {
+            get {
+                return ResourceManager.GetString("MiniState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paints.
+        /// </summary>
+        public static string Paint {
+            get {
+                return ResourceManager.GetString("Paint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paint Series.
+        /// </summary>
+        public static string PaintLine {
+            get {
+                return ResourceManager.GetString("PaintLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paint Type.
+        /// </summary>
+        public static string PaintType {
+            get {
+                return ResourceManager.GetString("PaintType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Privacy.
         /// </summary>
         public static string Privacy {
             get {
                 return ResourceManager.GetString("Privacy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        public static string User {
+            get {
+                return ResourceManager.GetString("User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My Paints.
+        /// </summary>
+        public static string UserPaints {
+            get {
+                return ResourceManager.GetString("UserPaints", resourceCulture);
             }
         }
     }

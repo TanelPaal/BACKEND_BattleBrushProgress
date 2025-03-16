@@ -14,4 +14,43 @@
     <data name="Privacy" xml:space="preserve">
         <value>Privaatsus</value>
     </data>
+    <data name="UserPaints" xml:space="preserve">
+        <value>Minu Värvid</value>
+    </data>
+    <data name="User" xml:space="preserve">
+        <value>Kasutaja</value>
+    </data>
+    <data name="PaintType" xml:space="preserve">
+        <value>Värvitüüp</value>
+    </data>
+    <data name="PaintLine" xml:space="preserve">
+        <value>Värvisari</value>
+    </data>
+    <data name="Paint" xml:space="preserve">
+        <value>Värvid</value>
+    </data>
+    <data name="MiniState" xml:space="preserve">
+        <value>Mini Staatus</value>
+    </data>
+    <data name="MiniProperties" xml:space="preserve">
+        <value>Mini Omadused</value>
+    </data>
+    <data name="MiniPaintSwatch" xml:space="preserve">
+        <value>Värvi Näidis</value>
+    </data>
+    <data name="MiniManufacturer" xml:space="preserve">
+        <value>Mini Tootja</value>
+    </data>
+    <data name="MiniFaction" xml:space="preserve">
+        <value>Mini Fraktsioon</value>
+    </data>
+    <data name="MiniatureCollection" xml:space="preserve">
+        <value>Miniatuuri Kollektsioon</value>
+    </data>
+    <data name="Miniature" xml:space="preserve">
+        <value>Miniatuur</value>
+    </data>
+    <data name="Brand" xml:space="preserve">
+        <value>Bränd</value>
+    </data>
 </root>

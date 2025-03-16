@@ -1,0 +1,132 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Domain\Paint.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Paint.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Brand.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Brand.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Miniature.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Miniature.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\MiniatureCollection.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>MiniatureCollection.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\MiniFaction.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>MiniFaction.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\MiniManufacturer.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>MiniManufacturer.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\MiniPaintSwatch.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>MiniPaintSwatch.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\MiniProperties.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>MiniProperties.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\MiniState.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>MiniState.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\PaintLine.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>PaintLine.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\PaintType.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>PaintType.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\User.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>User.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\UserPaints.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserPaints.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Domain\Paint.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Paint.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Brand.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Brand.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Miniature.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Miniature.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\MiniatureCollection.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>MiniatureCollection.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\MiniFaction.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>MiniFaction.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\MiniManufacturer.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>MiniManufacturer.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\MiniPaintSwatch.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>MiniPaintSwatch.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\MiniProperties.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>MiniProperties.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\MiniState.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>MiniState.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\PaintLine.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>PaintLine.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\PaintType.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>PaintType.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\User.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>User.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\UserPaints.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UserPaints.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+</Project>

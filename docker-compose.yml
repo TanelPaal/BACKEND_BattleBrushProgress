@@ -1,0 +1,17 @@
+﻿services:
+  postgres:
+    image: postgres:latest
+    container_name: battlebrush_db
+    restart: always
+    environment:
+      POSTGRES_DB: battlebrushprogress
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: steady123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:

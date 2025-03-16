@@ -21,6 +21,9 @@ public class Paint : BaseEntity
     public Guid PaintTypeId { get; set; }
     public PaintType? PaintType { get; set; }
     
+    public Guid? PaintLineId { get; set; }
+    public PaintLine? PaintLine { get; set; }
+    
     // Navigation property for UserPaints
     public ICollection<UserPaints>? UserPaints { get; set; }
 }

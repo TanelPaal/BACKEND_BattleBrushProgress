@@ -22,7 +22,10 @@ namespace WebApp.Controllers
         // GET: Paint
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Paints.Include(p => p.Brand).Include(p => p.PaintType);
+            var appDbContext = _context.Paints
+                .Include(p => p.Brand)
+                .Include(p => p.PaintType)
+                .Include(p => p.PaintLine);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -37,6 +40,7 @@ namespace WebApp.Controllers
             var paint = await _context.Paints
                 .Include(p => p.Brand)
                 .Include(p => p.PaintType)
+                .Include(p => p.PaintLine)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (paint == null)
             {
@@ -51,6 +55,7 @@ namespace WebApp.Controllers
         {
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName");
             ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name");
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "PaintLineName");
             return View();
         }
 
@@ -59,7 +64,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,HexCode,UPC,BrandId,PaintTypeId,Id")] Paint paint)
+        public async Task<IActionResult> Create([Bind("Name,HexCode,UPC,BrandId,PaintTypeId,PaintLineId,Id")] Paint paint)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +75,7 @@ namespace WebApp.Controllers
             }
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
             ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name", paint.PaintTypeId);
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "PaintLineName", paint.PaintLineId);
             return View(paint);
         }
 
@@ -88,6 +94,7 @@ namespace WebApp.Controllers
             }
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
             ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name", paint.PaintTypeId);
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "PaintLineName", paint.PaintLineId);
             return View(paint);
         }
 
@@ -96,7 +103,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,HexCode,UPC,BrandId,PaintTypeId,Id")] Paint paint)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Name,HexCode,UPC,BrandId,PaintTypeId,PaintLineId,Id")] Paint paint)
         {
             if (id != paint.Id)
             {
@@ -125,6 +132,7 @@ namespace WebApp.Controllers
             }
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
             ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name", paint.PaintTypeId);
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "PaintLineName", paint.PaintLineId);
             return View(paint);
         }
 

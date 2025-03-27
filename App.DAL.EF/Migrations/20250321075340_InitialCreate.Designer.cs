@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250316072648_InitialCreate")]
+    [Migration("20250321075340_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -230,7 +230,7 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
-                    b.Property<DateTime?>("CompletionDate")
+                    b.Property<DateTime>("CompletionDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("MiniStateId")

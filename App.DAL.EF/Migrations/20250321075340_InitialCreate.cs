@@ -347,7 +347,7 @@ namespace App.DAL.EF.Migrations
                     CollectionName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     CollectionDesc = table.Column<string>(type: "text", nullable: false),
                     AcquisitionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CompletionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CompletionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     MiniatureId = table.Column<Guid>(type: "uuid", nullable: false),
                     MiniStateId = table.Column<Guid>(type: "uuid", nullable: false)
                 },

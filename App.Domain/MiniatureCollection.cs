@@ -12,11 +12,25 @@ public class MiniatureCollection : BaseEntity
     [Display(Name = nameof(CollectionDesc), Prompt = nameof(CollectionDesc), ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]
     public string CollectionDesc { get; set; } = default!;
     
-    [Display(Name = nameof(AcquisitionDate), Prompt = nameof(AcquisitionDate), ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]
-    public DateTime AcquisitionDate { get; set; }
+    private DateTime _acquisitionDate = DateTime.UtcNow;
+
+    [Display(Name = nameof(AcquisitionDate), Prompt = nameof(AcquisitionDate),
+        ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]
+    public DateTime AcquisitionDate
+    {
+        get => _acquisitionDate; 
+        set => _acquisitionDate = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+    }
     
-    [Display(Name = nameof(CompletionDate), Prompt = nameof(CompletionDate), ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]
-    public DateTime? CompletionDate { get; set; }
+    private DateTime _completionDate = DateTime.UtcNow;
+
+    [Display(Name = nameof(CompletionDate), Prompt = nameof(CompletionDate),
+        ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]
+    public DateTime CompletionDate
+    {
+        get => _completionDate; 
+        set => _completionDate = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+    }
     
     // Relationships
     [Display(Name = nameof(Miniature), Prompt = nameof(Miniature), ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]

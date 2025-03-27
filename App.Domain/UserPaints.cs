@@ -9,8 +9,14 @@ public class UserPaints : BaseEntity
     [Display(Name = nameof(Quantity), Prompt = nameof(Quantity), ResourceType = typeof(App.Resources.Domain.UserPaints))]
     public int Quantity { get; set; }
     
+    private DateTime _acquisitionDate = DateTime.UtcNow;
+
     [Display(Name = nameof(AcquisitionDate), Prompt = nameof(AcquisitionDate), ResourceType = typeof(App.Resources.Domain.UserPaints))]
-    public DateTime AcquisitionDate { get; set; }
+    public DateTime AcquisitionDate
+    {
+        get => _acquisitionDate; 
+        set => _acquisitionDate = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+    }
     
     // Relationships
     [Display(Name = nameof(User), Prompt = nameof(User), ResourceType = typeof(App.Resources.Domain.UserPaints))]

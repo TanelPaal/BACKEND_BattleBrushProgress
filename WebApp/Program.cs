@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using WebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +41,7 @@ else
     );
 }
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();
+/*builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();*/
 
 
 
@@ -56,8 +58,18 @@ builder.Services.AddIdentity<AppUser, AppRole>(o =>
 //         options => options.SignIn.RequireConfirmedAccount = false)
 //     .AddEntityFrameworkStores<AppDbContext>();
 
+builder.Services.AddScoped<IEmailSender, WebApp.Services.NoOpEmailSender>();
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+// After your other service registrations
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Logout";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+});
 
 // add culture switching support
 var supportedCultures = builder.Configuration

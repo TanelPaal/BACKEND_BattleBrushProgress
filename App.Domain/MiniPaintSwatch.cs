@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using App.Domain.Identity;
 using Base.Domain;
 
 namespace App.Domain;
@@ -18,8 +19,11 @@ public class MiniPaintSwatch : BaseEntity
     [Display(Name = nameof(MiniatureCollection), Prompt = nameof(MiniatureCollection), ResourceType = typeof(App.Resources.Domain.MiniPaintSwatch))]
     public MiniatureCollection? MiniatureCollection { get; set; }
     
-    [Display(Name = nameof(UserPaints), Prompt = nameof(UserPaints), ResourceType = typeof(App.Resources.Domain.MiniPaintSwatch))]
-    public Guid UserPaintsId { get; set; }
-    [Display(Name = nameof(UserPaints), Prompt = nameof(UserPaints), ResourceType = typeof(App.Resources.Domain.MiniPaintSwatch))]
-    public UserPaints? UserPaints { get; set; }
+    [Display(Name = nameof(PersonPaints), Prompt = nameof(PersonPaints), ResourceType = typeof(App.Resources.Domain.MiniPaintSwatch))]
+    public Guid PersonPaintsId { get; set; }
+    [Display(Name = nameof(PersonPaints), Prompt = nameof(PersonPaints), ResourceType = typeof(App.Resources.Domain.MiniPaintSwatch))]
+    public PersonPaints? PersonPaints { get; set; }
+    
+    public Guid AppUserId { get; set; }
+    public AppUser? AppUser { get; set; }
 }

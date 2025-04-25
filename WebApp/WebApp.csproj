@@ -24,4 +24,72 @@
       <ProjectReference Include="..\Base.Resources\Base.Resources.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\User\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\User\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\User\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\User\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\User\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UserPaints\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UserPaints\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UserPaints\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UserPaints\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UserPaints\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniPaintSwatch\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniPaintSwatch\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniPaintSwatch\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniPaintSwatch\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniPaintSwatch\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Brand\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Brand\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Brand\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Brand\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Brand\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Miniature\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Miniature\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Miniature\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Miniature\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Miniature\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniatureCollection\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniatureCollection\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniatureCollection\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniatureCollection\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniatureCollection\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniFaction\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniFaction\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniFaction\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniFaction\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniFaction\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniManufacturer\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniManufacturer\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniManufacturer\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniManufacturer\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniManufacturer\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniProperties\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniProperties\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniProperties\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniProperties\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniProperties\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniState\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniState\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniState\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniState\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MiniState\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Paint\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Paint\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Paint\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Paint\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Paint\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\PaintLine\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\PaintLine\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\PaintLine\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\PaintLine\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\PaintLine\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\PaintType\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\PaintType\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\PaintType\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\PaintType\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\PaintType\Index.cshtml" />
+    </ItemGroup>
+
 </Project>

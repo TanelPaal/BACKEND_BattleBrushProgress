@@ -22,7 +22,7 @@ namespace WebApp.Controllers
         // GET: MiniatureCollection
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.MiniatureCollections.Include(m => m.Miniature).Include(m => m.MiniState);
+            var appDbContext = _context.MiniatureCollections.Include(m => m.AppUser).Include(m => m.Miniature).Include(m => m.MiniState).Include(m => m.Person);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -35,8 +35,10 @@ namespace WebApp.Controllers
             }
 
             var miniatureCollection = await _context.MiniatureCollections
+                .Include(m => m.AppUser)
                 .Include(m => m.Miniature)
                 .Include(m => m.MiniState)
+                .Include(m => m.Person)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (miniatureCollection == null)
             {
@@ -49,8 +51,10 @@ namespace WebApp.Controllers
         // GET: MiniatureCollection/Create
         public IActionResult Create()
         {
-            ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniName");
-            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateName");
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniDesc");
+            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateDesc");
+            ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName");
             return View();
         }
 
@@ -59,7 +63,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CollectionName,CollectionDesc,AcquisitionDate,CompletionDate,MiniatureId,MiniStateId,Id")] MiniatureCollection miniatureCollection)
+        public async Task<IActionResult> Create([Bind("CollectionName,CollectionDesc,AcquisitionDate,CompletionDate,MiniatureId,MiniStateId,PersonId,AppUserId,Id")] MiniatureCollection miniatureCollection)
         {
             if (ModelState.IsValid)
             {
@@ -68,8 +72,10 @@ namespace WebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniName", miniatureCollection.MiniatureId);
-            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateName", miniatureCollection.MiniStateId);
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniatureCollection.AppUserId);
+            ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniDesc", miniatureCollection.MiniatureId);
+            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateDesc", miniatureCollection.MiniStateId);
+            ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", miniatureCollection.PersonId);
             return View(miniatureCollection);
         }
 
@@ -86,8 +92,10 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniName", miniatureCollection.MiniatureId);
-            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateName", miniatureCollection.MiniStateId);
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniatureCollection.AppUserId);
+            ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniDesc", miniatureCollection.MiniatureId);
+            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateDesc", miniatureCollection.MiniStateId);
+            ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", miniatureCollection.PersonId);
             return View(miniatureCollection);
         }
 
@@ -96,7 +104,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CollectionName,CollectionDesc,AcquisitionDate,CompletionDate,MiniatureId,MiniStateId,Id")] MiniatureCollection miniatureCollection)
+        public async Task<IActionResult> Edit(Guid id, [Bind("CollectionName,CollectionDesc,AcquisitionDate,CompletionDate,MiniatureId,MiniStateId,PersonId,AppUserId,Id")] MiniatureCollection miniatureCollection)
         {
             if (id != miniatureCollection.Id)
             {
@@ -123,8 +131,10 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniName", miniatureCollection.MiniatureId);
-            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateName", miniatureCollection.MiniStateId);
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniatureCollection.AppUserId);
+            ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniDesc", miniatureCollection.MiniatureId);
+            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateDesc", miniatureCollection.MiniStateId);
+            ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", miniatureCollection.PersonId);
             return View(miniatureCollection);
         }
 
@@ -137,8 +147,10 @@ namespace WebApp.Controllers
             }
 
             var miniatureCollection = await _context.MiniatureCollections
+                .Include(m => m.AppUser)
                 .Include(m => m.Miniature)
                 .Include(m => m.MiniState)
+                .Include(m => m.Person)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (miniatureCollection == null)
             {

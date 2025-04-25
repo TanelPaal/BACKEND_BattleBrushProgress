@@ -36,5 +36,5 @@ public class Paint : BaseEntity
     public PaintLine? PaintLine { get; set; }
     
     // Navigation property for UserPaints
-    public ICollection<UserPaints>? UserPaints { get; set; }
+    public ICollection<PersonPaints>? PersonPaints { get; set; }
 }

@@ -112,5 +112,14 @@ namespace App.Resources.Domain {
                 return ResourceManager.GetString("MiniState", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Person Name.
+        /// </summary>
+        public static string Person {
+            get {
+                return ResourceManager.GetString("Person", resourceCulture);
+            }
+        }
     }
 }

@@ -78,20 +78,20 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User Paints.
+        /// </summary>
+        public static string PersonPaints {
+            get {
+                return ResourceManager.GetString("PersonPaints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Usage Type.
         /// </summary>
         public static string UsageType {
             get {
                 return ResourceManager.GetString("UsageType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User Paints.
-        /// </summary>
-        public static string UserPaints {
-            get {
-                return ResourceManager.GetString("UserPaints", resourceCulture);
             }
         }
     }

@@ -22,10 +22,7 @@ namespace WebApp.Controllers
         // GET: Paint
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Paints
-                .Include(p => p.Brand)
-                .Include(p => p.PaintType)
-                .Include(p => p.PaintLine);
+            var appDbContext = _context.Paints.Include(p => p.Brand).Include(p => p.PaintLine).Include(p => p.PaintType);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -39,8 +36,8 @@ namespace WebApp.Controllers
 
             var paint = await _context.Paints
                 .Include(p => p.Brand)
-                .Include(p => p.PaintType)
                 .Include(p => p.PaintLine)
+                .Include(p => p.PaintType)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (paint == null)
             {
@@ -54,8 +51,8 @@ namespace WebApp.Controllers
         public IActionResult Create()
         {
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName");
-            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name");
-            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "PaintLineName");
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description");
+            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description");
             return View();
         }
 
@@ -74,8 +71,8 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
-            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name", paint.PaintTypeId);
-            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "PaintLineName", paint.PaintLineId);
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description", paint.PaintLineId);
+            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description", paint.PaintTypeId);
             return View(paint);
         }
 
@@ -93,8 +90,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
-            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name", paint.PaintTypeId);
-            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "PaintLineName", paint.PaintLineId);
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description", paint.PaintLineId);
+            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description", paint.PaintTypeId);
             return View(paint);
         }
 
@@ -131,8 +128,8 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
-            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name", paint.PaintTypeId);
-            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "PaintLineName", paint.PaintLineId);
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description", paint.PaintLineId);
+            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description", paint.PaintTypeId);
             return View(paint);
         }
 
@@ -146,6 +143,7 @@ namespace WebApp.Controllers
 
             var paint = await _context.Paints
                 .Include(p => p.Brand)
+                .Include(p => p.PaintLine)
                 .Include(p => p.PaintType)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (paint == null)

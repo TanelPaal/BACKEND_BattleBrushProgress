@@ -1,4 +1,3 @@
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model IEnumerable<App.Domain.Paint>
 
 @{
@@ -26,10 +25,10 @@
                 @Html.DisplayNameFor(model => model.Brand)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PaintLine)
+                @Html.DisplayNameFor(model => model.PaintType)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PaintType)
+                @Html.DisplayNameFor(model => model.PaintLine)
             </th>
             <th></th>
         </tr>
@@ -49,11 +48,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Brand!.BrandName)
             </td>
-            <th>
-                @Html.DisplayFor(modelItem => item.PaintLine!.PaintLineName)
-            </th>
             <td>
-                @Html.DisplayFor(modelItem => item.PaintType!.Name)
+                @Html.DisplayFor(modelItem => item.PaintType!.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaintLine!.Description)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

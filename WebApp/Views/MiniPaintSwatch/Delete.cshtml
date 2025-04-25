@@ -1,4 +1,3 @@
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model App.Domain.MiniPaintSwatch
 
 @{
@@ -28,13 +27,19 @@
             @Html.DisplayNameFor(model => model.MiniatureCollection)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MiniatureCollection.CollectionDesc)
+            @Html.DisplayFor(model => model.MiniatureCollection!.CollectionDesc)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserPaints)
+            @Html.DisplayNameFor(model => model.PersonPaints)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserPaints.Paint.Name)
+            @Html.DisplayFor(model => model.PersonPaints!.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AppUser)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AppUser!.Id)
         </dd>
     </dl>
     

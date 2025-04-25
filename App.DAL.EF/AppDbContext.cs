@@ -1,10 +1,11 @@
 ﻿using App.Domain;
+using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF;
 
-public class AppDbContext : IdentityDbContext
+public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 {
     public DbSet<Brand> Brands { get; set; } = default!;
     public DbSet<Miniature> Miniatures { get; set; } = default!;
@@ -17,8 +18,8 @@ public class AppDbContext : IdentityDbContext
     public DbSet<Paint> Paints { get; set; } = default!;
     public DbSet<PaintLine> PaintLines { get; set; } = default!;
     public DbSet<PaintType> PaintTypes { get; set; } = default!;
-    public DbSet<User> Users { get; set; } = default!;
-    public DbSet<UserPaints> UserPaints { get; set; } = default!;
+    public DbSet<Person> Persons { get; set; } = default!;
+    public DbSet<PersonPaints> PersonPaints { get; set; } = default!;
     
     
     public AppDbContext(DbContextOptions<AppDbContext> options)

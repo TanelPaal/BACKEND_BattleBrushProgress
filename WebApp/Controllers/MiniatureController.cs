@@ -50,9 +50,9 @@ namespace WebApp.Controllers
         // GET: Miniature/Create
         public IActionResult Create()
         {
-            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionName");
-            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ManufacturerName");
-            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyName");
+            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc");
+            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ContactEmail");
+            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyDesc");
             return View();
         }
 
@@ -70,9 +70,9 @@ namespace WebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionName", miniature.MiniFactionId);
-            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ManufacturerName", miniature.MiniManufacturerId);
-            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyName", miniature.MiniPropertiesId);
+            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc", miniature.MiniFactionId);
+            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ContactEmail", miniature.MiniManufacturerId);
+            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyDesc", miniature.MiniPropertiesId);
             return View(miniature);
         }
 
@@ -89,9 +89,9 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionName", miniature.MiniFactionId);
-            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ManufacturerName", miniature.MiniManufacturerId);
-            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyName", miniature.MiniPropertiesId);
+            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc", miniature.MiniFactionId);
+            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ContactEmail", miniature.MiniManufacturerId);
+            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyDesc", miniature.MiniPropertiesId);
             return View(miniature);
         }
 
@@ -127,9 +127,9 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionName", miniature.MiniFactionId);
-            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ManufacturerName", miniature.MiniManufacturerId);
-            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyName", miniature.MiniPropertiesId);
+            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc", miniature.MiniFactionId);
+            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ContactEmail", miniature.MiniManufacturerId);
+            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyDesc", miniature.MiniPropertiesId);
             return View(miniature);
         }
 

@@ -11,7 +11,16 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="UserName" xml:space="preserve">
+    <data name="Paint" xml:space="preserve">
+        <value>Värv</value>
+    </data>
+    <data name="Quantity" xml:space="preserve">
+        <value>Kogus</value>
+    </data>
+    <data name="Person" xml:space="preserve">
         <value>Kasutaja Nimi</value>
+    </data>
+    <data name="AcquisitionDate" xml:space="preserve">
+        <value>Hankimise Kuupäev</value>
     </data>
 </root>

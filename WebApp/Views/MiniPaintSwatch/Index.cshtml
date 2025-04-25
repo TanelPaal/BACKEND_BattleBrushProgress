@@ -1,4 +1,3 @@
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model IEnumerable<App.Domain.MiniPaintSwatch>
 
 @{
@@ -23,7 +22,10 @@
                 @Html.DisplayNameFor(model => model.MiniatureCollection)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserPaints)
+                @Html.DisplayNameFor(model => model.PersonPaints)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser)
             </th>
             <th></th>
         </tr>
@@ -38,10 +40,13 @@
                 @Html.DisplayFor(modelItem => item.Notes)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniatureCollection.CollectionDesc)
+                @Html.DisplayFor(modelItem => item.MiniatureCollection!.CollectionDesc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserPaints.Paint.Name)
+                @Html.DisplayFor(modelItem => item.PersonPaints!.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -1,4 +1,4 @@
-@model App.Domain.PaintType
+@model App.Domain.Person
 
 @{
     ViewData["Title"] = "Details";
@@ -7,20 +7,20 @@
 <h1>Details</h1>
 
 <div>
-    <h4>PaintType</h4>
+    <h4>Person</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.PersonName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.PersonName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.AppUser)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.AppUser!.Id)
         </dd>
     </dl>
 </div>

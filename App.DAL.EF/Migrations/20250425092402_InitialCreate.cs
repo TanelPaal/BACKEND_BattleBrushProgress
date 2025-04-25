@@ -16,7 +16,7 @@ namespace App.DAL.EF.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
@@ -30,7 +30,7 @@ namespace App.DAL.EF.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -134,24 +134,12 @@ namespace App.DAL.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RoleId = table.Column<string>(type: "text", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
@@ -172,7 +160,7 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
@@ -191,10 +179,10 @@ namespace App.DAL.EF.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -211,8 +199,8 @@ namespace App.DAL.EF.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    RoleId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -235,9 +223,9 @@ namespace App.DAL.EF.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -246,6 +234,25 @@ namespace App.DAL.EF.Migrations
                     table.ForeignKey(
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Persons",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    PersonName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Persons", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Persons_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -349,11 +356,19 @@ namespace App.DAL.EF.Migrations
                     AcquisitionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CompletionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     MiniatureId = table.Column<Guid>(type: "uuid", nullable: false),
-                    MiniStateId = table.Column<Guid>(type: "uuid", nullable: false)
+                    MiniStateId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PersonId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MiniatureCollections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MiniatureCollections_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_MiniatureCollections_MiniStates_MiniStateId",
                         column: x => x.MiniStateId,
@@ -366,25 +381,44 @@ namespace App.DAL.EF.Migrations
                         principalTable: "Miniatures",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MiniatureCollections_Persons_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Persons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserPaints",
+                name: "PersonPaints",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     AcquisitionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PaintId = table.Column<Guid>(type: "uuid", nullable: false)
+                    PersonId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PaintId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserPaints", x => x.Id);
+                    table.PrimaryKey("PK_PersonPaints", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserPaints_Paints_PaintId",
+                        name: "FK_PersonPaints_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PersonPaints_Paints_PaintId",
                         column: x => x.PaintId,
                         principalTable: "Paints",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PersonPaints_Persons_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Persons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -397,11 +431,18 @@ namespace App.DAL.EF.Migrations
                     UsageType = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Notes = table.Column<string>(type: "text", nullable: false),
                     MiniatureCollectionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserPaintsId = table.Column<Guid>(type: "uuid", nullable: false)
+                    PersonPaintsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MiniPaintSwatches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MiniPaintSwatches_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_MiniPaintSwatches_MiniatureCollections_MiniatureCollectionId",
                         column: x => x.MiniatureCollectionId,
@@ -409,9 +450,9 @@ namespace App.DAL.EF.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MiniPaintSwatches_UserPaints_UserPaintsId",
-                        column: x => x.UserPaintsId,
-                        principalTable: "UserPaints",
+                        name: "FK_MiniPaintSwatches_PersonPaints_PersonPaintsId",
+                        column: x => x.PersonPaintsId,
+                        principalTable: "PersonPaints",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -454,6 +495,11 @@ namespace App.DAL.EF.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_MiniatureCollections_AppUserId",
+                table: "MiniatureCollections",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MiniatureCollections_MiniatureId",
                 table: "MiniatureCollections",
                 column: "MiniatureId");
@@ -462,6 +508,11 @@ namespace App.DAL.EF.Migrations
                 name: "IX_MiniatureCollections_MiniStateId",
                 table: "MiniatureCollections",
                 column: "MiniStateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MiniatureCollections_PersonId",
+                table: "MiniatureCollections",
+                column: "PersonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Miniatures_MiniFactionId",
@@ -479,14 +530,19 @@ namespace App.DAL.EF.Migrations
                 column: "MiniPropertiesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MiniPaintSwatches_AppUserId",
+                table: "MiniPaintSwatches",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MiniPaintSwatches_MiniatureCollectionId",
                 table: "MiniPaintSwatches",
                 column: "MiniatureCollectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MiniPaintSwatches_UserPaintsId",
+                name: "IX_MiniPaintSwatches_PersonPaintsId",
                 table: "MiniPaintSwatches",
-                column: "UserPaintsId");
+                column: "PersonPaintsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PaintLines_BrandId",
@@ -509,9 +565,24 @@ namespace App.DAL.EF.Migrations
                 column: "PaintTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserPaints_PaintId",
-                table: "UserPaints",
+                name: "IX_PersonPaints_AppUserId",
+                table: "PersonPaints",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonPaints_PaintId",
+                table: "PersonPaints",
                 column: "PaintId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonPaints_PersonId",
+                table: "PersonPaints",
+                column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Persons_AppUserId",
+                table: "Persons",
+                column: "AppUserId");
         }
 
         /// <inheritdoc />
@@ -536,19 +607,13 @@ namespace App.DAL.EF.Migrations
                 name: "MiniPaintSwatches");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "MiniatureCollections");
 
             migrationBuilder.DropTable(
-                name: "UserPaints");
+                name: "PersonPaints");
 
             migrationBuilder.DropTable(
                 name: "MiniStates");
@@ -558,6 +623,9 @@ namespace App.DAL.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "Paints");
+
+            migrationBuilder.DropTable(
+                name: "Persons");
 
             migrationBuilder.DropTable(
                 name: "MiniFactions");
@@ -573,6 +641,9 @@ namespace App.DAL.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "PaintTypes");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Brands");

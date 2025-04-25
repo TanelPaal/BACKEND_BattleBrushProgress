@@ -21,14 +21,14 @@ namespace App.Resources.Domain {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class UserPaints {
+    public class Person {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal UserPaints() {
+        internal Person() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace App.Resources.Domain {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("App.Resources.Domain.UserPaints", typeof(UserPaints).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("App.Resources.Domain.Person", typeof(Person).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,38 +60,11 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Acquisition Date.
-        /// </summary>
-        public static string AcquisitionDate {
-            get {
-                return ResourceManager.GetString("AcquisitionDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Paint.
-        /// </summary>
-        public static string Paint {
-            get {
-                return ResourceManager.GetString("Paint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Quantity.
-        /// </summary>
-        public static string Quantity {
-            get {
-                return ResourceManager.GetString("Quantity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
-        public static string User {
+        public static string UserName {
             get {
-                return ResourceManager.GetString("User", resourceCulture);
+                return ResourceManager.GetString("UserName", resourceCulture);
             }
         }
     }

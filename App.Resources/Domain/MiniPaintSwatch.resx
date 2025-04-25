@@ -27,7 +27,7 @@
     <data name="MiniatureCollection" xml:space="preserve">
         <value>Miniature Collection</value>
     </data>
-    <data name="UserPaints" xml:space="preserve">
+    <data name="PersonPaints" xml:space="preserve">
         <value>User Paints</value>
     </data>
 </root>

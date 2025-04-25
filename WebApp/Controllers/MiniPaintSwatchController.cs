@@ -22,10 +22,7 @@ namespace WebApp.Controllers
         // GET: MiniPaintSwatch
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.MiniPaintSwatches
-                .Include(m => m.MiniatureCollection)
-                .Include(m => m.UserPaints)
-                    .ThenInclude(up => up.Paint);
+            var appDbContext = _context.MiniPaintSwatches.Include(m => m.AppUser).Include(m => m.MiniatureCollection).Include(m => m.PersonPaints);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -38,9 +35,9 @@ namespace WebApp.Controllers
             }
 
             var miniPaintSwatch = await _context.MiniPaintSwatches
+                .Include(m => m.AppUser)
                 .Include(m => m.MiniatureCollection)
-                .Include(m => m.UserPaints)
-                    .ThenInclude(up => up.Paint)
+                .Include(m => m.PersonPaints)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (miniPaintSwatch == null)
             {
@@ -53,12 +50,9 @@ namespace WebApp.Controllers
         // GET: MiniPaintSwatch/Create
         public IActionResult Create()
         {
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id");
             ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc");
-            var userPaints = _context.UserPaints
-                .Include(p => p.Paint)
-                .Select(up => new { up.Id, Name = up.Paint != null ? up.Paint.Name : "Unknown" })
-                .ToList();
-            ViewData["UserPaintsId"] = new SelectList(userPaints, "Id", "Name");
+            ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id");
             return View();
         }
 
@@ -67,7 +61,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsageType,Notes,MiniatureCollectionId,UserPaintsId,Id")] MiniPaintSwatch miniPaintSwatch)
+        public async Task<IActionResult> Create([Bind("UsageType,Notes,MiniatureCollectionId,PersonPaintsId,AppUserId,Id")] MiniPaintSwatch miniPaintSwatch)
         {
             if (ModelState.IsValid)
             {
@@ -76,12 +70,9 @@ namespace WebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.AppUserId);
             ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc", miniPaintSwatch.MiniatureCollectionId);
-            var userPaints = _context.UserPaints
-                .Include(p => p.Paint)
-                .Select(up => new { up.Id, Name = up.Paint != null ? up.Paint.Name : "Unknown" })
-                .ToList();
-            ViewData["UserPaintsId"] = new SelectList(userPaints, "Id", "Name", miniPaintSwatch.UserPaintsId);
+            ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id", miniPaintSwatch.PersonPaintsId);
             return View(miniPaintSwatch);
         }
 
@@ -98,12 +89,9 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.AppUserId);
             ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc", miniPaintSwatch.MiniatureCollectionId);
-            var userPaints = _context.UserPaints
-                .Include(p => p.Paint)
-                .Select(up => new { up.Id, Name = up.Paint != null ? up.Paint.Name : "Unknown" })
-                .ToList();
-            ViewData["UserPaintsId"] = new SelectList(userPaints, "Id", "Name", miniPaintSwatch.UserPaintsId);
+            ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id", miniPaintSwatch.PersonPaintsId);
             return View(miniPaintSwatch);
         }
 
@@ -112,7 +100,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("UsageType,Notes,MiniatureCollectionId,UserPaintsId,Id")] MiniPaintSwatch miniPaintSwatch)
+        public async Task<IActionResult> Edit(Guid id, [Bind("UsageType,Notes,MiniatureCollectionId,PersonPaintsId,AppUserId,Id")] MiniPaintSwatch miniPaintSwatch)
         {
             if (id != miniPaintSwatch.Id)
             {
@@ -139,12 +127,9 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.AppUserId);
             ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc", miniPaintSwatch.MiniatureCollectionId);
-            var userPaints = _context.UserPaints
-                .Include(p => p.Paint)
-                .Select(up => new { up.Id, Name = up.Paint != null ? up.Paint.Name : "Unknown" })
-                .ToList();
-            ViewData["UserPaintsId"] = new SelectList(userPaints, "Id", "Name", miniPaintSwatch.UserPaintsId);
+            ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id", miniPaintSwatch.PersonPaintsId);
             return View(miniPaintSwatch);
         }
 
@@ -157,9 +142,9 @@ namespace WebApp.Controllers
             }
 
             var miniPaintSwatch = await _context.MiniPaintSwatches
+                .Include(m => m.AppUser)
                 .Include(m => m.MiniatureCollection)
-                .Include(m => m.UserPaints)
-                    .ThenInclude(up => up.Paint)
+                .Include(m => m.PersonPaints)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (miniPaintSwatch == null)
             {

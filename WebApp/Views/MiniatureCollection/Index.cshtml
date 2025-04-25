@@ -1,4 +1,3 @@
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model IEnumerable<App.Domain.MiniatureCollection>
 
 @{
@@ -31,6 +30,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.MiniState)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Person)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -50,10 +55,16 @@
                 @Html.DisplayFor(modelItem => item.CompletionDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Miniature.MiniName)
+                @Html.DisplayFor(modelItem => item.Miniature!.MiniDesc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniState.StateName)
+                @Html.DisplayFor(modelItem => item.MiniState!.StateDesc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Person!.PersonName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

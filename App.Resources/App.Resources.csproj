@@ -51,14 +51,6 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>PaintType.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Domain\User.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>User.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Domain\UserPaints.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>UserPaints.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -116,16 +108,6 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>PaintType.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Domain\User.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>User.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Domain\UserPaints.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>UserPaints.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

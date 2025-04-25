@@ -24,7 +24,7 @@
     <data name="AcquisitionDate" xml:space="preserve">
         <value>Acquisition Date</value>
     </data>
-    <data name="User" xml:space="preserve">
+    <data name="Person" xml:space="preserve">
         <value>Username</value>
     </data>
     <data name="Paint" xml:space="preserve">

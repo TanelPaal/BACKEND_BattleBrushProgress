@@ -36,4 +36,7 @@
     <data name="CompletionDate" xml:space="preserve">
         <value>Completion Date</value>
     </data>
+    <data name="Person" xml:space="preserve">
+        <value>Person Name</value>
+    </data>
 </root>

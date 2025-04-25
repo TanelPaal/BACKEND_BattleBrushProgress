@@ -7,7 +7,7 @@ public class PaintLine : BaseEntity
 {
     [MaxLength(128)]
     [Display(Name = nameof(PaintLineName), Prompt = nameof(PaintLineName), ResourceType = typeof(App.Resources.Domain.PaintLine))]
-    public string PaintLineName { get; set; }
+    public string PaintLineName { get; set; } = default!;
     
     [MaxLength(256)]
     [Display(Name = nameof(Description), Prompt = nameof(Description), ResourceType = typeof(App.Resources.Domain.PaintLine))]

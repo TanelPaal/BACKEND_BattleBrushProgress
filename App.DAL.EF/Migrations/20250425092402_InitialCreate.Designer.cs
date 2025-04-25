@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250321075340_InitialCreate")]
+    [Migration("20250425092402_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -54,6 +54,98 @@ namespace App.DAL.EF.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("App.Domain.Identity.AppRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("App.Domain.Identity.AppUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("App.Domain.MiniFaction", b =>
@@ -113,6 +205,9 @@ namespace App.DAL.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("MiniatureCollectionId")
                         .HasColumnType("uuid");
 
@@ -120,19 +215,21 @@ namespace App.DAL.EF.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("PersonPaintsId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("UsageType")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<Guid>("UserPaintsId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("MiniatureCollectionId");
 
-                    b.HasIndex("UserPaintsId");
+                    b.HasIndex("PersonPaintsId");
 
                     b.ToTable("MiniPaintSwatches");
                 });
@@ -221,6 +318,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<DateTime>("AcquisitionDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("CollectionDesc")
                         .IsRequired()
                         .HasColumnType("text");
@@ -239,11 +339,18 @@ namespace App.DAL.EF.Migrations
                     b.Property<Guid>("MiniatureId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("PersonId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("MiniStateId");
 
                     b.HasIndex("MiniatureId");
+
+                    b.HasIndex("PersonId");
 
                     b.ToTable("MiniatureCollections");
                 });
@@ -336,23 +443,28 @@ namespace App.DAL.EF.Migrations
                     b.ToTable("PaintTypes");
                 });
 
-            modelBuilder.Entity("App.Domain.User", b =>
+            modelBuilder.Entity("App.Domain.Person", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("UserName")
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PersonName")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("App.Domain.UserPaints", b =>
+            modelBuilder.Entity("App.Domain.PersonPaints", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -361,49 +473,30 @@ namespace App.DAL.EF.Migrations
                     b.Property<DateTime>("AcquisitionDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("PaintId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PersonId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("PaintId");
 
-                    b.ToTable("UserPaints");
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("PersonPaints");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -417,9 +510,8 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -428,71 +520,7 @@ namespace App.DAL.EF.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -506,9 +534,8 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -517,22 +544,19 @@ namespace App.DAL.EF.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -541,13 +565,13 @@ namespace App.DAL.EF.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -556,18 +580,16 @@ namespace App.DAL.EF.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -579,21 +601,29 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.MiniPaintSwatch", b =>
                 {
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("App.Domain.MiniatureCollection", "MiniatureCollection")
                         .WithMany("MiniPaintSwatches")
                         .HasForeignKey("MiniatureCollectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("App.Domain.UserPaints", "UserPaints")
+                    b.HasOne("App.Domain.PersonPaints", "PersonPaints")
                         .WithMany("MiniPaintSwatches")
-                        .HasForeignKey("UserPaintsId")
+                        .HasForeignKey("PersonPaintsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("AppUser");
+
                     b.Navigation("MiniatureCollection");
 
-                    b.Navigation("UserPaints");
+                    b.Navigation("PersonPaints");
                 });
 
             modelBuilder.Entity("App.Domain.Miniature", b =>
@@ -625,6 +655,12 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.MiniatureCollection", b =>
                 {
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("App.Domain.MiniState", "MiniState")
                         .WithMany()
                         .HasForeignKey("MiniStateId")
@@ -637,9 +673,19 @@ namespace App.DAL.EF.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("App.Domain.Person", "Person")
+                        .WithMany("MiniatureCollections")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
                     b.Navigation("MiniState");
 
                     b.Navigation("Miniature");
+
+                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("App.Domain.Paint", b =>
@@ -678,62 +724,89 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("Brand");
                 });
 
-            modelBuilder.Entity("App.Domain.UserPaints", b =>
+            modelBuilder.Entity("App.Domain.Person", b =>
                 {
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
+                        .WithMany("Persons")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("App.Domain.PersonPaints", b =>
+                {
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("App.Domain.Paint", "Paint")
-                        .WithMany("UserPaints")
+                        .WithMany("PersonPaints")
                         .HasForeignKey("PaintId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("App.Domain.Person", "Person")
+                        .WithMany("PersonPaints")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
                     b.Navigation("Paint");
+
+                    b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("App.Domain.Identity.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("App.Domain.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("App.Domain.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("App.Domain.Identity.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("App.Domain.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("App.Domain.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -745,6 +818,11 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("PaintLines");
 
                     b.Navigation("Paints");
+                });
+
+            modelBuilder.Entity("App.Domain.Identity.AppUser", b =>
+                {
+                    b.Navigation("Persons");
                 });
 
             modelBuilder.Entity("App.Domain.MiniFaction", b =>
@@ -774,7 +852,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Paint", b =>
                 {
-                    b.Navigation("UserPaints");
+                    b.Navigation("PersonPaints");
                 });
 
             modelBuilder.Entity("App.Domain.PaintType", b =>
@@ -782,7 +860,14 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("Paints");
                 });
 
-            modelBuilder.Entity("App.Domain.UserPaints", b =>
+            modelBuilder.Entity("App.Domain.Person", b =>
+                {
+                    b.Navigation("MiniatureCollections");
+
+                    b.Navigation("PersonPaints");
+                });
+
+            modelBuilder.Entity("App.Domain.PersonPaints", b =>
                 {
                     b.Navigation("MiniPaintSwatches");
                 });

@@ -92,4 +92,8 @@
       <_ContentIncludedByDefault Remove="Views\PaintType\Index.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Areas\Identity\Data\" />
+    </ItemGroup>
+
 </Project>

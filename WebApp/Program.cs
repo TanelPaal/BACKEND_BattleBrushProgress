@@ -17,7 +17,7 @@ Console.WriteLine(builder.Environment.EnvironmentName);
 
 if (builder.Environment.IsProduction())
 {
-    builder.Services.AddDbContext<AppDbContext>(options =>
+    builder.Services.AddDbContext<App.DAL.EF.AppDbContext>(options =>
         options
             .UseNpgsql(
                 connectionString, 
@@ -27,7 +27,7 @@ if (builder.Environment.IsProduction())
 }
 else
 {
-    builder.Services.AddDbContext<AppDbContext>(options =>
+    builder.Services.AddDbContext<App.DAL.EF.AppDbContext>(options =>
         options
             .UseNpgsql(
                 connectionString, 
@@ -39,15 +39,17 @@ else
     );
 }
 
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();
+
 
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<AppUser, AppRole>(o => 
-        o.SignIn.RequireConfirmedAccount = true)
+        o.SignIn.RequireConfirmedAccount = false)
     .AddDefaultTokenProviders()
-    .AddEntityFrameworkStores<AppDbContext>()
+    .AddEntityFrameworkStores<App.DAL.EF.AppDbContext>()
     .AddDefaultTokenProviders();
 
 // builder.Services.AddDefaultIdentity<IdentityUser>(

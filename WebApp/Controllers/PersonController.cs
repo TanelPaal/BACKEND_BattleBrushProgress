@@ -96,7 +96,15 @@ public class PersonController : Controller
         {
             return NotFound();
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", person.AppUserId);
+        
+        // Verify the current user owns this person record
+        var userIdStr = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        var userId = Guid.Parse(userIdStr);
+        if (person.AppUserId != userId)
+        {
+            return Forbid();
+        }
+        
         return View(person);
     }
 
@@ -105,12 +113,30 @@ public class PersonController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("PersonName,AppUserId,Id")] Person person)
+    public async Task<IActionResult> Edit(Guid id, [Bind("PersonName,Id")] Person person)
     {
         if (id != person.Id)
         {
             return NotFound();
         }
+        
+        // Get the original person to preserve the AppUserId
+        var originalPerson = await _context.Persons.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+        if (originalPerson == null)
+        {
+            return NotFound();
+        }
+        
+        // Verify the current user owns this person record
+        var userIdStr = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        var userId = Guid.Parse(userIdStr);
+        if (originalPerson.AppUserId != userId)
+        {
+            return Forbid();
+        }
+        
+        // Set the AppUserId to the original value
+        person.AppUserId = originalPerson.AppUserId;
 
         if (ModelState.IsValid)
         {
@@ -132,7 +158,7 @@ public class PersonController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", person.AppUserId);
+        // ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", person.AppUserId);
         return View(person);
     }
 

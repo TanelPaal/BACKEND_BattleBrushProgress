@@ -24,7 +24,7 @@ public class PersonPaintsController : Controller
     // GET: PersonPaints
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.PersonPaints.Include(p => p.AppUser).Include(p => p.Paint).Include(p => p.Person);
+        var appDbContext = _context.PersonPaints.Include(p => p.User).Include(p => p.Paint).Include(p => p.Person);
         return View(await appDbContext.ToListAsync());
     }
 
@@ -37,7 +37,7 @@ public class PersonPaintsController : Controller
         }
 
         var personPaints = await _context.PersonPaints
-            .Include(p => p.AppUser)
+            .Include(p => p.User)
             .Include(p => p.Paint)
             .Include(p => p.Person)
             .FirstOrDefaultAsync(m => m.Id == id);
@@ -72,7 +72,7 @@ public class PersonPaintsController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", personPaints.AppUserId);
+        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", personPaints.UserId);
         ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "HexCode", personPaints.PaintId);
         ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", personPaints.PersonId);
         return View(personPaints);
@@ -91,7 +91,7 @@ public class PersonPaintsController : Controller
         {
             return NotFound();
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", personPaints.AppUserId);
+        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", personPaints.UserId);
         ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "HexCode", personPaints.PaintId);
         ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", personPaints.PersonId);
         return View(personPaints);
@@ -129,7 +129,7 @@ public class PersonPaintsController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", personPaints.AppUserId);
+        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", personPaints.UserId);
         ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "HexCode", personPaints.PaintId);
         ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", personPaints.PersonId);
         return View(personPaints);
@@ -144,7 +144,7 @@ public class PersonPaintsController : Controller
         }
 
         var personPaints = await _context.PersonPaints
-            .Include(p => p.AppUser)
+            .Include(p => p.User)
             .Include(p => p.Paint)
             .Include(p => p.Person)
             .FirstOrDefaultAsync(m => m.Id == id);

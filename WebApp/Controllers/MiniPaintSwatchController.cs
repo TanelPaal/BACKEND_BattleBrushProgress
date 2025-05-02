@@ -24,7 +24,7 @@ public class MiniPaintSwatchController : Controller
     // GET: MiniPaintSwatch
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.MiniPaintSwatches.Include(m => m.AppUser).Include(m => m.MiniatureCollection).Include(m => m.PersonPaints);
+        var appDbContext = _context.MiniPaintSwatches.Include(m => m.User).Include(m => m.MiniatureCollection).Include(m => m.PersonPaints);
         return View(await appDbContext.ToListAsync());
     }
 
@@ -37,7 +37,7 @@ public class MiniPaintSwatchController : Controller
         }
 
         var miniPaintSwatch = await _context.MiniPaintSwatches
-            .Include(m => m.AppUser)
+            .Include(m => m.User)
             .Include(m => m.MiniatureCollection)
             .Include(m => m.PersonPaints)
             .FirstOrDefaultAsync(m => m.Id == id);
@@ -72,7 +72,7 @@ public class MiniPaintSwatchController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.AppUserId);
+        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.UserId);
         ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc", miniPaintSwatch.MiniatureCollectionId);
         ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id", miniPaintSwatch.PersonPaintsId);
         return View(miniPaintSwatch);
@@ -91,7 +91,7 @@ public class MiniPaintSwatchController : Controller
         {
             return NotFound();
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.AppUserId);
+        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.UserId);
         ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc", miniPaintSwatch.MiniatureCollectionId);
         ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id", miniPaintSwatch.PersonPaintsId);
         return View(miniPaintSwatch);
@@ -129,7 +129,7 @@ public class MiniPaintSwatchController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.AppUserId);
+        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.UserId);
         ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc", miniPaintSwatch.MiniatureCollectionId);
         ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id", miniPaintSwatch.PersonPaintsId);
         return View(miniPaintSwatch);
@@ -144,7 +144,7 @@ public class MiniPaintSwatchController : Controller
         }
 
         var miniPaintSwatch = await _context.MiniPaintSwatches
-            .Include(m => m.AppUser)
+            .Include(m => m.User)
             .Include(m => m.MiniatureCollection)
             .Include(m => m.PersonPaints)
             .FirstOrDefaultAsync(m => m.Id == id);

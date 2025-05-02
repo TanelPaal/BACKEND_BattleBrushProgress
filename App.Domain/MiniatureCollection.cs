@@ -4,7 +4,7 @@ using Base.Domain;
 
 namespace App.Domain;
 
-public class MiniatureCollection : BaseEntity
+public class MiniatureCollection : BaseEntityUser<AppUser, AppRole>
 {
     [MaxLength(256)]
     [Display(Name = nameof(CollectionName), Prompt = nameof(CollectionName), ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]
@@ -51,6 +51,6 @@ public class MiniatureCollection : BaseEntity
     
     public ICollection<MiniPaintSwatch>? MiniPaintSwatches { get; set; }
     
-    public Guid AppUserId { get; set; }
-    public AppUser? AppUser { get; set; }
+    // public Guid AppUserId { get; set; }
+    // public AppUser? AppUser { get; set; }
 }

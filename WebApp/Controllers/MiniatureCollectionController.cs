@@ -24,7 +24,7 @@ public class MiniatureCollectionController : Controller
     // GET: MiniatureCollection
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.MiniatureCollections.Include(m => m.AppUser).Include(m => m.Miniature).Include(m => m.MiniState).Include(m => m.Person);
+        var appDbContext = _context.MiniatureCollections.Include(m => m.User).Include(m => m.Miniature).Include(m => m.MiniState).Include(m => m.Person);
         return View(await appDbContext.ToListAsync());
     }
 
@@ -37,7 +37,7 @@ public class MiniatureCollectionController : Controller
         }
 
         var miniatureCollection = await _context.MiniatureCollections
-            .Include(m => m.AppUser)
+            .Include(m => m.User)
             .Include(m => m.Miniature)
             .Include(m => m.MiniState)
             .Include(m => m.Person)
@@ -74,7 +74,7 @@ public class MiniatureCollectionController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniatureCollection.AppUserId);
+        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniatureCollection.UserId);
         ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniDesc", miniatureCollection.MiniatureId);
         ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateDesc", miniatureCollection.MiniStateId);
         ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", miniatureCollection.PersonId);
@@ -94,7 +94,7 @@ public class MiniatureCollectionController : Controller
         {
             return NotFound();
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniatureCollection.AppUserId);
+        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniatureCollection.UserId);
         ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniDesc", miniatureCollection.MiniatureId);
         ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateDesc", miniatureCollection.MiniStateId);
         ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", miniatureCollection.PersonId);
@@ -133,7 +133,7 @@ public class MiniatureCollectionController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniatureCollection.AppUserId);
+        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniatureCollection.UserId);
         ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniDesc", miniatureCollection.MiniatureId);
         ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateDesc", miniatureCollection.MiniStateId);
         ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", miniatureCollection.PersonId);
@@ -149,7 +149,7 @@ public class MiniatureCollectionController : Controller
         }
 
         var miniatureCollection = await _context.MiniatureCollections
-            .Include(m => m.AppUser)
+            .Include(m => m.User)
             .Include(m => m.Miniature)
             .Include(m => m.MiniState)
             .Include(m => m.Person)

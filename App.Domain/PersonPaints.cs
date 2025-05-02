@@ -4,7 +4,7 @@ using Base.Domain;
 
 namespace App.Domain;
 
-public class PersonPaints : BaseEntity
+public class PersonPaints : BaseEntityUser<AppUser, AppRole>
 {
     [Required]
     [Display(Name = nameof(Quantity), Prompt = nameof(Quantity), ResourceType = typeof(App.Resources.Domain.PersonPaints))]
@@ -34,6 +34,6 @@ public class PersonPaints : BaseEntity
     
     public ICollection<MiniPaintSwatch>? MiniPaintSwatches { get; set; }
     
-    public Guid AppUserId { get; set; }
-    public AppUser? AppUser { get; set; }
+    // public Guid AppUserId { get; set; }
+    // public AppUser? AppUser { get; set; }
 }

@@ -31,8 +31,8 @@ public class PersonController : Controller
         
         var res = await _context
                 .Persons
-                .Include(p => p.AppUser)
-                .Where(p => p.AppUserId == userId)
+                .Include(p => p.User)
+                .Where(p => p.UserId == userId)
                 .ToListAsync();
         return View(res);
     }
@@ -46,7 +46,7 @@ public class PersonController : Controller
         }
 
         var person = await _context.Persons
-            .Include(p => p.AppUser)
+            .Include(p => p.User)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (person == null)
         {
@@ -71,7 +71,7 @@ public class PersonController : Controller
     {
         var userIdStr = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var userId = Guid.Parse(userIdStr);
-        person.AppUserId = userId;
+        person.UserId = userId;
         
         if (ModelState.IsValid)
         {
@@ -100,7 +100,7 @@ public class PersonController : Controller
         // Verify the current user owns this person record
         var userIdStr = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var userId = Guid.Parse(userIdStr);
-        if (person.AppUserId != userId)
+        if (person.UserId != userId)
         {
             return Forbid();
         }
@@ -130,13 +130,13 @@ public class PersonController : Controller
         // Verify the current user owns this person record
         var userIdStr = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var userId = Guid.Parse(userIdStr);
-        if (originalPerson.AppUserId != userId)
+        if (originalPerson.UserId != userId)
         {
             return Forbid();
         }
         
         // Set the AppUserId to the original value
-        person.AppUserId = originalPerson.AppUserId;
+        person.UserId = originalPerson.UserId;
 
         if (ModelState.IsValid)
         {
@@ -171,7 +171,7 @@ public class PersonController : Controller
         }
 
         var person = await _context.Persons
-            .Include(p => p.AppUser)
+            .Include(p => p.User)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (person == null)
         {

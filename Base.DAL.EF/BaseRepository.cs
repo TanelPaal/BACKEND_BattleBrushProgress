@@ -1,5 +1,7 @@
 ﻿using Base.Contracts;
 using Base.DAL.Contracts;
+using Base.Domain;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Base.DAL.EF;

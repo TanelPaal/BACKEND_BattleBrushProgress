@@ -36,9 +36,8 @@ public class MiniatureCollectionController : Controller
     // GET: MiniatureCollection
     public async Task<IActionResult> Index()
     {
-        var userId = User.GetUserId();
-        var collections = await _repository.AllWithIncludesAsync(userId);
-        return View(collections);
+        var res = await _repository.AllAsync(User.GetUserId());
+        return View(res);
     }
 
     // GET: MiniatureCollection/Details/5
@@ -49,9 +48,7 @@ public class MiniatureCollectionController : Controller
             return NotFound();
         }
 
-        var userId = User.GetUserId();
-        var miniatureCollection = await _repository.FindWithIncludesAsync(id.Value, userId);
-        
+        var miniatureCollection = await _repository.FindAsync(id.Value, User.GetUserId());
         if (miniatureCollection == null)
         {
             return NotFound();
@@ -72,18 +69,19 @@ public class MiniatureCollectionController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(MiniatureCollection miniatureCollection)
+    public async Task<IActionResult> Create(MiniatureCollection entity)
     {
-        miniatureCollection.UserId = User.GetUserId();
+        entity.UserId = User.GetUserId();
         
         if (ModelState.IsValid)
         {
-            _repository.Add(miniatureCollection);
+            _repository.Add(entity);
             await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        await PopulateDropDowns(miniatureCollection);
-        return View(miniatureCollection);
+
+        await PopulateDropDowns();
+        return View(entity);
     }
 
     // GET: MiniatureCollection/Edit/5
@@ -94,16 +92,14 @@ public class MiniatureCollectionController : Controller
             return NotFound();
         }
 
-        var userId = User.GetUserId();
-        var miniatureCollection = await _repository.FindAsync(id.Value);
-        
-        if (miniatureCollection == null || miniatureCollection.UserId != userId)
+        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        if (entity == null)
         {
             return NotFound();
         }
-        
-        await PopulateDropDowns(miniatureCollection);
-        return View(miniatureCollection);
+
+        await PopulateDropDowns();
+        return View(entity);
     }
 
     // POST: MiniatureCollection/Edit/5
@@ -111,29 +107,23 @@ public class MiniatureCollectionController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, MiniatureCollection miniatureCollection)
+    public async Task<IActionResult> Edit(Guid id, MiniatureCollection entity)
     {
-        if (id != miniatureCollection.Id)
-        {
-            return NotFound();
-        }
-        
-        var userId = User.GetUserId();
-        if (!await _repository.IsOwnedByUserAsync(id, userId))
+        if (id != entity.Id)
         {
             return NotFound();
         }
 
         if (ModelState.IsValid)
         {
-            miniatureCollection.UserId = userId;
-            _repository.Update(miniatureCollection);
+            entity.UserId = User.GetUserId();
+            _repository.Update(entity);
             await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        
-        await PopulateDropDowns(miniatureCollection);
-        return View(miniatureCollection);
+
+        await PopulateDropDowns();
+        return View(entity);
     }
 
     // GET: MiniatureCollection/Delete/5
@@ -144,15 +134,13 @@ public class MiniatureCollectionController : Controller
             return NotFound();
         }
 
-        var userId = User.GetUserId();
-        var miniatureCollection = await _repository.FindWithIncludesAsync(id.Value, userId);
-        
-        if (miniatureCollection == null)
+        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(miniatureCollection);
+        return View(entity);
     }
 
     // POST: MiniatureCollection/Delete/5
@@ -160,42 +148,29 @@ public class MiniatureCollectionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var userId = User.GetUserId();
-        if (!await _repository.IsOwnedByUserAsync(id, userId))
-        {
-            return NotFound();
-        }
-
-        await _repository.RemoveAsync(id);
+        await _repository.RemoveAsync(id, User.GetUserId());
         await _repository.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
     
     // Helper method to populate dropdowns
-    private async Task PopulateDropDowns(MiniatureCollection? miniatureCollection = null)
+    private async Task PopulateDropDowns()
     {
         var userId = User.GetUserId();
         
-        var miniatures = await _miniatureRepository.AllAsync();
-        var miniStates = await _miniStateRepository.AllAsync();
-        var persons = await _personRepository.AllAsync(userId);
-
         ViewData["MiniatureId"] = new SelectList(
-            miniatures, 
-            "Id", 
-            "MiniDesc", 
-            miniatureCollection?.MiniatureId);
+            await _miniatureRepository.AllAsync(),
+            "Id",
+            "MiniDesc");
             
         ViewData["MiniStateId"] = new SelectList(
-            miniStates, 
-            "Id", 
-            "StateName", 
-            miniatureCollection?.MiniStateId);
+            await _miniStateRepository.AllAsync(),
+            "Id",
+            "StateName");
             
         ViewData["PersonId"] = new SelectList(
-            persons, 
-            "Id", 
-            "PersonName", 
-            miniatureCollection?.PersonId);
+            await _personRepository.AllAsync(userId),
+            "Id",
+            "PersonName");
     }
 }

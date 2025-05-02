@@ -5,7 +5,8 @@ namespace App.DAL.Contracts;
 
 public interface IMiniatureCollectionRepository: IRepository<MiniatureCollection>
 {
-    Task<IEnumerable<MiniatureCollection>> AllWithIncludesAsync(Guid userId);
-    Task<MiniatureCollection?> FindWithIncludesAsync(Guid id, Guid userId);
+    Task<IEnumerable<MiniatureCollection>> AllAsync(Guid userId);
+    Task<MiniatureCollection?> FindAsync(Guid id, Guid userId);
     Task<bool> IsOwnedByUserAsync(Guid id, Guid userId);
+    Task RemoveAsync(Guid id, Guid userId);
 }

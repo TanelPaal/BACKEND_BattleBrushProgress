@@ -11,10 +11,9 @@ public class MiniatureCollectionRepository : BaseRepository<MiniatureCollection>
     {
     }
     
-    public async Task<IEnumerable<MiniatureCollection>> AllWithIncludesAsync(Guid userId)
+    public override async Task<IEnumerable<MiniatureCollection>> AllAsync(Guid userId)
     {
         return await RepositoryDbSet
-            .Include(m => m.User)
             .Include(m => m.Miniature)
             .Include(m => m.MiniState)
             .Include(m => m.Person)
@@ -22,10 +21,9 @@ public class MiniatureCollectionRepository : BaseRepository<MiniatureCollection>
             .ToListAsync();
     }
 
-    public async Task<MiniatureCollection?> FindWithIncludesAsync(Guid id, Guid userId)
+    public override async Task<MiniatureCollection?> FindAsync(Guid id, Guid userId)
     {
         return await RepositoryDbSet
-            .Include(m => m.User)
             .Include(m => m.Miniature)
             .Include(m => m.MiniState)
             .Include(m => m.Person)
@@ -36,5 +34,16 @@ public class MiniatureCollectionRepository : BaseRepository<MiniatureCollection>
     {
         return await RepositoryDbSet
             .AnyAsync(m => m.Id == id && m.UserId == userId);
+    }
+
+    public async Task RemoveAsync(Guid id, Guid userId)
+    {
+        var entity = await RepositoryDbSet
+            .FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+            
+        if (entity != null)
+        {
+            RepositoryDbSet.Remove(entity);
+        }
     }
 }

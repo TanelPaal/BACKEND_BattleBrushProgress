@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IPaintTypeRepository: IRepository<PaintType>
+public interface IPaintTypeRepository: IBaseRepository<PaintType>
 {
     
 }

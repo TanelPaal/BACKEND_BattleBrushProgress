@@ -16,24 +16,18 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniPaintSwatchController : Controller
 {
-    private readonly IMiniPaintSwatchRepository _repository;
-    private readonly IMiniatureCollectionRepository _miniatureCollectionRepository;
-    private readonly IPersonPaintsRepository _personPaintsRepository;
+    private readonly IAppUOW _uow;
 
-    public MiniPaintSwatchController(
-        IMiniPaintSwatchRepository repository,
-        IMiniatureCollectionRepository miniatureCollectionRepository,
-        IPersonPaintsRepository personPaintsRepository)
+
+    public MiniPaintSwatchController(IAppUOW uow)
     {
-        _repository = repository;
-        _miniatureCollectionRepository = miniatureCollectionRepository;
-        _personPaintsRepository = personPaintsRepository;
+        _uow = uow;
     }
 
     // GET: MiniPaintSwatch
     public async Task<IActionResult> Index()
     {
-        var res = await _repository.AllAsync(User.GetUserId());
+        var res = await _uow.MiniPaintSwatchRepository.AllAsync(User.GetUserId());
         return View(res);
     }
 
@@ -45,7 +39,7 @@ public class MiniPaintSwatchController : Controller
             return NotFound();
         }
 
-        var miniPaintSwatch = await _repository.FindAsync(id.Value, User.GetUserId());
+        var miniPaintSwatch = await _uow.MiniPaintSwatchRepository.FindAsync(id.Value, User.GetUserId());
         if (miniPaintSwatch == null)
         {
             return NotFound();
@@ -72,8 +66,8 @@ public class MiniPaintSwatchController : Controller
         
         if (ModelState.IsValid)
         {
-            _repository.Add(entity);
-            await _repository.SaveChangesAsync();
+            _uow.MiniPaintSwatchRepository.Add(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -89,7 +83,7 @@ public class MiniPaintSwatchController : Controller
             return NotFound();
         }
 
-        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _uow.MiniPaintSwatchRepository.FindAsync(id.Value, User.GetUserId());
         if (entity == null)
         {
             return NotFound();
@@ -114,8 +108,8 @@ public class MiniPaintSwatchController : Controller
         if (ModelState.IsValid)
         {
             entity.UserId = User.GetUserId();
-            _repository.Update(entity);
-            await _repository.SaveChangesAsync();
+            _uow.MiniPaintSwatchRepository.Update(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -131,7 +125,7 @@ public class MiniPaintSwatchController : Controller
             return NotFound();
         }
 
-        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _uow.MiniPaintSwatchRepository.FindAsync(id.Value, User.GetUserId());
         if (entity == null)
         {
             return NotFound();
@@ -145,8 +139,8 @@ public class MiniPaintSwatchController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _repository.RemoveAsync(id, User.GetUserId());
-        await _repository.SaveChangesAsync();
+        await _uow.MiniPaintSwatchRepository.RemoveAsync(id, User.GetUserId());
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
     
@@ -155,12 +149,12 @@ public class MiniPaintSwatchController : Controller
         var userId = User.GetUserId();
         
         ViewData["MiniatureCollectionId"] = new SelectList(
-            await _miniatureCollectionRepository.AllAsync(userId),
+            await _uow.MiniatureCollectionRepository.AllAsync(userId),
             "Id",
             "CollectionName");
             
         ViewData["PersonPaintsId"] = new SelectList(
-            await _personPaintsRepository.AllAsync(userId),
+            await _uow.PersonPaintsRepository.AllAsync(userId),
             "Id",
             "Paint.Name"); // Assuming you want to show the paint name
     }

@@ -16,24 +16,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class PersonPaintsController : Controller
 {
-    private readonly IPersonPaintsRepository _repository;
-    private readonly IPaintRepository _paintRepository;
-    private readonly IPersonRepository _personRepository;
+    private readonly IAppUOW _uow;
 
-    public PersonPaintsController(
-        IPersonPaintsRepository repository,
-        IPaintRepository paintRepository,
-        IPersonRepository personRepository)
+    public PersonPaintsController(IAppUOW uow)
     {
-        _repository = repository;
-        _paintRepository = paintRepository;
-        _personRepository = personRepository;
+        _uow = uow;
     }
 
     // GET: PersonPaints
     public async Task<IActionResult> Index()
     {
-        var res = await _repository.AllAsync(User.GetUserId());
+        var res = await _uow.PersonPaintsRepository.AllAsync(User.GetUserId());
         return View(res);
     }
 
@@ -45,7 +38,7 @@ public class PersonPaintsController : Controller
             return NotFound();
         }
 
-        var personPaints = await _repository.FindAsync(id.Value, User.GetUserId());
+        var personPaints = await _uow.PersonPaintsRepository.FindAsync(id.Value, User.GetUserId());
         if (personPaints == null)
         {
             return NotFound();
@@ -72,8 +65,8 @@ public class PersonPaintsController : Controller
         
         if (ModelState.IsValid)
         {
-            _repository.Add(entity);
-            await _repository.SaveChangesAsync();
+            _uow.PersonPaintsRepository.Add(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -89,7 +82,7 @@ public class PersonPaintsController : Controller
             return NotFound();
         }
 
-        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _uow.PersonPaintsRepository.FindAsync(id.Value, User.GetUserId());
         if (entity == null)
         {
             return NotFound();
@@ -114,8 +107,8 @@ public class PersonPaintsController : Controller
         if (ModelState.IsValid)
         {
             entity.UserId = User.GetUserId();
-            _repository.Update(entity);
-            await _repository.SaveChangesAsync();
+            _uow.PersonPaintsRepository.Update(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -131,7 +124,7 @@ public class PersonPaintsController : Controller
             return NotFound();
         }
 
-        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _uow.PersonPaintsRepository.FindAsync(id.Value, User.GetUserId());
         if (entity == null)
         {
             return NotFound();
@@ -145,8 +138,8 @@ public class PersonPaintsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _repository.RemoveAsync(id, User.GetUserId());
-        await _repository.SaveChangesAsync();
+        await _uow.PersonPaintsRepository.RemoveAsync(id, User.GetUserId());
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
     
@@ -156,12 +149,12 @@ public class PersonPaintsController : Controller
         var userId = User.GetUserId();
         
         ViewData["PaintId"] = new SelectList(
-            await _paintRepository.AllAsync(),
+            await _uow.PaintRepository.AllAsync(),
             "Id",
             "Name");
             
         ViewData["PersonId"] = new SelectList(
-            await _personRepository.AllAsync(userId),
+            await _uow.PersonRepository.AllAsync(userId),
             "Id",
             "PersonName");
     }

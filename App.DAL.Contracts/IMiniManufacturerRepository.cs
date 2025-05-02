@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IMiniManufacturerRepository: IRepository<MiniManufacturer>
+public interface IMiniManufacturerRepository: IBaseRepository<MiniManufacturer>
 {
     
 }

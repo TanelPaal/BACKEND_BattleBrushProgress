@@ -3,7 +3,7 @@ using Base.Domain;
 
 namespace Base.DAL.Contracts;
 
-public interface IRepository<TEntity> : IRepository<TEntity, Guid>
+public interface IBaseRepository<TEntity> : IRepository<TEntity, Guid>
     where TEntity : IDomainId
 {
 }
@@ -12,9 +12,6 @@ public interface IRepository<TEntity, TKey>
     where TEntity : IDomainId<TKey>
     where TKey : IEquatable<TKey>
 {
-    // TODO: Implement UOW, remove SaveChangesAsync from repository
-    Task<int> SaveChangesAsync();
-    
     IEnumerable<TEntity> All(TKey? userId = default!);
     Task<IEnumerable<TEntity>> AllAsync(TKey? userId = default!);
 

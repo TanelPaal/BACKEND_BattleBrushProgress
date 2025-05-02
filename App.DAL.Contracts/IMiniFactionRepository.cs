@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IMiniFactionRepository: IRepository<MiniFaction>
+public interface IMiniFactionRepository: IBaseRepository<MiniFaction>
 {
     
 }

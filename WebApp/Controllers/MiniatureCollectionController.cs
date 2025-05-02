@@ -16,27 +16,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniatureCollectionController : Controller
 {
-    private readonly IMiniatureCollectionRepository _repository;
-    private readonly IMiniatureRepository _miniatureRepository;
-    private readonly IMiniStateRepository _miniStateRepository;
-    private readonly IPersonRepository _personRepository;
+    private readonly IAppUOW _uow;
 
-    public MiniatureCollectionController(
-        IMiniatureCollectionRepository repository,
-        IMiniatureRepository miniatureRepository,
-        IMiniStateRepository miniStateRepository,
-        IPersonRepository personRepository)
+    public MiniatureCollectionController(IAppUOW uow)
     {
-        _repository = repository;
-        _miniatureRepository = miniatureRepository;
-        _miniStateRepository = miniStateRepository;
-        _personRepository = personRepository;
+        _uow = uow;
     }
 
     // GET: MiniatureCollection
     public async Task<IActionResult> Index()
     {
-        var res = await _repository.AllAsync(User.GetUserId());
+        var res = await _uow.MiniatureCollectionRepository.AllAsync(User.GetUserId());
         return View(res);
     }
 
@@ -48,7 +38,7 @@ public class MiniatureCollectionController : Controller
             return NotFound();
         }
 
-        var miniatureCollection = await _repository.FindAsync(id.Value, User.GetUserId());
+        var miniatureCollection = await _uow.MiniatureCollectionRepository.FindAsync(id.Value, User.GetUserId());
         if (miniatureCollection == null)
         {
             return NotFound();
@@ -75,8 +65,8 @@ public class MiniatureCollectionController : Controller
         
         if (ModelState.IsValid)
         {
-            _repository.Add(entity);
-            await _repository.SaveChangesAsync();
+            _uow.MiniatureCollectionRepository.Add(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -92,7 +82,7 @@ public class MiniatureCollectionController : Controller
             return NotFound();
         }
 
-        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _uow.MiniatureCollectionRepository.FindAsync(id.Value, User.GetUserId());
         if (entity == null)
         {
             return NotFound();
@@ -117,8 +107,8 @@ public class MiniatureCollectionController : Controller
         if (ModelState.IsValid)
         {
             entity.UserId = User.GetUserId();
-            _repository.Update(entity);
-            await _repository.SaveChangesAsync();
+            _uow.MiniatureCollectionRepository.Update(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -134,7 +124,7 @@ public class MiniatureCollectionController : Controller
             return NotFound();
         }
 
-        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _uow.MiniatureCollectionRepository.FindAsync(id.Value, User.GetUserId());
         if (entity == null)
         {
             return NotFound();
@@ -148,8 +138,8 @@ public class MiniatureCollectionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _repository.RemoveAsync(id, User.GetUserId());
-        await _repository.SaveChangesAsync();
+        await _uow.MiniatureCollectionRepository.RemoveAsync(id, User.GetUserId());
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
     
@@ -159,17 +149,17 @@ public class MiniatureCollectionController : Controller
         var userId = User.GetUserId();
         
         ViewData["MiniatureId"] = new SelectList(
-            await _miniatureRepository.AllAsync(),
+            await _uow.MiniatureRepository.AllAsync(),
             "Id",
             "MiniDesc");
             
         ViewData["MiniStateId"] = new SelectList(
-            await _miniStateRepository.AllAsync(),
+            await _uow.MiniStateRepository.AllAsync(),
             "Id",
             "StateName");
             
         ViewData["PersonId"] = new SelectList(
-            await _personRepository.AllAsync(userId),
+            await _uow.PersonRepository.AllAsync(userId),
             "Id",
             "PersonName");
     }

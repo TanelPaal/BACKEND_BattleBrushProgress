@@ -15,28 +15,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniatureController : Controller
 {
-    private readonly IMiniatureRepository _repository;
-    private readonly IMiniFactionRepository _factionRepository;
-    private readonly IMiniManufacturerRepository _manufacturerRepository;
-    private readonly IMiniPropertiesRepository _propertiesRepository;
-    
+    private readonly IAppUOW _uow;
 
-    public MiniatureController(
-        IMiniatureRepository repository,
-        IMiniFactionRepository factionRepository,
-        IMiniManufacturerRepository manufacturerRepository,
-        IMiniPropertiesRepository propertiesRepository)
+    public MiniatureController(IAppUOW uow)
     {
-        _repository = repository;
-        _factionRepository = factionRepository;
-        _manufacturerRepository = manufacturerRepository;
-        _propertiesRepository = propertiesRepository;
+        _uow = uow;
     }
 
     // GET: Miniature
     public async Task<IActionResult> Index()
     {
-        var miniatures = await _repository.AllWithIncludesAsync();
+        var miniatures = await _uow.MiniatureRepository.AllWithIncludesAsync();
         return View(miniatures);
     }
 
@@ -48,7 +37,7 @@ public class MiniatureController : Controller
             return NotFound();
         }
 
-        var miniature = await _repository.FindWithIncludesAsync(id.Value);
+        var miniature = await _uow.MiniatureRepository.FindWithIncludesAsync(id.Value);
         if (miniature == null)
         {
             return NotFound();
@@ -73,8 +62,8 @@ public class MiniatureController : Controller
     {
         if (ModelState.IsValid)
         {
-            _repository.Add(miniature);
-            await _repository.SaveChangesAsync();
+            _uow.MiniatureRepository.Add(miniature);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         await PopulateDropDowns(miniature);
@@ -89,7 +78,7 @@ public class MiniatureController : Controller
             return NotFound();
         }
 
-        var miniature = await _repository.FindAsync(id.Value);
+        var miniature = await _uow.MiniatureRepository.FindAsync(id.Value);
         if (miniature == null)
         {
             return NotFound();
@@ -112,8 +101,8 @@ public class MiniatureController : Controller
 
         if (ModelState.IsValid)
         {
-            _repository.Update(miniature);
-            await _repository.SaveChangesAsync();
+            _uow.MiniatureRepository.Update(miniature);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         await PopulateDropDowns(miniature);
@@ -128,7 +117,7 @@ public class MiniatureController : Controller
             return NotFound();
         }
 
-        var miniature = await _repository.FindWithIncludesAsync(id.Value);
+        var miniature = await _uow.MiniatureRepository.FindWithIncludesAsync(id.Value);
         if (miniature == null)
         {
             return NotFound();
@@ -142,17 +131,17 @@ public class MiniatureController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _repository.RemoveAsync(id);
-        await _repository.SaveChangesAsync();
+        await _uow.MiniatureRepository.RemoveAsync(id);
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
     
     // Helper method to populate dropdowns
     private async Task PopulateDropDowns(Miniature? miniature = null)
     {
-        var factions = await _factionRepository.AllAsync();
-        var manufacturers = await _manufacturerRepository.AllAsync();
-        var properties = await _propertiesRepository.AllAsync();
+        var factions = await _uow.MiniFactionRepository.AllAsync();
+        var manufacturers = await _uow.MiniManufacturerRepository.AllAsync();
+        var properties = await _uow.MiniPropertiesRepository.AllAsync();
 
         ViewData["MiniFactionId"] = new SelectList(
             factions, 

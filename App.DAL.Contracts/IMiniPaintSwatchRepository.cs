@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IMiniPaintSwatchRepository: IRepository<MiniPaintSwatch>
+public interface IMiniPaintSwatchRepository: IBaseRepository<MiniPaintSwatch>
 {
     Task<IEnumerable<MiniPaintSwatch>> AllAsync(Guid userId);
     Task<MiniPaintSwatch?> FindAsync(Guid id, Guid userId);

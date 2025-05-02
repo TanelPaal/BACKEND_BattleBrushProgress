@@ -15,17 +15,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniManufacturerController : Controller
 {
-    private readonly IMiniManufacturerRepository _repository;
+    private readonly IAppUOW _uow;
 
-    public MiniManufacturerController(IMiniManufacturerRepository repository)
+    public MiniManufacturerController(IAppUOW uow)
     {
-        _repository = repository;
+        _uow = uow;
     }
 
     // GET: MiniManufacturer
     public async Task<IActionResult> Index()
     {
-        var manufacturers = await _repository.AllAsync();
+        var manufacturers = await _uow.MiniManufacturerRepository.AllAsync();
         return View(manufacturers);
     }
 
@@ -37,7 +37,7 @@ public class MiniManufacturerController : Controller
             return NotFound();
         }
 
-        var miniManufacturer = await _repository.FindAsync(id.Value);
+        var miniManufacturer = await _uow.MiniManufacturerRepository.FindAsync(id.Value);
         if (miniManufacturer == null)
         {
             return NotFound();
@@ -61,8 +61,8 @@ public class MiniManufacturerController : Controller
     {
         if (ModelState.IsValid)
         {
-            _repository.Add(miniManufacturer);
-            await _repository.SaveChangesAsync();
+            _uow.MiniManufacturerRepository.Add(miniManufacturer);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniManufacturer);
@@ -76,7 +76,7 @@ public class MiniManufacturerController : Controller
             return NotFound();
         }
 
-        var miniManufacturer = await _repository.FindAsync(id.Value);
+        var miniManufacturer = await _uow.MiniManufacturerRepository.FindAsync(id.Value);
         if (miniManufacturer == null)
         {
             return NotFound();
@@ -98,8 +98,8 @@ public class MiniManufacturerController : Controller
 
         if (ModelState.IsValid)
         {
-            _repository.Update(miniManufacturer);
-            await _repository.SaveChangesAsync();
+            _uow.MiniManufacturerRepository.Update(miniManufacturer);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniManufacturer);
@@ -113,7 +113,7 @@ public class MiniManufacturerController : Controller
             return NotFound();
         }
 
-        var miniManufacturer = await _repository.FindAsync(id.Value);
+        var miniManufacturer = await _uow.MiniManufacturerRepository.FindAsync(id.Value);
         if (miniManufacturer == null)
         {
             return NotFound();
@@ -127,8 +127,8 @@ public class MiniManufacturerController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _repository.RemoveAsync(id);
-        await _repository.SaveChangesAsync();
+        await _uow.MiniManufacturerRepository.RemoveAsync(id);
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

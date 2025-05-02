@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IMiniatureCollectionRepository: IRepository<MiniatureCollection>
+public interface IMiniatureCollectionRepository: IBaseRepository<MiniatureCollection>
 {
     Task<IEnumerable<MiniatureCollection>> AllAsync(Guid userId);
     Task<MiniatureCollection?> FindAsync(Guid id, Guid userId);

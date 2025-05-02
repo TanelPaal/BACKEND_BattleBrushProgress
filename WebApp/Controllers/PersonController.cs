@@ -17,17 +17,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class PersonController : Controller
 {
-    private readonly IPersonRepository _repository;
+    private readonly IAppUOW _uow;
 
-    public PersonController(IPersonRepository repository)
+    public PersonController(IAppUOW uow)
     {
-        _repository = repository;
+        _uow = uow;
     }
 
     // GET: Person
     public async Task<IActionResult> Index()
     {
-        var res = await _repository.AllAsync(User.GetUserId());
+        var res = await _uow.PersonRepository.AllAsync(User.GetUserId());
         
         return View(res);
     }
@@ -40,7 +40,7 @@ public class PersonController : Controller
             return NotFound();
         }
         
-        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _uow.PersonRepository.FindAsync(id.Value, User.GetUserId());
         
         if (entity == null)
         {
@@ -67,8 +67,8 @@ public class PersonController : Controller
         
         if (ModelState.IsValid)
         {
-            _repository.Add(entity);
-            await _repository.SaveChangesAsync();
+            _uow.PersonRepository.Add(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
 
         }
@@ -83,7 +83,7 @@ public class PersonController : Controller
             return NotFound();
         }
 
-        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _uow.PersonRepository.FindAsync(id.Value, User.GetUserId());
         
         if (entity == null)
         {
@@ -108,13 +108,12 @@ public class PersonController : Controller
         if (ModelState.IsValid)
         {
             entity.UserId = User.GetUserId();
-            _repository.Update(entity);
-            await _repository.SaveChangesAsync();
+            _uow.PersonRepository.Update(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         return View(entity);
-
     }
 
     // GET: Person/Delete/5
@@ -126,14 +125,13 @@ public class PersonController : Controller
         }
 
 
-        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _uow.PersonRepository.FindAsync(id.Value, User.GetUserId());
         if (entity == null)
         {
             return NotFound();
         }
 
         return View(entity);
-
     }
 
     // POST: Person/Delete/5
@@ -141,10 +139,8 @@ public class PersonController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _repository.RemoveAsync(id, User.GetUserId());
-
-        await _repository.SaveChangesAsync();
+        await _uow.PersonRepository.RemoveAsync(id, User.GetUserId());
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-
     }
 }

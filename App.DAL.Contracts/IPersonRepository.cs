@@ -3,6 +3,6 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IPersonRepository : IRepository<Person>
+public interface IPersonRepository : IBaseRepository<Person>
 {
 }

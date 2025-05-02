@@ -11,7 +11,7 @@ public class PersonPaintsRepository : BaseRepository<PersonPaints>, IPersonPaint
     {
     }
     
-    public override async Task<IEnumerable<PersonPaints>> AllAsync(Guid userId)
+    public override async Task<IEnumerable<PersonPaints>> AllAsync(Guid userId = default!)
     {
         return await RepositoryDbSet
             .Include(p => p.Paint)
@@ -20,7 +20,7 @@ public class PersonPaintsRepository : BaseRepository<PersonPaints>, IPersonPaint
             .ToListAsync();
     }
 
-    public override async Task<PersonPaints?> FindAsync(Guid id, Guid userId)
+    public override async Task<PersonPaints?> FindAsync(Guid id, Guid userId = default!)
     {
         return await RepositoryDbSet
             .Include(p => p.Paint)

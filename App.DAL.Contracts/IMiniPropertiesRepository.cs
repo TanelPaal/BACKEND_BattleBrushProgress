@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IMiniPropertiesRepository: IRepository<MiniProperties>
+public interface IMiniPropertiesRepository: IBaseRepository<MiniProperties>
 {
     
 }

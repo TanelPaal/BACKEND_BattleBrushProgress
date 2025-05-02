@@ -15,17 +15,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniFactionController : Controller
 {
-    private readonly IMiniFactionRepository _repository;
+    private readonly IAppUOW _uow;
 
-    public MiniFactionController(IMiniFactionRepository repository)
+    public MiniFactionController(IAppUOW uow)
     {
-        _repository = repository;
+        _uow = uow;
     }
 
     // GET: MiniFaction
     public async Task<IActionResult> Index()
     {
-        var factions = await _repository.AllAsync();
+        var factions = await _uow.MiniFactionRepository.AllAsync();
         return View(factions);
     }
 
@@ -37,7 +37,7 @@ public class MiniFactionController : Controller
             return NotFound();
         }
 
-        var miniFaction = await _repository.FindAsync(id.Value);
+        var miniFaction = await _uow.MiniFactionRepository.FindAsync(id.Value);
         if (miniFaction == null)
         {
             return NotFound();
@@ -61,8 +61,8 @@ public class MiniFactionController : Controller
     {
         if (ModelState.IsValid)
         {
-            _repository.Add(miniFaction);
-            await _repository.SaveChangesAsync();
+            _uow.MiniFactionRepository.Add(miniFaction);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniFaction);
@@ -76,7 +76,7 @@ public class MiniFactionController : Controller
             return NotFound();
         }
 
-        var miniFaction = await _repository.FindAsync(id.Value);
+        var miniFaction = await _uow.MiniFactionRepository.FindAsync(id.Value);
         if (miniFaction == null)
         {
             return NotFound();
@@ -98,8 +98,8 @@ public class MiniFactionController : Controller
 
         if (ModelState.IsValid)
         {
-            _repository.Update(miniFaction);
-            await _repository.SaveChangesAsync();
+            _uow.MiniFactionRepository.Update(miniFaction);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniFaction);
@@ -113,7 +113,7 @@ public class MiniFactionController : Controller
             return NotFound();
         }
 
-        var miniFaction = await _repository.FindAsync(id.Value);
+        var miniFaction = await _uow.MiniFactionRepository.FindAsync(id.Value);
         if (miniFaction == null)
         {
             return NotFound();
@@ -127,8 +127,8 @@ public class MiniFactionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _repository.RemoveAsync(id);
-        await _repository.SaveChangesAsync();
+        await _uow.MiniFactionRepository.RemoveAsync(id);
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

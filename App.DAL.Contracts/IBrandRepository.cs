@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IBrandRepository: IRepository<Brand>
+public interface IBrandRepository: IBaseRepository<Brand>
 {
     
 }

@@ -15,18 +15,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class BrandController : Controller
 {
-    //private readonly AppDbContext _context;
-    private readonly IBrandRepository _repository;
+    private readonly IAppUOW _uow;
     
-    public BrandController(IBrandRepository repository)
+    public BrandController(IAppUOW uow)
     {
-        _repository = repository;
+        _uow = uow;
     }
 
     // GET: Brand
     public async Task<IActionResult> Index()
     {
-        var res = await _repository.AllAsync();
+        var res = await _uow.BrandRepository.AllAsync();
         return View(res);
     }
 
@@ -38,7 +37,7 @@ public class BrandController : Controller
             return NotFound();
         }
 
-        var brand = await _repository.FindAsync(id.Value);
+        var brand = await _uow.BrandRepository.FindAsync(id.Value);
 
         if (brand == null)
         {
@@ -63,8 +62,8 @@ public class BrandController : Controller
     {
         if (ModelState.IsValid)
         {
-            _repository.Add(brand);
-            await _repository.SaveChangesAsync();
+            _uow.BrandRepository.Add(brand);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(brand);
@@ -78,7 +77,7 @@ public class BrandController : Controller
             return NotFound();
         }
 
-        var brand = await _repository.FindAsync(id.Value);
+        var brand = await _uow.BrandRepository.FindAsync(id.Value);
         if (brand == null)
         {
             return NotFound();
@@ -100,8 +99,8 @@ public class BrandController : Controller
 
         if (ModelState.IsValid)
         {
-            _repository.Update(brand);
-            await _repository.SaveChangesAsync();
+            _uow.BrandRepository.Update(brand);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(brand);
@@ -115,7 +114,7 @@ public class BrandController : Controller
             return NotFound();
         }
 
-        var brand = await _repository.FindAsync(id.Value);
+        var brand = await _uow.BrandRepository.FindAsync(id.Value);
         if (brand == null)
         {
             return NotFound();
@@ -129,8 +128,8 @@ public class BrandController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _repository.RemoveAsync(id);
-        await _repository.SaveChangesAsync();
+        await _uow.BrandRepository.RemoveAsync(id);
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

@@ -15,17 +15,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniPropertiesController : Controller
 {
-    private readonly IMiniPropertiesRepository _repository;
+    private readonly IAppUOW _uow;
 
-    public MiniPropertiesController(IMiniPropertiesRepository repository)
+    public MiniPropertiesController(IAppUOW uow)
     {
-        _repository = repository;
+        _uow = uow;
     }
 
     // GET: MiniProperties
     public async Task<IActionResult> Index()
     {
-        var properties = await _repository.AllAsync();
+        var properties = await _uow.MiniPropertiesRepository.AllAsync();
         return View(properties);
     }
 
@@ -37,7 +37,7 @@ public class MiniPropertiesController : Controller
             return NotFound();
         }
 
-        var miniProperties = await _repository.FindAsync(id.Value);
+        var miniProperties = await _uow.MiniPropertiesRepository.FindAsync(id.Value);
         if (miniProperties == null)
         {
             return NotFound();
@@ -61,8 +61,8 @@ public class MiniPropertiesController : Controller
     {
         if (ModelState.IsValid)
         {
-            _repository.Add(miniProperties);
-            await _repository.SaveChangesAsync();
+            _uow.MiniPropertiesRepository.Add(miniProperties);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniProperties);
@@ -76,7 +76,7 @@ public class MiniPropertiesController : Controller
             return NotFound();
         }
 
-        var miniProperties = await _repository.FindAsync(id.Value);
+        var miniProperties = await _uow.MiniPropertiesRepository.FindAsync(id.Value);
         if (miniProperties == null)
         {
             return NotFound();
@@ -98,8 +98,8 @@ public class MiniPropertiesController : Controller
 
         if (ModelState.IsValid)
         {
-            _repository.Update(miniProperties);
-            await _repository.SaveChangesAsync();
+            _uow.MiniPropertiesRepository.Update(miniProperties);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniProperties);
@@ -113,7 +113,7 @@ public class MiniPropertiesController : Controller
             return NotFound();
         }
 
-        var miniProperties = await _repository.FindAsync(id.Value);
+        var miniProperties = await _uow.MiniPropertiesRepository.FindAsync(id.Value);
         if (miniProperties == null)
         {
             return NotFound();
@@ -127,8 +127,8 @@ public class MiniPropertiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _repository.RemoveAsync(id);
-        await _repository.SaveChangesAsync();
+        await _uow.MiniPropertiesRepository.RemoveAsync(id);
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

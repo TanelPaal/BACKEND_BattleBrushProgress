@@ -15,24 +15,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class PaintController : Controller
 {
-    //private readonly AppDbContext _context;
-    private readonly IPaintRepository _repository;
-    private readonly IBrandRepository _brandRepository;
-    private readonly IPaintLineRepository _paintLineRepository;
-    private readonly IPaintTypeRepository _paintTypeRepository;
+    private readonly IAppUOW _uow;
 
-    public PaintController(IPaintRepository repository, IBrandRepository brandRepository, IPaintLineRepository paintLineRepository, IPaintTypeRepository paintTypeRepository)
+    public PaintController(IAppUOW uow)
     {
-        _repository = repository;
-        _brandRepository = brandRepository;
-        _paintLineRepository = paintLineRepository;
-        _paintTypeRepository = paintTypeRepository;
+        _uow = uow;
     }
 
     // GET: Paint
     public async Task<IActionResult> Index()
     {
-        var paints = await _repository.AllWithIncludesAsync();
+        var paints = await _uow.PaintRepository.AllWithIncludesAsync();
         return View(paints);
     }
 
@@ -44,7 +37,7 @@ public class PaintController : Controller
             return NotFound();
         }
 
-        var paint = await _repository.FindWithIncludesAsync(id.Value);
+        var paint = await _uow.PaintRepository.FindWithIncludesAsync(id.Value);
         if (paint == null)
         {
             return NotFound();
@@ -69,8 +62,8 @@ public class PaintController : Controller
     {
         if (ModelState.IsValid)
         {
-            _repository.Add(paint);
-            await _repository.SaveChangesAsync();
+            _uow.PaintRepository.Add(paint);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         await PopulateDropDowns(paint);
@@ -85,7 +78,7 @@ public class PaintController : Controller
             return NotFound();
         }
 
-        var paint = await _repository.FindAsync(id.Value);
+        var paint = await _uow.PaintRepository.FindAsync(id.Value);
         if (paint == null)
         {
             return NotFound();
@@ -109,8 +102,8 @@ public class PaintController : Controller
 
         if (ModelState.IsValid)
         {
-            _repository.Update(paint);
-            await _repository.SaveChangesAsync();
+            _uow.PaintRepository.Update(paint);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         
@@ -126,7 +119,7 @@ public class PaintController : Controller
             return NotFound();
         }
 
-        var paint = await _repository.FindWithIncludesAsync(id.Value);
+        var paint = await _uow.PaintRepository.FindWithIncludesAsync(id.Value);
         if (paint == null)
         {
             return NotFound();
@@ -140,17 +133,17 @@ public class PaintController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _repository.RemoveAsync(id);
-        await _repository.SaveChangesAsync();
+        await _uow.PaintRepository.RemoveAsync(id);
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
     
     // Helper method to populate dropdowns
     private async Task PopulateDropDowns(Paint? paint = null)
     {
-        var brands = await _brandRepository.AllAsync();
-        var paintLines = await _paintLineRepository.AllAsync();
-        var paintTypes = await _paintTypeRepository.AllAsync();
+        var brands = await _uow.BrandRepository.AllAsync();
+        var paintLines = await _uow.PaintLineRepository.AllAsync();
+        var paintTypes = await _uow.PaintTypeRepository.AllAsync();
 
         ViewData["BrandId"] = new SelectList(brands, "Id", "BrandName", paint?.BrandId);
         ViewData["PaintLineId"] = new SelectList(paintLines, "Id", "PaintLineName", paint?.PaintLineId);

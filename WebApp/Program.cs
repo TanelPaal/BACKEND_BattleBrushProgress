@@ -1,5 +1,7 @@
 using System.Globalization;
+using App.DAL.Contracts;
 using App.DAL.EF;
+using App.DAL.EF.Repositories;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -19,7 +21,7 @@ Console.WriteLine(builder.Environment.EnvironmentName);
 
 if (builder.Environment.IsProduction())
 {
-    builder.Services.AddDbContext<App.DAL.EF.AppDbContext>(options =>
+    builder.Services.AddDbContext<AppDbContext>(options =>
         options
             .UseNpgsql(
                 connectionString, 
@@ -29,7 +31,7 @@ if (builder.Environment.IsProduction())
 }
 else
 {
-    builder.Services.AddDbContext<App.DAL.EF.AppDbContext>(options =>
+    builder.Services.AddDbContext<AppDbContext>(options =>
         options
             .UseNpgsql(
                 connectionString, 
@@ -38,10 +40,15 @@ else
             .ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))
             .EnableDetailedErrors()
             .EnableSensitiveDataLogging()
+            // disable tracking, allow id based shared entity creation
+            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution)
+
     );
 }
 
-/*builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();*/
+// register all the repo interfaces and their implementations, use scoped lifetime
+// scoped - get created once per web client request (same as dbcontext)
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
 
 

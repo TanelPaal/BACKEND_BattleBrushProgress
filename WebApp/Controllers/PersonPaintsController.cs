@@ -101,7 +101,7 @@ public class PersonPaintsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("Quantity,AcquisitionDate,PersonId,PaintId,AppUserId,Id")] PersonPaints personPaints)
+    public async Task<IActionResult> Edit(Guid id, [Bind("Quantity,AcquisitionDate,PersonId,PaintId,UserId,Id")] PersonPaints personPaints)
     {
         if (id != personPaints.Id)
         {
@@ -112,6 +112,12 @@ public class PersonPaintsController : Controller
         {
             try
             {
+                // Verify the user is editing their own record
+                if (personPaints.UserId.ToString() != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
+                {
+                    return Forbid();
+                }
+            
                 _context.Update(personPaints);
                 await _context.SaveChangesAsync();
             }
@@ -128,7 +134,6 @@ public class PersonPaintsController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", personPaints.UserId);
         ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "HexCode", personPaints.PaintId);
         ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", personPaints.PersonId);
         return View(personPaints);

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,18 +15,22 @@ namespace WebApp.Controllers;
 [Authorize]
 public class PaintLineController : Controller
 {
-    private readonly AppDbContext _context;
+    //private readonly AppDbContext _context;
+    
+    private readonly IPaintLineRepository _repository;
+    private readonly IBrandRepository _brandRepository;
 
-    public PaintLineController(AppDbContext context)
+    public PaintLineController(IPaintLineRepository repository, IBrandRepository brandRepository)
     {
-        _context = context;
+        _repository = repository;
+        _brandRepository = brandRepository;
     }
 
     // GET: PaintLine
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.PaintLines.Include(p => p.Brand);
-        return View(await appDbContext.ToListAsync());
+        var paintLines = await _repository.AllWithIncludesAsync();
+        return View(paintLines);
     }
 
     // GET: PaintLine/Details/5
@@ -36,9 +41,7 @@ public class PaintLineController : Controller
             return NotFound();
         }
 
-        var paintLine = await _context.PaintLines
-            .Include(p => p.Brand)
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var paintLine = await _repository.FindWithIncludesAsync(id.Value);
         if (paintLine == null)
         {
             return NotFound();
@@ -48,9 +51,10 @@ public class PaintLineController : Controller
     }
 
     // GET: PaintLine/Create
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName");
+        var brands = await _brandRepository.AllAsync();
+        ViewData["BrandId"] = new SelectList(brands, "Id", "BrandName");
         return View();
     }
 
@@ -59,16 +63,17 @@ public class PaintLineController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("PaintLineName,Description,BrandId,Id")] PaintLine paintLine)
+    public async Task<IActionResult> Create(PaintLine paintLine)
     {
         if (ModelState.IsValid)
         {
-            paintLine.Id = Guid.NewGuid();
-            _context.Add(paintLine);
-            await _context.SaveChangesAsync();
+            _repository.Add(paintLine);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paintLine.BrandId);
+        
+        var brands = await _brandRepository.AllAsync();
+        ViewData["BrandId"] = new SelectList(brands, "Id", "BrandName", paintLine.BrandId);
         return View(paintLine);
     }
 
@@ -80,12 +85,14 @@ public class PaintLineController : Controller
             return NotFound();
         }
 
-        var paintLine = await _context.PaintLines.FindAsync(id);
+        var paintLine = await _repository.FindAsync(id.Value);
         if (paintLine == null)
         {
             return NotFound();
         }
-        ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paintLine.BrandId);
+
+        var brands = await _brandRepository.AllAsync();
+        ViewData["BrandId"] = new SelectList(brands, "Id", "BrandName", paintLine.BrandId);
         return View(paintLine);
     }
 
@@ -94,7 +101,7 @@ public class PaintLineController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("PaintLineName,Description,BrandId,Id")] PaintLine paintLine)
+    public async Task<IActionResult> Edit(Guid id, PaintLine paintLine)
     {
         if (id != paintLine.Id)
         {
@@ -103,25 +110,13 @@ public class PaintLineController : Controller
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(paintLine);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PaintLineExists(paintLine.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _repository.Update(paintLine);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paintLine.BrandId);
+
+        var brands = await _brandRepository.AllAsync();
+        ViewData["BrandId"] = new SelectList(brands, "Id", "BrandName", paintLine.BrandId);
         return View(paintLine);
     }
 
@@ -133,9 +128,7 @@ public class PaintLineController : Controller
             return NotFound();
         }
 
-        var paintLine = await _context.PaintLines
-            .Include(p => p.Brand)
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var paintLine = await _repository.FindWithIncludesAsync(id.Value);
         if (paintLine == null)
         {
             return NotFound();
@@ -149,18 +142,8 @@ public class PaintLineController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var paintLine = await _context.PaintLines.FindAsync(id);
-        if (paintLine != null)
-        {
-            _context.PaintLines.Remove(paintLine);
-        }
-
-        await _context.SaveChangesAsync();
+        await _repository.RemoveAsync(id);
+        await _repository.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool PaintLineExists(Guid id)
-    {
-        return _context.PaintLines.Any(e => e.Id == id);
     }
 }

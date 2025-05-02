@@ -50,6 +50,9 @@ else
 // scoped - get created once per web client request (same as dbcontext)
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+builder.Services.AddScoped<IPaintLineRepository, PaintLineRepository>();
+builder.Services.AddScoped<IPaintTypeRepository, PaintTypeRepository>();
+builder.Services.AddScoped<IPaintRepository, PaintRepository>();
 
 
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,17 +15,19 @@ namespace WebApp.Controllers;
 [Authorize]
 public class PaintTypeController : Controller
 {
-    private readonly AppDbContext _context;
+    //private readonly AppDbContext _context;
+    private readonly IPaintTypeRepository _repository;
 
-    public PaintTypeController(AppDbContext context)
+    public PaintTypeController(IPaintTypeRepository repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     // GET: PaintType
     public async Task<IActionResult> Index()
     {
-        return View(await _context.PaintTypes.ToListAsync());
+        var paintTypes = await _repository.AllAsync();
+        return View(paintTypes);
     }
 
     // GET: PaintType/Details/5
@@ -35,8 +38,7 @@ public class PaintTypeController : Controller
             return NotFound();
         }
 
-        var paintType = await _context.PaintTypes
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var paintType = await _repository.FindAsync(id.Value);
         if (paintType == null)
         {
             return NotFound();
@@ -56,13 +58,12 @@ public class PaintTypeController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Name,Description,Id")] PaintType paintType)
+    public async Task<IActionResult> Create(PaintType paintType)
     {
         if (ModelState.IsValid)
         {
-            paintType.Id = Guid.NewGuid();
-            _context.Add(paintType);
-            await _context.SaveChangesAsync();
+            _repository.Add(paintType);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(paintType);
@@ -76,7 +77,7 @@ public class PaintTypeController : Controller
             return NotFound();
         }
 
-        var paintType = await _context.PaintTypes.FindAsync(id);
+        var paintType = await _repository.FindAsync(id.Value);
         if (paintType == null)
         {
             return NotFound();
@@ -89,7 +90,7 @@ public class PaintTypeController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("Name,Description,Id")] PaintType paintType)
+    public async Task<IActionResult> Edit(Guid id, PaintType paintType)
     {
         if (id != paintType.Id)
         {
@@ -98,22 +99,8 @@ public class PaintTypeController : Controller
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(paintType);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PaintTypeExists(paintType.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _repository.Update(paintType); 
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(paintType);
@@ -127,8 +114,7 @@ public class PaintTypeController : Controller
             return NotFound();
         }
 
-        var paintType = await _context.PaintTypes
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var paintType = await _repository.FindAsync(id.Value);
         if (paintType == null)
         {
             return NotFound();
@@ -142,18 +128,8 @@ public class PaintTypeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var paintType = await _context.PaintTypes.FindAsync(id);
-        if (paintType != null)
-        {
-            _context.PaintTypes.Remove(paintType);
-        }
-
-        await _context.SaveChangesAsync();
+        await _repository.RemoveAsync(id);
+        await _repository.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool PaintTypeExists(Guid id)
-    {
-        return _context.PaintTypes.Any(e => e.Id == id);
     }
 }

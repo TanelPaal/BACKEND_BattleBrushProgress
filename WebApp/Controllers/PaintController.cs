@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,18 +15,25 @@ namespace WebApp.Controllers;
 [Authorize]
 public class PaintController : Controller
 {
-    private readonly AppDbContext _context;
+    //private readonly AppDbContext _context;
+    private readonly IPaintRepository _repository;
+    private readonly IBrandRepository _brandRepository;
+    private readonly IPaintLineRepository _paintLineRepository;
+    private readonly IPaintTypeRepository _paintTypeRepository;
 
-    public PaintController(AppDbContext context)
+    public PaintController(IPaintRepository repository, IBrandRepository brandRepository, IPaintLineRepository paintLineRepository, IPaintTypeRepository paintTypeRepository)
     {
-        _context = context;
+        _repository = repository;
+        _brandRepository = brandRepository;
+        _paintLineRepository = paintLineRepository;
+        _paintTypeRepository = paintTypeRepository;
     }
 
     // GET: Paint
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.Paints.Include(p => p.Brand).Include(p => p.PaintLine).Include(p => p.PaintType);
-        return View(await appDbContext.ToListAsync());
+        var paints = await _repository.AllWithIncludesAsync();
+        return View(paints);
     }
 
     // GET: Paint/Details/5
@@ -36,11 +44,7 @@ public class PaintController : Controller
             return NotFound();
         }
 
-        var paint = await _context.Paints
-            .Include(p => p.Brand)
-            .Include(p => p.PaintLine)
-            .Include(p => p.PaintType)
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var paint = await _repository.FindWithIncludesAsync(id.Value);
         if (paint == null)
         {
             return NotFound();
@@ -50,11 +54,9 @@ public class PaintController : Controller
     }
 
     // GET: Paint/Create
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName");
-        ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description");
-        ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description");
+        await PopulateDropDowns();
         return View();
     }
 
@@ -63,18 +65,15 @@ public class PaintController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Name,HexCode,UPC,BrandId,PaintTypeId,PaintLineId,Id")] Paint paint)
+    public async Task<IActionResult> Create(Paint paint)
     {
         if (ModelState.IsValid)
         {
-            paint.Id = Guid.NewGuid();
-            _context.Add(paint);
-            await _context.SaveChangesAsync();
+            _repository.Add(paint);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
-        ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description", paint.PaintLineId);
-        ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description", paint.PaintTypeId);
+        await PopulateDropDowns(paint);
         return View(paint);
     }
 
@@ -86,14 +85,13 @@ public class PaintController : Controller
             return NotFound();
         }
 
-        var paint = await _context.Paints.FindAsync(id);
+        var paint = await _repository.FindAsync(id.Value);
         if (paint == null)
         {
             return NotFound();
         }
-        ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
-        ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description", paint.PaintLineId);
-        ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description", paint.PaintTypeId);
+        
+        await PopulateDropDowns(paint);
         return View(paint);
     }
 
@@ -102,7 +100,7 @@ public class PaintController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("Name,HexCode,UPC,BrandId,PaintTypeId,PaintLineId,Id")] Paint paint)
+    public async Task<IActionResult> Edit(Guid id, Paint paint)
     {
         if (id != paint.Id)
         {
@@ -111,27 +109,12 @@ public class PaintController : Controller
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(paint);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PaintExists(paint.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _repository.Update(paint);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
-        ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description", paint.PaintLineId);
-        ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description", paint.PaintTypeId);
+        
+        await PopulateDropDowns(paint);
         return View(paint);
     }
 
@@ -143,11 +126,7 @@ public class PaintController : Controller
             return NotFound();
         }
 
-        var paint = await _context.Paints
-            .Include(p => p.Brand)
-            .Include(p => p.PaintLine)
-            .Include(p => p.PaintType)
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var paint = await _repository.FindWithIncludesAsync(id.Value);
         if (paint == null)
         {
             return NotFound();
@@ -161,18 +140,20 @@ public class PaintController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var paint = await _context.Paints.FindAsync(id);
-        if (paint != null)
-        {
-            _context.Paints.Remove(paint);
-        }
-
-        await _context.SaveChangesAsync();
+        await _repository.RemoveAsync(id);
+        await _repository.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
-
-    private bool PaintExists(Guid id)
+    
+    // Helper method to populate dropdowns
+    private async Task PopulateDropDowns(Paint? paint = null)
     {
-        return _context.Paints.Any(e => e.Id == id);
+        var brands = await _brandRepository.AllAsync();
+        var paintLines = await _paintLineRepository.AllAsync();
+        var paintTypes = await _paintTypeRepository.AllAsync();
+
+        ViewData["BrandId"] = new SelectList(brands, "Id", "BrandName", paint?.BrandId);
+        ViewData["PaintLineId"] = new SelectList(paintLines, "Id", "PaintLineName", paint?.PaintLineId);
+        ViewData["PaintTypeId"] = new SelectList(paintTypes, "Id", "Name", paint?.PaintTypeId);
     }
 }

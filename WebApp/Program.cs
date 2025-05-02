@@ -64,6 +64,7 @@ builder.Services.AddScoped<IMiniatureRepository, MiniatureRepository>();
 
 //MiniatureCollection
 builder.Services.AddScoped<IMiniStateRepository, MiniStateRepository>();
+builder.Services.AddScoped<IMiniatureCollectionRepository, MiniatureCollectionRepository>();
 
 
 

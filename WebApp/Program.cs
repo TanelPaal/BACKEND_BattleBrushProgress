@@ -62,7 +62,8 @@ builder.Services.AddScoped<IMiniFactionRepository, MiniFactionRepository>();
 builder.Services.AddScoped<IMiniManufacturerRepository, MiniManufacturerRepository>();
 builder.Services.AddScoped<IMiniatureRepository, MiniatureRepository>();
 
-
+//MiniatureCollection
+builder.Services.AddScoped<IMiniStateRepository, MiniStateRepository>();
 
 
 

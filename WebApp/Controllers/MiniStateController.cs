@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,17 +15,18 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniStateController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IMiniStateRepository _repository;
 
-    public MiniStateController(AppDbContext context)
+    public MiniStateController(IMiniStateRepository repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     // GET: MiniState
     public async Task<IActionResult> Index()
     {
-        return View(await _context.MiniStates.ToListAsync());
+        var states = await _repository.AllAsync();
+        return View(states);
     }
 
     // GET: MiniState/Details/5
@@ -35,8 +37,7 @@ public class MiniStateController : Controller
             return NotFound();
         }
 
-        var miniState = await _context.MiniStates
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var miniState = await _repository.FindAsync(id.Value);
         if (miniState == null)
         {
             return NotFound();
@@ -56,13 +57,12 @@ public class MiniStateController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("StateName,StateDesc,Id")] MiniState miniState)
+    public async Task<IActionResult> Create(MiniState miniState)
     {
         if (ModelState.IsValid)
         {
-            miniState.Id = Guid.NewGuid();
-            _context.Add(miniState);
-            await _context.SaveChangesAsync();
+            _repository.Add(miniState);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniState);
@@ -76,7 +76,7 @@ public class MiniStateController : Controller
             return NotFound();
         }
 
-        var miniState = await _context.MiniStates.FindAsync(id);
+        var miniState = await _repository.FindAsync(id.Value);
         if (miniState == null)
         {
             return NotFound();
@@ -89,7 +89,7 @@ public class MiniStateController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("StateName,StateDesc,Id")] MiniState miniState)
+    public async Task<IActionResult> Edit(Guid id, MiniState miniState)
     {
         if (id != miniState.Id)
         {
@@ -98,22 +98,8 @@ public class MiniStateController : Controller
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(miniState);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MiniStateExists(miniState.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _repository.Update(miniState);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniState);
@@ -127,8 +113,7 @@ public class MiniStateController : Controller
             return NotFound();
         }
 
-        var miniState = await _context.MiniStates
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var miniState = await _repository.FindAsync(id.Value);
         if (miniState == null)
         {
             return NotFound();
@@ -142,18 +127,8 @@ public class MiniStateController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var miniState = await _context.MiniStates.FindAsync(id);
-        if (miniState != null)
-        {
-            _context.MiniStates.Remove(miniState);
-        }
-
-        await _context.SaveChangesAsync();
+        await _repository.RemoveAsync(id);
+        await _repository.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool MiniStateExists(Guid id)
-    {
-        return _context.MiniStates.Any(e => e.Id == id);
     }
 }

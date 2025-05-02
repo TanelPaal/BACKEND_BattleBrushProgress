@@ -52,7 +52,6 @@ public class PersonPaintsController : Controller
     // GET: PersonPaints/Create
     public IActionResult Create()
     {
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id");
         ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "HexCode");
         ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName");
         return View();
@@ -63,16 +62,16 @@ public class PersonPaintsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Quantity,AcquisitionDate,PersonId,PaintId,AppUserId,Id")] PersonPaints personPaints)
+    public async Task<IActionResult> Create([Bind("Quantity,AcquisitionDate,PersonId,PaintId,Id")] PersonPaints personPaints)
     {
         if (ModelState.IsValid)
         {
             personPaints.Id = Guid.NewGuid();
+            personPaints.UserId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!);
             _context.Add(personPaints);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", personPaints.UserId);
         ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "HexCode", personPaints.PaintId);
         ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", personPaints.PersonId);
         return View(personPaints);

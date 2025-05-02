@@ -49,6 +49,9 @@ else
 // register all the repo interfaces and their implementations, use scoped lifetime
 // scoped - get created once per web client request (same as dbcontext)
 
+// MiniPaintSwatch
+builder.Services.AddScoped<IMiniPaintSwatchRepository, MiniPaintSwatchRepository>();
+
 // PersonPaints
 builder.Services.AddScoped<IPersonPaintsRepository, PersonPaintsRepository>();
 

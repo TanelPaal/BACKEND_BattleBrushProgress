@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers;
@@ -14,18 +16,25 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniPaintSwatchController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IMiniPaintSwatchRepository _repository;
+    private readonly IMiniatureCollectionRepository _miniatureCollectionRepository;
+    private readonly IPersonPaintsRepository _personPaintsRepository;
 
-    public MiniPaintSwatchController(AppDbContext context)
+    public MiniPaintSwatchController(
+        IMiniPaintSwatchRepository repository,
+        IMiniatureCollectionRepository miniatureCollectionRepository,
+        IPersonPaintsRepository personPaintsRepository)
     {
-        _context = context;
+        _repository = repository;
+        _miniatureCollectionRepository = miniatureCollectionRepository;
+        _personPaintsRepository = personPaintsRepository;
     }
 
     // GET: MiniPaintSwatch
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.MiniPaintSwatches.Include(m => m.User).Include(m => m.MiniatureCollection).Include(m => m.PersonPaints);
-        return View(await appDbContext.ToListAsync());
+        var res = await _repository.AllAsync(User.GetUserId());
+        return View(res);
     }
 
     // GET: MiniPaintSwatch/Details/5
@@ -36,11 +45,7 @@ public class MiniPaintSwatchController : Controller
             return NotFound();
         }
 
-        var miniPaintSwatch = await _context.MiniPaintSwatches
-            .Include(m => m.User)
-            .Include(m => m.MiniatureCollection)
-            .Include(m => m.PersonPaints)
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var miniPaintSwatch = await _repository.FindAsync(id.Value, User.GetUserId());
         if (miniPaintSwatch == null)
         {
             return NotFound();
@@ -50,11 +55,9 @@ public class MiniPaintSwatchController : Controller
     }
 
     // GET: MiniPaintSwatch/Create
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id");
-        ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc");
-        ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id");
+        await PopulateDropDowns();
         return View();
     }
 
@@ -63,19 +66,19 @@ public class MiniPaintSwatchController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("UsageType,Notes,MiniatureCollectionId,PersonPaintsId,AppUserId,Id")] MiniPaintSwatch miniPaintSwatch)
+    public async Task<IActionResult> Create(MiniPaintSwatch entity)
     {
+        entity.UserId = User.GetUserId();
+        
         if (ModelState.IsValid)
         {
-            miniPaintSwatch.Id = Guid.NewGuid();
-            _context.Add(miniPaintSwatch);
-            await _context.SaveChangesAsync();
+            _repository.Add(entity);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.UserId);
-        ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc", miniPaintSwatch.MiniatureCollectionId);
-        ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id", miniPaintSwatch.PersonPaintsId);
-        return View(miniPaintSwatch);
+
+        await PopulateDropDowns();
+        return View(entity);
     }
 
     // GET: MiniPaintSwatch/Edit/5
@@ -86,15 +89,14 @@ public class MiniPaintSwatchController : Controller
             return NotFound();
         }
 
-        var miniPaintSwatch = await _context.MiniPaintSwatches.FindAsync(id);
-        if (miniPaintSwatch == null)
+        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        if (entity == null)
         {
             return NotFound();
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.UserId);
-        ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc", miniPaintSwatch.MiniatureCollectionId);
-        ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id", miniPaintSwatch.PersonPaintsId);
-        return View(miniPaintSwatch);
+
+        await PopulateDropDowns();
+        return View(entity);
     }
 
     // POST: MiniPaintSwatch/Edit/5
@@ -102,37 +104,23 @@ public class MiniPaintSwatchController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("UsageType,Notes,MiniatureCollectionId,PersonPaintsId,AppUserId,Id")] MiniPaintSwatch miniPaintSwatch)
+    public async Task<IActionResult> Edit(Guid id, MiniPaintSwatch entity)
     {
-        if (id != miniPaintSwatch.Id)
+        if (id != entity.Id)
         {
             return NotFound();
         }
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(miniPaintSwatch);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MiniPaintSwatchExists(miniPaintSwatch.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            entity.UserId = User.GetUserId();
+            _repository.Update(entity);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.UserId);
-        ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc", miniPaintSwatch.MiniatureCollectionId);
-        ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id", miniPaintSwatch.PersonPaintsId);
-        return View(miniPaintSwatch);
+
+        await PopulateDropDowns();
+        return View(entity);
     }
 
     // GET: MiniPaintSwatch/Delete/5
@@ -143,17 +131,13 @@ public class MiniPaintSwatchController : Controller
             return NotFound();
         }
 
-        var miniPaintSwatch = await _context.MiniPaintSwatches
-            .Include(m => m.User)
-            .Include(m => m.MiniatureCollection)
-            .Include(m => m.PersonPaints)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (miniPaintSwatch == null)
+        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(miniPaintSwatch);
+        return View(entity);
     }
 
     // POST: MiniPaintSwatch/Delete/5
@@ -161,18 +145,23 @@ public class MiniPaintSwatchController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var miniPaintSwatch = await _context.MiniPaintSwatches.FindAsync(id);
-        if (miniPaintSwatch != null)
-        {
-            _context.MiniPaintSwatches.Remove(miniPaintSwatch);
-        }
-
-        await _context.SaveChangesAsync();
+        await _repository.RemoveAsync(id, User.GetUserId());
+        await _repository.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
-
-    private bool MiniPaintSwatchExists(Guid id)
+    
+    private async Task PopulateDropDowns()
     {
-        return _context.MiniPaintSwatches.Any(e => e.Id == id);
+        var userId = User.GetUserId();
+        
+        ViewData["MiniatureCollectionId"] = new SelectList(
+            await _miniatureCollectionRepository.AllAsync(userId),
+            "Id",
+            "CollectionName");
+            
+        ViewData["PersonPaintsId"] = new SelectList(
+            await _personPaintsRepository.AllAsync(userId),
+            "Id",
+            "Paint.Name"); // Assuming you want to show the paint name
     }
 }

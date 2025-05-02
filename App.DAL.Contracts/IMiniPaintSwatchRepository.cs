@@ -5,5 +5,8 @@ namespace App.DAL.Contracts;
 
 public interface IMiniPaintSwatchRepository: IRepository<MiniPaintSwatch>
 {
-    
+    Task<IEnumerable<MiniPaintSwatch>> AllAsync(Guid userId);
+    Task<MiniPaintSwatch?> FindAsync(Guid id, Guid userId);
+    Task<bool> IsOwnedByUserAsync(Guid id, Guid userId);
+    Task RemoveAsync(Guid id, Guid userId);
 }

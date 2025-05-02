@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,17 +15,18 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniPropertiesController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IMiniPropertiesRepository _repository;
 
-    public MiniPropertiesController(AppDbContext context)
+    public MiniPropertiesController(IMiniPropertiesRepository repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     // GET: MiniProperties
     public async Task<IActionResult> Index()
     {
-        return View(await _context.MiniProperties.ToListAsync());
+        var properties = await _repository.AllAsync();
+        return View(properties);
     }
 
     // GET: MiniProperties/Details/5
@@ -35,8 +37,7 @@ public class MiniPropertiesController : Controller
             return NotFound();
         }
 
-        var miniProperties = await _context.MiniProperties
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var miniProperties = await _repository.FindAsync(id.Value);
         if (miniProperties == null)
         {
             return NotFound();
@@ -56,13 +57,12 @@ public class MiniPropertiesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("PropertyName,PropertyDesc,Id")] MiniProperties miniProperties)
+    public async Task<IActionResult> Create(MiniProperties miniProperties)
     {
         if (ModelState.IsValid)
         {
-            miniProperties.Id = Guid.NewGuid();
-            _context.Add(miniProperties);
-            await _context.SaveChangesAsync();
+            _repository.Add(miniProperties);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniProperties);
@@ -76,7 +76,7 @@ public class MiniPropertiesController : Controller
             return NotFound();
         }
 
-        var miniProperties = await _context.MiniProperties.FindAsync(id);
+        var miniProperties = await _repository.FindAsync(id.Value);
         if (miniProperties == null)
         {
             return NotFound();
@@ -89,7 +89,7 @@ public class MiniPropertiesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("PropertyName,PropertyDesc,Id")] MiniProperties miniProperties)
+    public async Task<IActionResult> Edit(Guid id, MiniProperties miniProperties)
     {
         if (id != miniProperties.Id)
         {
@@ -98,22 +98,8 @@ public class MiniPropertiesController : Controller
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(miniProperties);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MiniPropertiesExists(miniProperties.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _repository.Update(miniProperties);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniProperties);
@@ -127,8 +113,7 @@ public class MiniPropertiesController : Controller
             return NotFound();
         }
 
-        var miniProperties = await _context.MiniProperties
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var miniProperties = await _repository.FindAsync(id.Value);
         if (miniProperties == null)
         {
             return NotFound();
@@ -142,18 +127,8 @@ public class MiniPropertiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var miniProperties = await _context.MiniProperties.FindAsync(id);
-        if (miniProperties != null)
-        {
-            _context.MiniProperties.Remove(miniProperties);
-        }
-
-        await _context.SaveChangesAsync();
+        await _repository.RemoveAsync(id);
+        await _repository.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool MiniPropertiesExists(Guid id)
-    {
-        return _context.MiniProperties.Any(e => e.Id == id);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,18 +15,29 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniatureController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IMiniatureRepository _repository;
+    private readonly IMiniFactionRepository _factionRepository;
+    private readonly IMiniManufacturerRepository _manufacturerRepository;
+    private readonly IMiniPropertiesRepository _propertiesRepository;
+    
 
-    public MiniatureController(AppDbContext context)
+    public MiniatureController(
+        IMiniatureRepository repository,
+        IMiniFactionRepository factionRepository,
+        IMiniManufacturerRepository manufacturerRepository,
+        IMiniPropertiesRepository propertiesRepository)
     {
-        _context = context;
+        _repository = repository;
+        _factionRepository = factionRepository;
+        _manufacturerRepository = manufacturerRepository;
+        _propertiesRepository = propertiesRepository;
     }
 
     // GET: Miniature
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.Miniatures.Include(m => m.MiniFaction).Include(m => m.MiniManufacturer).Include(m => m.MiniProperties);
-        return View(await appDbContext.ToListAsync());
+        var miniatures = await _repository.AllWithIncludesAsync();
+        return View(miniatures);
     }
 
     // GET: Miniature/Details/5
@@ -36,11 +48,7 @@ public class MiniatureController : Controller
             return NotFound();
         }
 
-        var miniature = await _context.Miniatures
-            .Include(m => m.MiniFaction)
-            .Include(m => m.MiniManufacturer)
-            .Include(m => m.MiniProperties)
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var miniature = await _repository.FindWithIncludesAsync(id.Value);
         if (miniature == null)
         {
             return NotFound();
@@ -50,11 +58,9 @@ public class MiniatureController : Controller
     }
 
     // GET: Miniature/Create
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc");
-        ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ContactEmail");
-        ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyDesc");
+        await PopulateDropDowns();
         return View();
     }
 
@@ -63,18 +69,15 @@ public class MiniatureController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("MiniName,MiniDesc,MiniFactionId,MiniPropertiesId,MiniManufacturerId,Id")] Miniature miniature)
+    public async Task<IActionResult> Create(Miniature miniature)
     {
         if (ModelState.IsValid)
         {
-            miniature.Id = Guid.NewGuid();
-            _context.Add(miniature);
-            await _context.SaveChangesAsync();
+            _repository.Add(miniature);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc", miniature.MiniFactionId);
-        ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ContactEmail", miniature.MiniManufacturerId);
-        ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyDesc", miniature.MiniPropertiesId);
+        await PopulateDropDowns(miniature);
         return View(miniature);
     }
 
@@ -86,14 +89,12 @@ public class MiniatureController : Controller
             return NotFound();
         }
 
-        var miniature = await _context.Miniatures.FindAsync(id);
+        var miniature = await _repository.FindAsync(id.Value);
         if (miniature == null)
         {
             return NotFound();
         }
-        ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc", miniature.MiniFactionId);
-        ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ContactEmail", miniature.MiniManufacturerId);
-        ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyDesc", miniature.MiniPropertiesId);
+        await PopulateDropDowns(miniature);
         return View(miniature);
     }
 
@@ -102,7 +103,7 @@ public class MiniatureController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("MiniName,MiniDesc,MiniFactionId,MiniPropertiesId,MiniManufacturerId,Id")] Miniature miniature)
+    public async Task<IActionResult> Edit(Guid id, Miniature miniature)
     {
         if (id != miniature.Id)
         {
@@ -111,27 +112,11 @@ public class MiniatureController : Controller
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(miniature);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MiniatureExists(miniature.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _repository.Update(miniature);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc", miniature.MiniFactionId);
-        ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ContactEmail", miniature.MiniManufacturerId);
-        ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyDesc", miniature.MiniPropertiesId);
+        await PopulateDropDowns(miniature);
         return View(miniature);
     }
 
@@ -143,11 +128,7 @@ public class MiniatureController : Controller
             return NotFound();
         }
 
-        var miniature = await _context.Miniatures
-            .Include(m => m.MiniFaction)
-            .Include(m => m.MiniManufacturer)
-            .Include(m => m.MiniProperties)
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var miniature = await _repository.FindWithIncludesAsync(id.Value);
         if (miniature == null)
         {
             return NotFound();
@@ -161,18 +142,34 @@ public class MiniatureController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var miniature = await _context.Miniatures.FindAsync(id);
-        if (miniature != null)
-        {
-            _context.Miniatures.Remove(miniature);
-        }
-
-        await _context.SaveChangesAsync();
+        await _repository.RemoveAsync(id);
+        await _repository.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
-
-    private bool MiniatureExists(Guid id)
+    
+    // Helper method to populate dropdowns
+    private async Task PopulateDropDowns(Miniature? miniature = null)
     {
-        return _context.Miniatures.Any(e => e.Id == id);
+        var factions = await _factionRepository.AllAsync();
+        var manufacturers = await _manufacturerRepository.AllAsync();
+        var properties = await _propertiesRepository.AllAsync();
+
+        ViewData["MiniFactionId"] = new SelectList(
+            factions, 
+            "Id", 
+            "FactionName", 
+            miniature?.MiniFactionId);
+            
+        ViewData["MiniManufacturerId"] = new SelectList(
+            manufacturers, 
+            "Id", 
+            "ManufacturerName", 
+            miniature?.MiniManufacturerId);
+            
+        ViewData["MiniPropertiesId"] = new SelectList(
+            properties, 
+            "Id", 
+            "PropertyName", 
+            miniature?.MiniPropertiesId);
     }
 }

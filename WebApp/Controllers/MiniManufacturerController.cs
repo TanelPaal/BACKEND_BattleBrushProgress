@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,17 +15,18 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniManufacturerController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IMiniManufacturerRepository _repository;
 
-    public MiniManufacturerController(AppDbContext context)
+    public MiniManufacturerController(IMiniManufacturerRepository repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     // GET: MiniManufacturer
     public async Task<IActionResult> Index()
     {
-        return View(await _context.MiniManufacturers.ToListAsync());
+        var manufacturers = await _repository.AllAsync();
+        return View(manufacturers);
     }
 
     // GET: MiniManufacturer/Details/5
@@ -35,8 +37,7 @@ public class MiniManufacturerController : Controller
             return NotFound();
         }
 
-        var miniManufacturer = await _context.MiniManufacturers
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var miniManufacturer = await _repository.FindAsync(id.Value);
         if (miniManufacturer == null)
         {
             return NotFound();
@@ -56,13 +57,12 @@ public class MiniManufacturerController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("ManufacturerName,HeadquartersLocation,ContactEmail,ContactPhone,Id")] MiniManufacturer miniManufacturer)
+    public async Task<IActionResult> Create(MiniManufacturer miniManufacturer)
     {
         if (ModelState.IsValid)
         {
-            miniManufacturer.Id = Guid.NewGuid();
-            _context.Add(miniManufacturer);
-            await _context.SaveChangesAsync();
+            _repository.Add(miniManufacturer);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniManufacturer);
@@ -76,7 +76,7 @@ public class MiniManufacturerController : Controller
             return NotFound();
         }
 
-        var miniManufacturer = await _context.MiniManufacturers.FindAsync(id);
+        var miniManufacturer = await _repository.FindAsync(id.Value);
         if (miniManufacturer == null)
         {
             return NotFound();
@@ -89,7 +89,7 @@ public class MiniManufacturerController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("ManufacturerName,HeadquartersLocation,ContactEmail,ContactPhone,Id")] MiniManufacturer miniManufacturer)
+    public async Task<IActionResult> Edit(Guid id, MiniManufacturer miniManufacturer)
     {
         if (id != miniManufacturer.Id)
         {
@@ -98,22 +98,8 @@ public class MiniManufacturerController : Controller
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(miniManufacturer);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MiniManufacturerExists(miniManufacturer.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _repository.Update(miniManufacturer);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniManufacturer);
@@ -127,8 +113,7 @@ public class MiniManufacturerController : Controller
             return NotFound();
         }
 
-        var miniManufacturer = await _context.MiniManufacturers
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var miniManufacturer = await _repository.FindAsync(id.Value);
         if (miniManufacturer == null)
         {
             return NotFound();
@@ -142,18 +127,8 @@ public class MiniManufacturerController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var miniManufacturer = await _context.MiniManufacturers.FindAsync(id);
-        if (miniManufacturer != null)
-        {
-            _context.MiniManufacturers.Remove(miniManufacturer);
-        }
-
-        await _context.SaveChangesAsync();
+        await _repository.RemoveAsync(id);
+        await _repository.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool MiniManufacturerExists(Guid id)
-    {
-        return _context.MiniManufacturers.Any(e => e.Id == id);
     }
 }

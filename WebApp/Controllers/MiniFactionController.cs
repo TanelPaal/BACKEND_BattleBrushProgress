@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,17 +15,18 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniFactionController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IMiniFactionRepository _repository;
 
-    public MiniFactionController(AppDbContext context)
+    public MiniFactionController(IMiniFactionRepository repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     // GET: MiniFaction
     public async Task<IActionResult> Index()
     {
-        return View(await _context.MiniFactions.ToListAsync());
+        var factions = await _repository.AllAsync();
+        return View(factions);
     }
 
     // GET: MiniFaction/Details/5
@@ -35,8 +37,7 @@ public class MiniFactionController : Controller
             return NotFound();
         }
 
-        var miniFaction = await _context.MiniFactions
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var miniFaction = await _repository.FindAsync(id.Value);
         if (miniFaction == null)
         {
             return NotFound();
@@ -56,13 +57,12 @@ public class MiniFactionController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("FactionName,FactionDesc,Id")] MiniFaction miniFaction)
+    public async Task<IActionResult> Create(MiniFaction miniFaction)
     {
         if (ModelState.IsValid)
         {
-            miniFaction.Id = Guid.NewGuid();
-            _context.Add(miniFaction);
-            await _context.SaveChangesAsync();
+            _repository.Add(miniFaction);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniFaction);
@@ -76,7 +76,7 @@ public class MiniFactionController : Controller
             return NotFound();
         }
 
-        var miniFaction = await _context.MiniFactions.FindAsync(id);
+        var miniFaction = await _repository.FindAsync(id.Value);
         if (miniFaction == null)
         {
             return NotFound();
@@ -89,7 +89,7 @@ public class MiniFactionController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("FactionName,FactionDesc,Id")] MiniFaction miniFaction)
+    public async Task<IActionResult> Edit(Guid id, MiniFaction miniFaction)
     {
         if (id != miniFaction.Id)
         {
@@ -98,22 +98,8 @@ public class MiniFactionController : Controller
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(miniFaction);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MiniFactionExists(miniFaction.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _repository.Update(miniFaction);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniFaction);
@@ -127,8 +113,7 @@ public class MiniFactionController : Controller
             return NotFound();
         }
 
-        var miniFaction = await _context.MiniFactions
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var miniFaction = await _repository.FindAsync(id.Value);
         if (miniFaction == null)
         {
             return NotFound();
@@ -142,18 +127,8 @@ public class MiniFactionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var miniFaction = await _context.MiniFactions.FindAsync(id);
-        if (miniFaction != null)
-        {
-            _context.MiniFactions.Remove(miniFaction);
-        }
-
-        await _context.SaveChangesAsync();
+        await _repository.RemoveAsync(id);
+        await _repository.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool MiniFactionExists(Guid id)
-    {
-        return _context.MiniFactions.Any(e => e.Id == id);
     }
 }

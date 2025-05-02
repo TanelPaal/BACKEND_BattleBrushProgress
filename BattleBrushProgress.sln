@@ -6,6 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "!Solution Items", "!Solutio
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 		..\ModelPaintTracker\Directory.Build.props = ..\ModelPaintTracker\Directory.Build.props
+		ProjectProposal_TanelPaal.pdf = ProjectProposal_TanelPaal.pdf
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Domain", "App.Domain\App.Domain.csproj", "{7B05FB37-7A02-4DC9-A685-93745F1ED164}"

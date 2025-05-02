@@ -17,10 +17,9 @@ namespace WebApp.Controllers;
 [Authorize]
 public class PersonController : Controller
 {
-    //private readonly AppDbContext _context;
     private readonly IPersonRepository _repository;
 
-    public PersonController(AppDbContext context, IPersonRepository repository)
+    public PersonController(IPersonRepository repository)
     {
         _repository = repository;
     }

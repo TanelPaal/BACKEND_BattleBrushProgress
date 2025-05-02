@@ -49,6 +49,7 @@ else
 // register all the repo interfaces and their implementations, use scoped lifetime
 // scoped - get created once per web client request (same as dbcontext)
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 
 
 

@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers;
@@ -14,18 +16,25 @@ namespace WebApp.Controllers;
 [Authorize]
 public class PersonPaintsController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IPersonPaintsRepository _repository;
+    private readonly IPaintRepository _paintRepository;
+    private readonly IPersonRepository _personRepository;
 
-    public PersonPaintsController(AppDbContext context)
+    public PersonPaintsController(
+        IPersonPaintsRepository repository,
+        IPaintRepository paintRepository,
+        IPersonRepository personRepository)
     {
-        _context = context;
+        _repository = repository;
+        _paintRepository = paintRepository;
+        _personRepository = personRepository;
     }
 
     // GET: PersonPaints
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.PersonPaints.Include(p => p.User).Include(p => p.Paint).Include(p => p.Person);
-        return View(await appDbContext.ToListAsync());
+        var res = await _repository.AllAsync(User.GetUserId());
+        return View(res);
     }
 
     // GET: PersonPaints/Details/5
@@ -36,11 +45,7 @@ public class PersonPaintsController : Controller
             return NotFound();
         }
 
-        var personPaints = await _context.PersonPaints
-            .Include(p => p.User)
-            .Include(p => p.Paint)
-            .Include(p => p.Person)
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var personPaints = await _repository.FindAsync(id.Value, User.GetUserId());
         if (personPaints == null)
         {
             return NotFound();
@@ -50,10 +55,9 @@ public class PersonPaintsController : Controller
     }
 
     // GET: PersonPaints/Create
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "HexCode");
-        ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName");
+        await PopulateDropDowns();
         return View();
     }
 
@@ -62,19 +66,19 @@ public class PersonPaintsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Quantity,AcquisitionDate,PersonId,PaintId,Id")] PersonPaints personPaints)
+    public async Task<IActionResult> Create(PersonPaints entity)
     {
+        entity.UserId = User.GetUserId();
+        
         if (ModelState.IsValid)
         {
-            personPaints.Id = Guid.NewGuid();
-            personPaints.UserId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!);
-            _context.Add(personPaints);
-            await _context.SaveChangesAsync();
+            _repository.Add(entity);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "HexCode", personPaints.PaintId);
-        ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", personPaints.PersonId);
-        return View(personPaints);
+
+        await PopulateDropDowns();
+        return View(entity);
     }
 
     // GET: PersonPaints/Edit/5
@@ -85,15 +89,14 @@ public class PersonPaintsController : Controller
             return NotFound();
         }
 
-        var personPaints = await _context.PersonPaints.FindAsync(id);
-        if (personPaints == null)
+        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        if (entity == null)
         {
             return NotFound();
         }
-        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", personPaints.UserId);
-        ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "HexCode", personPaints.PaintId);
-        ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", personPaints.PersonId);
-        return View(personPaints);
+        
+        await PopulateDropDowns();
+        return View(entity);
     }
 
     // POST: PersonPaints/Edit/5
@@ -101,42 +104,23 @@ public class PersonPaintsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("Quantity,AcquisitionDate,PersonId,PaintId,UserId,Id")] PersonPaints personPaints)
+    public async Task<IActionResult> Edit(Guid id, PersonPaints entity)
     {
-        if (id != personPaints.Id)
+        if (id != entity.Id)
         {
             return NotFound();
         }
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                // Verify the user is editing their own record
-                if (personPaints.UserId.ToString() != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
-                {
-                    return Forbid();
-                }
-            
-                _context.Update(personPaints);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PersonPaintsExists(personPaints.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            entity.UserId = User.GetUserId();
+            _repository.Update(entity);
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "HexCode", personPaints.PaintId);
-        ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", personPaints.PersonId);
-        return View(personPaints);
+
+        await PopulateDropDowns();
+        return View(entity);
     }
 
     // GET: PersonPaints/Delete/5
@@ -147,17 +131,13 @@ public class PersonPaintsController : Controller
             return NotFound();
         }
 
-        var personPaints = await _context.PersonPaints
-            .Include(p => p.User)
-            .Include(p => p.Paint)
-            .Include(p => p.Person)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (personPaints == null)
+        var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(personPaints);
+        return View(entity);
     }
 
     // POST: PersonPaints/Delete/5
@@ -165,18 +145,24 @@ public class PersonPaintsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var personPaints = await _context.PersonPaints.FindAsync(id);
-        if (personPaints != null)
-        {
-            _context.PersonPaints.Remove(personPaints);
-        }
-
-        await _context.SaveChangesAsync();
+        await _repository.RemoveAsync(id, User.GetUserId());
+        await _repository.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
-
-    private bool PersonPaintsExists(Guid id)
+    
+    // Helper method to populate dropdowns
+    private async Task PopulateDropDowns()
     {
-        return _context.PersonPaints.Any(e => e.Id == id);
+        var userId = User.GetUserId();
+        
+        ViewData["PaintId"] = new SelectList(
+            await _paintRepository.AllAsync(),
+            "Id",
+            "Name");
+            
+        ViewData["PersonId"] = new SelectList(
+            await _personRepository.AllAsync(userId),
+            "Id",
+            "PersonName");
     }
 }

@@ -49,6 +49,13 @@ else
 // register all the repo interfaces and their implementations, use scoped lifetime
 // scoped - get created once per web client request (same as dbcontext)
 
+// PersonPaints
+builder.Services.AddScoped<IPersonPaintsRepository, PersonPaintsRepository>();
+
+//MiniatureCollection
+builder.Services.AddScoped<IMiniStateRepository, MiniStateRepository>();
+builder.Services.AddScoped<IMiniatureCollectionRepository, MiniatureCollectionRepository>();
+
 //Paint
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
@@ -62,9 +69,7 @@ builder.Services.AddScoped<IMiniFactionRepository, MiniFactionRepository>();
 builder.Services.AddScoped<IMiniManufacturerRepository, MiniManufacturerRepository>();
 builder.Services.AddScoped<IMiniatureRepository, MiniatureRepository>();
 
-//MiniatureCollection
-builder.Services.AddScoped<IMiniStateRepository, MiniStateRepository>();
-builder.Services.AddScoped<IMiniatureCollectionRepository, MiniatureCollectionRepository>();
+
 
 
 

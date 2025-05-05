@@ -3,8 +3,8 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IPaintRepository: IBaseRepository<Paint>
+public interface IPaintRepository: IBaseRepository<App.DAL.DTO.Paint>
 {
-    Task<IEnumerable<Paint>> AllWithIncludesAsync();
-    Task<Paint?> FindWithIncludesAsync(Guid id);
+    Task<IEnumerable<App.DAL.DTO.Paint>> AllWithIncludesAsync();
+    Task<App.DAL.DTO.Paint?> FindWithIncludesAsync(Guid id);
 }

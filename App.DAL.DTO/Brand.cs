@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Base.Contracts;
 
 namespace App.DAL.DTO;
 
-public class Brand
+public class Brand : IDomainId
 {
+    public Guid Id { get; set; }
+    
     [MaxLength(256)]
     [Display(Name = nameof(BrandName), Prompt = nameof(BrandName), ResourceType = typeof(App.Resources.Domain.Brand))]
     public string BrandName { get; set; } = default!;

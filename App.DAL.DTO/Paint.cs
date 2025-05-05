@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Base.Contracts;
 
 namespace App.DAL.DTO;
 
-public class Paint
+public class Paint : IDomainId
 {
+    public Guid Id { get; set; }
+    
     [MaxLength(128)]
     [Display(Name = nameof(Name), Prompt = nameof(Name), ResourceType = typeof(App.Resources.Domain.Paint))]
     public string Name { get; set; } = default!;

@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using App.Resources.Domain;
+using Base.Contracts;
 
 namespace App.DAL.DTO;
 
-public class Miniature
+public class Miniature : IDomainId
 {
+    public Guid Id { get; set; }
+    
     [MaxLength(256)]
     [Display(Name = nameof(MiniName), Prompt = nameof(MiniName), ResourceType = typeof(App.Resources.Domain.Miniature))]
     public string MiniName { get; set; } = default!;

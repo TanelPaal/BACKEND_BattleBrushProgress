@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Base.Contracts;
 
 namespace App.DAL.DTO;
 
-public class PersonPaints
+public class PersonPaints : IDomainId
 {
+    public Guid Id { get; set; }
+    
     [Required]
     [Display(Name = nameof(Quantity), Prompt = nameof(Quantity), ResourceType = typeof(App.Resources.Domain.PersonPaints))]
     public int Quantity { get; set; }

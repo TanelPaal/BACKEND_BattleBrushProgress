@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Base.Contracts;
 
 namespace App.DAL.DTO;
 
-public class MiniFaction
+public class MiniFaction : IDomainId
 {
+    public Guid Id { get; set; }
+    
     [MaxLength(256)]
     [Display(Name = nameof(FactionName), Prompt = nameof(FactionName), ResourceType = typeof(App.Resources.Domain.MiniFaction))]
     public string FactionName { get; set; } = default!;

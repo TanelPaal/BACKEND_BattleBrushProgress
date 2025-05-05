@@ -3,8 +3,8 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IMiniatureRepository: IBaseRepository<Miniature>
+public interface IMiniatureRepository: IBaseRepository<App.DAL.DTO.Miniature>
 {
-    Task<IEnumerable<Miniature>> AllWithIncludesAsync();
-    Task<Miniature?> FindWithIncludesAsync(Guid id);
+    Task<IEnumerable<App.DAL.DTO.Miniature>> AllWithIncludesAsync();
+    Task<App.DAL.DTO.Miniature?> FindWithIncludesAsync(Guid id);
 }

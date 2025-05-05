@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Base.Contracts;
 
 namespace App.DAL.DTO;
 
-public class MiniManufacturery
+public class MiniManufacturer : IDomainId
 {
+    public Guid Id { get; set; }
+    
     [MaxLength(256)]
     [Display(Name = nameof(ManufacturerName), Prompt = nameof(ManufacturerName), ResourceType = typeof(App.Resources.Domain.MiniManufacturer))]
     public string ManufacturerName { get; set; } = default!;

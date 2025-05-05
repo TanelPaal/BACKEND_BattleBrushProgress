@@ -3,8 +3,8 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IPaintLineRepository: IBaseRepository<PaintLine>
+public interface IPaintLineRepository: IBaseRepository<App.DAL.DTO.PaintLine>
 {
-    Task<IEnumerable<PaintLine>> AllWithIncludesAsync();
-    Task<PaintLine> FindWithIncludesAsync(Guid id);
+    Task<IEnumerable<App.DAL.DTO.PaintLine>> AllWithIncludesAsync();
+    Task<App.DAL.DTO.PaintLine> FindWithIncludesAsync(Guid id);
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
-using App.Domain;
+using App.DAL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
@@ -62,11 +62,11 @@ public class MiniPaintSwatchController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(MiniPaintSwatch entity)
     {
-        entity.UserId = User.GetUserId();
+        /*entity.UserId = User.GetUserId();*/
         
         if (ModelState.IsValid)
         {
-            _uow.MiniPaintSwatchRepository.Add(entity);
+            _uow.MiniPaintSwatchRepository.Add(entity, User.GetUserId());
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -107,7 +107,6 @@ public class MiniPaintSwatchController : Controller
 
         if (ModelState.IsValid)
         {
-            entity.UserId = User.GetUserId();
             _uow.MiniPaintSwatchRepository.Update(entity);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

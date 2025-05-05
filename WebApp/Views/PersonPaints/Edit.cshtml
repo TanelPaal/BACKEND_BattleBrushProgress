@@ -1,4 +1,4 @@
-@model App.Domain.PersonPaints
+@model App.DAL.DTO.PersonPaints
 
 @{
     ViewData["Title"] = "Edit";
@@ -33,7 +33,7 @@
                 <span asp-validation-for="PaintId" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="UserId" />
+            @*<input type="hidden" asp-for="UserId" />*@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

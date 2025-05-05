@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Base.Contracts;
 
 namespace App.DAL.DTO;
 
-public class PaintLine
+public class PaintLine : IDomainId
 {
+    public Guid Id { get; set; }
+    
     [MaxLength(128)]
     [Display(Name = nameof(PaintLineName), Prompt = nameof(PaintLineName), ResourceType = typeof(App.Resources.Domain.PaintLine))]
     public string PaintLineName { get; set; } = default!;

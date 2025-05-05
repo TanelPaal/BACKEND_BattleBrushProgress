@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
-using App.Domain;
+using App.DAL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
@@ -63,11 +63,11 @@ public class PersonController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Person entity)
     {
-        entity.UserId = User.GetUserId();
+        /*entity.UserId = User.GetUserId();*/
         
         if (ModelState.IsValid)
         {
-            _uow.PersonRepository.Add(entity);
+            _uow.PersonRepository.Add(entity, User.GetUserId());
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
 
@@ -107,7 +107,6 @@ public class PersonController : Controller
 
         if (ModelState.IsValid)
         {
-            entity.UserId = User.GetUserId();
             _uow.PersonRepository.Update(entity);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

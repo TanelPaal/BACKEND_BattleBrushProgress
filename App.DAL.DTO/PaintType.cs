@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Base.Contracts;
 
 namespace App.DAL.DTO;
 
-public class PaintType
+public class PaintType : IDomainId
 {
+    public Guid Id { get; set; }
+    
     [MaxLength(64)]
     [Display(Name = nameof(Name), Prompt = nameof(Name), ResourceType = typeof(App.Resources.Domain.PaintType))]
     public string Name { get; set; } = default!; // Acrylic, enamel, wash etc

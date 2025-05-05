@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Base.Contracts;
 
 namespace App.DAL.DTO;
 
-public class MiniPaintSwatch
+public class MiniPaintSwatch : IDomainId
 {
+    public Guid Id { get; set; }
+    
     [MaxLength(50)]
     [Display(Name = nameof(UsageType), Prompt = nameof(UsageType), ResourceType = typeof(App.Resources.Domain.MiniPaintSwatch))]
     public string UsageType { get; set; } = default!;

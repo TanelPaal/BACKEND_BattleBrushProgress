@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Base.Contracts;
 
 namespace App.DAL.DTO;
 
-public class MiniatureCollection
+public class MiniatureCollection : IDomainId
 {
+    public Guid Id { get; set; }
+    
     [MaxLength(256)]
     [Display(Name = nameof(CollectionName), Prompt = nameof(CollectionName), ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]
     public string CollectionName { get; set; } = default!;

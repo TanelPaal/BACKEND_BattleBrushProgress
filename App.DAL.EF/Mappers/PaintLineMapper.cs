@@ -8,11 +8,31 @@ public class PaintLineMapper : IMapper<App.DAL.DTO.PaintLine, App.Domain.PaintLi
 {
     public PaintLine? Map(Domain.PaintLine? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+        var res = new PaintLine()
+        {
+            Id = entity.Id,
+            PaintLineName = entity.PaintLineName,
+            Description = entity.Description,
+            BrandId = entity.BrandId,
+            // TODO: Figure out how to map or skip
+            Brand = null
+        };
+        return res;
     }
 
     public Domain.PaintLine? Map(PaintLine? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+        var res = new Domain.PaintLine()
+        {
+            Id = entity.Id,
+            PaintLineName = entity.PaintLineName,
+            Description = entity.Description,
+            BrandId = entity.BrandId,
+            // TODO: Figure out how to map or skip
+            Brand = null
+        };
+        return res;
     }
 }

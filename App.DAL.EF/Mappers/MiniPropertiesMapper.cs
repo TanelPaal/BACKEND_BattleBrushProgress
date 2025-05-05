@@ -7,11 +7,29 @@ public class MiniPropertiesMapper : IMapper<App.DAL.DTO.MiniProperties, App.Doma
 {
     public MiniProperties? Map(Domain.MiniProperties? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+        var res = new MiniProperties()
+        {
+            Id = entity.Id,
+            PropertyName = entity.PropertyName,
+            PropertyDesc = entity.PropertyDesc,
+            // TODO: Figure out how to map or skip
+            // Miniatures = null
+        };
+        return res;
     }
 
     public Domain.MiniProperties? Map(MiniProperties? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+        var res = new Domain.MiniProperties()
+        {
+            Id = entity.Id,
+            PropertyName = entity.PropertyName,
+            PropertyDesc = entity.PropertyDesc,
+            // TODO: Figure out how to map or skip
+            // Miniatures = null
+        };
+        return res;
     }
 }

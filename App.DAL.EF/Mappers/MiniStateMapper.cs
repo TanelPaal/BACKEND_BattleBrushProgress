@@ -7,11 +7,25 @@ public class MiniStateMapper : IMapper<App.DAL.DTO.MiniState, App.Domain.MiniSta
 {
     public MiniState? Map(Domain.MiniState? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+        var res = new MiniState
+        {
+            Id = entity.Id,
+            StateName = entity.StateName,
+            StateDesc = entity.StateDesc
+        };
+        return res;
     }
 
     public Domain.MiniState? Map(MiniState? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+        var res = new Domain.MiniState
+        {
+            Id = entity.Id,
+            StateName = entity.StateName,
+            StateDesc = entity.StateDesc
+        };
+        return res;
     }
 }

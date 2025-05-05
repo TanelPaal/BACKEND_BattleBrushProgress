@@ -7,11 +7,29 @@ public class MiniFactionMapper : IMapper<App.DAL.DTO.MiniFaction, App.Domain.Min
 {
     public MiniFaction? Map(Domain.MiniFaction? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+        var res = new MiniFaction()
+        {
+            Id = entity.Id,
+            FactionName = entity.FactionName,
+            FactionDesc = entity.FactionDesc,
+            // TODO: Figure out how to map or skip
+            // Miniatures = null
+        };
+        return res;
     }
 
     public Domain.MiniFaction? Map(MiniFaction? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+        var res = new Domain.MiniFaction()
+        {
+            Id = entity.Id,
+            FactionName = entity.FactionName,
+            FactionDesc = entity.FactionDesc,
+            // TODO: Figure out how to map or skip
+            // Miniatures = null
+        };
+        return res;
     }
 }

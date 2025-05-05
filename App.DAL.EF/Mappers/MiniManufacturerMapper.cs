@@ -7,11 +7,33 @@ public class MiniManufacturerMapper : IMapper<App.DAL.DTO.MiniManufacturer, App.
 {
     public MiniManufacturer? Map(Domain.MiniManufacturer? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+        var res = new MiniManufacturer()
+        {
+            Id = entity.Id,
+            ManufacturerName = entity.ManufacturerName,
+            HeadquartersLocation = entity.HeadquartersLocation,
+            ContactEmail = entity.ContactEmail,
+            ContactPhone = entity.ContactPhone,
+            // TODO: Figure out how to map or skip
+            // Miniatures = null
+        };
+        return res;
     }
 
     public Domain.MiniManufacturer? Map(MiniManufacturer? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+        var res = new Domain.MiniManufacturer()
+        {
+            Id = entity.Id,
+            ManufacturerName = entity.ManufacturerName,
+            HeadquartersLocation = entity.HeadquartersLocation,
+            ContactEmail = entity.ContactEmail,
+            ContactPhone = entity.ContactPhone,
+            // TODO: Figure out how to map or skip
+            // Miniatures = null
+        };
+        return res;
     }
 }

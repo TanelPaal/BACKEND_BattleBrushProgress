@@ -1,5 +1,6 @@
 ﻿using App.Domain;
 using App.Domain.Identity;
+using Base.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Build.Framework;
@@ -58,6 +59,28 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
             .HasOne(a => a.Role)
             .WithMany(r => r.UserRoles)
             .HasForeignKey(a => a.RoleId);
-
     }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        var entries = ChangeTracker.Entries()
+            .Where(e => e is { Entity: IDomainMeta});
+
+        foreach (var entry in entries)
+        {
+            if (entry.State == EntityState.Added)
+            {
+                (entry.Entity as IDomainMeta)!.CreatedAt = DateTime.UtcNow;
+                (entry.Entity as IDomainMeta)!.CreatedBy = "System";
+            } 
+            else if (entry.State == EntityState.Modified)
+            {
+                (entry.Entity as IDomainMeta)!.ChangedAt = DateTime.UtcNow;
+                (entry.Entity as IDomainMeta)!.ChangedBy = "System";
+            }
+        }
+        
+        return base.SaveChangesAsync(cancellationToken);
+    }
+    
 }

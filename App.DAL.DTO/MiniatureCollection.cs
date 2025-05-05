@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain.Identity;
-using Base.Domain;
 
-namespace App.Domain;
+namespace App.DAL.DTO;
 
-public class MiniatureCollection : BaseEntityUser<AppUser>
+public class MiniatureCollection
 {
     [MaxLength(256)]
     [Display(Name = nameof(CollectionName), Prompt = nameof(CollectionName), ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]
@@ -50,5 +48,4 @@ public class MiniatureCollection : BaseEntityUser<AppUser>
     public Person? Person { get; set; }
     
     public ICollection<MiniPaintSwatch>? MiniPaintSwatches { get; set; }
-
 }

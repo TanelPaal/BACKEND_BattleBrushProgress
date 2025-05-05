@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain.Identity;
-using Base.Domain;
 
-namespace App.Domain;
+namespace App.DAL.DTO;
 
-public class PersonPaints : BaseEntityUser<AppUser>
+public class PersonPaints
 {
     [Required]
     [Display(Name = nameof(Quantity), Prompt = nameof(Quantity), ResourceType = typeof(App.Resources.Domain.PersonPaints))]
@@ -33,5 +31,4 @@ public class PersonPaints : BaseEntityUser<AppUser>
     public Paint? Paint { get; set; }
     
     public ICollection<MiniPaintSwatch>? MiniPaintSwatches { get; set; }
-
 }

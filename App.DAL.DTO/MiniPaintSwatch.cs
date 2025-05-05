@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain.Identity;
-using Base.Domain;
 
-namespace App.Domain;
+namespace App.DAL.DTO;
 
-public class MiniPaintSwatch : BaseEntityUser<AppUser>
+public class MiniPaintSwatch
 {
     [MaxLength(50)]
     [Display(Name = nameof(UsageType), Prompt = nameof(UsageType), ResourceType = typeof(App.Resources.Domain.MiniPaintSwatch))]

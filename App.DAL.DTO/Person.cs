@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain.Identity;
-using Base.Domain;
 
-namespace App.Domain;
+namespace App.DAL.DTO;
 
-public class Person : BaseEntityUser<AppUser>
+public class Person
 {
     [MaxLength(128)]
     [Display(Name = nameof(App.Resources.Domain.Person.UserName), Prompt = nameof(App.Resources.Domain.Person.UserName), ResourceType = typeof(App.Resources.Domain.Person))]
@@ -12,5 +10,4 @@ public class Person : BaseEntityUser<AppUser>
     
     public ICollection<PersonPaints>? PersonPaints { get; set; }
     public ICollection<MiniatureCollection>? MiniatureCollections { get; set; }
-    
 }

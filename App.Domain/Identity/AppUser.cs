@@ -18,4 +18,6 @@ public class AppUser : BaseUser<AppUserRole>
     public ICollection<MiniatureCollection>? MiniatureCollections { get; set; }
     public ICollection<PersonPaints>? PersonPaints { get; set; }
     public ICollection<MiniPaintSwatch>? MiniPaintSwatches { get; set; }
+    
+    public ICollection<AppRefreshToken>? RefreshTokens { get; set; }
 }

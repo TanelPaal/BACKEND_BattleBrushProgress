@@ -25,6 +25,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
     public DbSet<Person> Persons { get; set; } = default!;
     public DbSet<PersonPaints> PersonPaints { get; set; } = default!;
     
+    public DbSet<AppRefreshToken> RefreshTokens { get; set; } = default!;
     
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)

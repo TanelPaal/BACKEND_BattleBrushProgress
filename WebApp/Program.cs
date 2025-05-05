@@ -1,4 +1,6 @@
 using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using App.DAL.Contracts;
 using App.DAL.EF;
 using App.DAL.EF.Repositories;
@@ -9,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.IdentityModel.Tokens;
 using WebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -50,7 +53,6 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 // register all the repo interfaces and their implementations, use scoped lifetime
 builder.Services.AddScoped<IAppUOW, AppUOW>();
 
-
 // // register all the repo interfaces and their implementations, use scoped lifetime
 // // scoped - get created once per web client request (same as dbcontext)
 // // MiniPaintSwatch
@@ -77,15 +79,34 @@ builder.Services.AddScoped<IAppUOW, AppUOW>();
 // builder.Services.AddScoped<IMiniatureRepository, MiniatureRepository>();
 
 
+// JWT SUPPORT
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
+builder.Services
+    .AddAuthentication()
+    .AddCookie(options => { options.SlidingExpiration = true; })
+    .AddJwtBearer(options =>
+        {
+            options.RequireHttpsMetadata = false;
+            //options.SaveToken = false;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuer = builder.Configuration["JWTSecurity:Issuer"],
+                ValidAudience = builder.Configuration["JWTSecurity:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(builder.Configuration["JWTSecurity:Key"]!)),
+                ClockSkew = TimeSpan.Zero // remove delay of token when expire
+            };
+        }
+
+    );
+
+
 builder.Services.AddIdentity<AppUser, AppRole>(o => 
         o.SignIn.RequireConfirmedAccount = false)
     .AddDefaultTokenProviders()
-    .AddEntityFrameworkStores<App.DAL.EF.AppDbContext>()
+    .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-// builder.Services.AddDefaultIdentity<IdentityUser>(
-//         options => options.SignIn.RequireConfirmedAccount = false)
-//     .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddScoped<IEmailSender, WebApp.Services.NoOpEmailSender>();
 

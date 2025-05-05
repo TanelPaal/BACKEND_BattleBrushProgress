@@ -69,5 +69,38 @@ dotnet aspnet-codegenerator controller -name PersonController -actions -m App.Do
 
 dotnet aspnet-codegenerator controller -name PersonPaintsController -actions -m App.Domain.PersonPaints -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 
+~~~
+
+API Controllers
+~~~sh
+cd WebApp
+~~~
+~~~sh
+dotnet aspnet-codegenerator controller -name PaintController  -m  App.Domain.Paint        -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+
+dotnet aspnet-codegenerator controller -name BrandController  -m  App.Domain.Brand        -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+
+dotnet aspnet-codegenerator controller -name MiniatureController  -m  App.Domain.Miniature        -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+
+dotnet aspnet-codegenerator controller -name MiniatureCollectionController  -m  App.Domain.MiniatureCollection        -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+
+dotnet aspnet-codegenerator controller -name MiniFactionController  -m  App.Domain.MiniFaction        -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+
+dotnet aspnet-codegenerator controller -name MiniManufacturerController  -m  App.Domain.MiniManufacturer        -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+
+dotnet aspnet-codegenerator controller -name MiniPropertiesController  -m  App.Domain.MiniProperties        -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+
+dotnet aspnet-codegenerator controller -name MiniStateController  -m  App.Domain.MiniState       -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+
+dotnet aspnet-codegenerator controller -name PaintLineController  -m  App.Domain.PaintLine        -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+
+dotnet aspnet-codegenerator controller -name PaintTypeController  -m  App.Domain.PaintType        -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+
+dotnet aspnet-codegenerator controller -name MiniPaintSwatchController  -m  App.Domain.MiniPaintSwatch        -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+
+dotnet aspnet-codegenerator controller -name PersonController  -m  App.Domain.Person        -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+
+dotnet aspnet-codegenerator controller -name PersonPaintsController  -m  App.Domain.PersonPaints        -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
 
 ~~~
+

@@ -1,6 +1,7 @@
 ﻿using App.DAL.EF;
 using App.Domain.Identity;
 using App.DTO.Identity;
+using Asp.Versioning;
 using Base.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.Identity;
 
-[Route("api/[controller]/[action]")]
+[ApiVersion( "1.0" )]
+[Route("api/v{version:apiVersion}/[controller]/[action]")]
 [ApiController]
 public class AccountController : ControllerBase
 {

@@ -2,42 +2,45 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
-using App.DAL.DTO;
+using App.BLL.DTO;
+using Asp.Versioning;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion( "1.0" )]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PersonController : ControllerBase
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
 
-        public PersonController(IAppUOW uow)
+        public PersonController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/Person
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> GetPersons()
+        public async Task<ActionResult<IEnumerable<App.BLL.DTO.Person>>> GetPersons()
         {
-            return (await _uow.PersonRepository.AllAsync(User.GetUserId())).ToList();
+            return (await _bll.PersonService.AllAsync(User.GetUserId())).ToList();
         }
 
         // GET: api/Person/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> GetPerson(Guid id)
         {
-            var person = await _uow.PersonRepository.FindAsync(id);
+            var person = await _bll.PersonService.FindAsync(id);
 
             if (person == null)
             {
@@ -57,8 +60,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.PersonRepository.Update(person);
-            _uow.SaveChangesAsync();
+            _bll.PersonService.Update(person);
+            _bll.SaveChangesAsync();
                 
             return NoContent();
         }
@@ -68,24 +71,29 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Person>> PostPerson(Person person)
         {
-            _uow.PersonRepository.Add(person);
-            await _uow.SaveChangesAsync();
+            _bll.PersonService.Add(person, User.GetUserId());
+            await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetPerson", new { id = person.Id }, person);
+            return CreatedAtAction("GetPerson", new
+            {
+                // TODO: get person id
+                id = person.Id,
+                version = HttpContext.GetRequestedApiVersion()!.ToString()
+            }, person);
         }
 
         // DELETE: api/Person/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePerson(Guid id)
         {
-            var person = await _uow.PersonRepository.FindAsync(id);
+            var person = await _bll.PersonService.FindAsync(id);
             if (person == null)
             {
                 return NotFound();
             }
 
-            _uow.PersonRepository.Remove(person);
-            await _uow.SaveChangesAsync();
+            _bll.PersonService.Remove(person);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }

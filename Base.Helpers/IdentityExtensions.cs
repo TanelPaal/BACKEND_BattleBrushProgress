@@ -17,9 +17,9 @@ public static class IdentityExtensions
     private static readonly JwtSecurityTokenHandler JWTSecurityTokenHandler = new JwtSecurityTokenHandler();
     
     public static string GenerateJwt(
-        IEnumerable<Claim> claims, 
-        string key, 
-        string issuer, 
+        IEnumerable<Claim> claims,
+        string key,
+        string issuer,
         string audience,
         DateTime expires)
     {
@@ -33,8 +33,38 @@ public static class IdentityExtensions
             expires: expires,
             signingCredentials: signingCredentials
         );
-        
+
         return JWTSecurityTokenHandler.WriteToken(token);
     }
+
+    
+    public static bool ValidateJwt(string jwt, string key, string issuer, string audience)
+    {
+        var validationParams = new TokenValidationParameters()
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = issuer,
+            ValidateIssuer = true,
+
+            ValidAudience = audience,
+            ValidateAudience = true,
+
+            ValidateLifetime = false
+        };
+
+        try
+        {
+            new JwtSecurityTokenHandler().ValidateToken(jwt, validationParams, out _);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 
 }

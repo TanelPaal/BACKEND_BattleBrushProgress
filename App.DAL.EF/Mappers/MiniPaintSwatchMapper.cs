@@ -5,6 +5,9 @@ namespace App.DAL.EF.Mappers;
 
 public class MiniPaintSwatchMapper : IMapper<App.DAL.DTO.MiniPaintSwatch, App.Domain.MiniPaintSwatch>
 {
+    private readonly MiniatureCollectionMapper _miniatureCollectionMapper = new();
+    private readonly PersonPaintsMapper _personPaintsMapper = new();
+    
     public MiniPaintSwatch? Map(Domain.MiniPaintSwatch? entity)
     {
         if (entity == null) return null;
@@ -14,9 +17,9 @@ public class MiniPaintSwatchMapper : IMapper<App.DAL.DTO.MiniPaintSwatch, App.Do
             UsageType = entity.UsageType,
             Notes = entity.Notes,
             MiniatureCollectionId = entity.MiniatureCollectionId,
-            MiniatureCollection = null, // Optionally map if needed
+            MiniatureCollection = entity.MiniatureCollection != null ? _miniatureCollectionMapper.Map(entity.MiniatureCollection) : null,
             PersonPaintsId = entity.PersonPaintsId,
-            PersonPaints = null // Optionally map if needed       
+            PersonPaints = entity.PersonPaints != null ? _personPaintsMapper.Map(entity.PersonPaints) : null,    
         };
         return res;
     }

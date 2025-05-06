@@ -5,6 +5,10 @@ namespace App.DAL.EF.Mappers;
 
 public class MiniatureCollectionMapper : IMapper<App.DAL.DTO.MiniatureCollection, App.Domain.MiniatureCollection>
 {
+    private readonly MiniatureMapper _miniatureMapper = new();
+    private readonly MiniStateMapper _miniStateMapper = new();
+    private readonly PersonMapper _personMapper = new();
+    
     public MiniatureCollection? Map(Domain.MiniatureCollection? entity)
     {
         if (entity == null) return null;
@@ -16,12 +20,12 @@ public class MiniatureCollectionMapper : IMapper<App.DAL.DTO.MiniatureCollection
             AcquisitionDate = entity.AcquisitionDate,
             CompletionDate = entity.CompletionDate,
             MiniatureId = entity.MiniatureId,
-            Miniature = null, // Optionally map if needed
+            Miniature = entity.Miniature != null ? _miniatureMapper.Map(entity.Miniature) : null,
             MiniStateId = entity.MiniStateId,
-            MiniState = null, // Optionally map if needed
+            MiniState = entity.MiniState != null ? _miniStateMapper.Map(entity.MiniState) : null,
             PersonId = entity.PersonId,
-            Person = null, // Optionally map if needed
-            MiniPaintSwatches = null // Optionally map if needed
+            Person = entity.Person != null ? _personMapper.Map(entity.Person) : null,
+            // MiniPaintSwatches = null // Optionally map if needed
         };
         return res;
     }
@@ -42,7 +46,7 @@ public class MiniatureCollectionMapper : IMapper<App.DAL.DTO.MiniatureCollection
             MiniState = null, // Optionally map if needed
             PersonId = entity.PersonId,
             Person = null, // Optionally map if needed
-            MiniPaintSwatches = null // Optionally map if needed
+            // MiniPaintSwatches = null // Optionally map if needed
         };
         return res;
     }

@@ -6,6 +6,8 @@ namespace App.DAL.EF.Mappers;
 
 public class PaintLineMapper : IMapper<App.DAL.DTO.PaintLine, App.Domain.PaintLine>
 {
+    private readonly BrandMapper _brandMapper = new();
+    
     public PaintLine? Map(Domain.PaintLine? entity)
     {
         if (entity == null) return null;
@@ -16,7 +18,7 @@ public class PaintLineMapper : IMapper<App.DAL.DTO.PaintLine, App.Domain.PaintLi
             Description = entity.Description,
             BrandId = entity.BrandId,
             // TODO: Figure out how to map or skip
-            Brand = null
+            Brand = entity.Brand != null ? _brandMapper.Map(entity.Brand) : null,
         };
         return res;
     }

@@ -5,6 +5,10 @@ namespace App.DAL.EF.Mappers;
 
 public class PaintMapper : IMapper<App.DAL.DTO.Paint, App.Domain.Paint>
 {
+    private readonly BrandMapper _brandMapper = new();
+    private readonly PaintTypeMapper _paintTypeMapper = new();
+    private readonly PaintLineMapper _paintLineMapper = new();
+    
     public Paint? Map(Domain.Paint? entity)
     {
         if (entity == null) return null;
@@ -15,11 +19,11 @@ public class PaintMapper : IMapper<App.DAL.DTO.Paint, App.Domain.Paint>
             HexCode = entity.HexCode,
             UPC = entity.UPC,
             BrandId = entity.BrandId,
-            Brand = null, // Optionally map if needed
+            Brand = entity.Brand != null ? _brandMapper.Map(entity.Brand) : null, 
             PaintTypeId = entity.PaintTypeId,
-            PaintType = null, // Optionally map if needed
+            PaintType = entity.PaintType != null ? _paintTypeMapper.Map(entity.PaintType) : null,
             PaintLineId = entity.PaintLineId,
-            PaintLine = null, // Optionally map if needed
+            PaintLine = entity.PaintLine != null ? _paintLineMapper.Map(entity.PaintLine) : null,
             // PersonPaints = null // Optionally map if needed
         };
         return res;

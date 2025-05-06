@@ -5,6 +5,9 @@ namespace App.DAL.EF.Mappers;
 
 public class PersonPaintsMapper : IMapper<App.DAL.DTO.PersonPaints, App.Domain.PersonPaints>
 {
+    private readonly PaintMapper _paintMapper = new();
+    private readonly PersonMapper _personMapper = new();
+    
     public PersonPaints? Map(Domain.PersonPaints? entity)
     {
         if (entity == null) return null;
@@ -14,10 +17,10 @@ public class PersonPaintsMapper : IMapper<App.DAL.DTO.PersonPaints, App.Domain.P
             Quantity = entity.Quantity,
             AcquisitionDate = entity.AcquisitionDate,
             PersonId = entity.PersonId,
-            Person = null, // Optionally map if needed
+            Person = entity.Person != null ? _personMapper.Map(entity.Person) : null,
             PaintId = entity.PaintId,
-            Paint = null, // Optionally map if needed
-            MiniPaintSwatches = null // Optionally map if needed       
+            Paint = entity.Paint != null ? _paintMapper.Map(entity.Paint) : null,
+            // MiniPaintSwatches = null // Optionally map if needed       
         };
         return res;
     }
@@ -34,7 +37,7 @@ public class PersonPaintsMapper : IMapper<App.DAL.DTO.PersonPaints, App.Domain.P
             Person = null, // Optionally map if needed
             PaintId = entity.PaintId,
             Paint = null, // Optionally map if needed
-            MiniPaintSwatches = null // Optionally map if needed       
+            // MiniPaintSwatches = null // Optionally map if needed       
         };
         return res;
     }

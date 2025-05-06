@@ -30,10 +30,25 @@ namespace WebApp.ApiControllers
         }
 
         // GET: api/Person
+        /// <summary>
+        /// Get all persons for currently logged-in user
+        /// </summary>
+        /// <returns>List of persons</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<App.BLL.DTO.Person>>> GetPersons()
+        [Produces( "application/json" )]
+        [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.Person> ), 200 )]
+        [ProducesResponseType( 404 )]
+        ///
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.Person>>> GetPersons()
         {
-            return (await _bll.PersonService.AllAsync(User.GetUserId())).ToList();
+            var data = (await _bll.PersonService.AllAsync(User.GetUserId())).ToList();
+            // TODO: add mapping to DTO
+            var res = data.Select(p => new App.DTO.v1.Person()
+            {
+                Id = p.Id,
+                PersonName = p.PersonName
+            }).ToList();
+            return res;
         }
 
         // GET: api/Person/5
@@ -86,7 +101,7 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePerson(Guid id)
         {
-            var person = await _bll.PersonService.FindAsync(id);
+            var person = await _bll.PersonService.FindAsync(id, User.GetUserId());
             if (person == null)
             {
                 return NotFound();

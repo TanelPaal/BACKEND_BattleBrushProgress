@@ -93,6 +93,7 @@ public class BaseBaseRepository<TDalEntity, TDomainEntity, TKey> : IBaseReposito
         RepositoryDbSet.Add(dbEntity!);
     }
 
+    // TODO : add user id check to update method
     public virtual TDalEntity Update(TDalEntity entity)
     {
         return UOWMapper.Map(RepositoryDbSet.Update(UOWMapper.Map(entity)!).Entity)!;

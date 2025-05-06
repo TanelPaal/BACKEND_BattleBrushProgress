@@ -5,9 +5,9 @@ using Base.DAL.EF;
 
 namespace App.DAL.EF.Repositories;
 
-public class PaintTypeRepository : BaseRepository<App.DAL.DTO.PaintType, App.Domain.PaintType>, IPaintTypeRepository
+public class PaintTypeRepository : BaseBaseRepository<App.DAL.DTO.PaintType, App.Domain.PaintType>, IPaintTypeRepository
 {
-    public PaintTypeRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new PaintTypeMapper())
+    public PaintTypeRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new PaintTypeUOWMapper())
     {
     }
     

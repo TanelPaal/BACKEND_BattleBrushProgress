@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers;
@@ -15,17 +16,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniFactionController : Controller
 {
-    private readonly IAppUOW _uow;
+    private readonly IAppBLL _bll;
 
-    public MiniFactionController(IAppUOW uow)
+    public MiniFactionController(IAppBLL bll)
     {
-        _uow = uow;
+        _bll = bll;
     }
 
     // GET: MiniFaction
     public async Task<IActionResult> Index()
     {
-        var factions = await _uow.MiniFactionRepository.AllAsync();
+        var factions = await _bll.MiniFactionService.AllAsync();
         return View(factions);
     }
 
@@ -37,7 +38,7 @@ public class MiniFactionController : Controller
             return NotFound();
         }
 
-        var miniFaction = await _uow.MiniFactionRepository.FindAsync(id.Value);
+        var miniFaction = await _bll.MiniFactionService.FindAsync(id.Value);
         if (miniFaction == null)
         {
             return NotFound();
@@ -61,8 +62,8 @@ public class MiniFactionController : Controller
     {
         if (ModelState.IsValid)
         {
-            _uow.MiniFactionRepository.Add(miniFaction);
-            await _uow.SaveChangesAsync();
+            _bll.MiniFactionService.Add(miniFaction);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniFaction);
@@ -76,7 +77,7 @@ public class MiniFactionController : Controller
             return NotFound();
         }
 
-        var miniFaction = await _uow.MiniFactionRepository.FindAsync(id.Value);
+        var miniFaction = await _bll.MiniFactionService.FindAsync(id.Value);
         if (miniFaction == null)
         {
             return NotFound();
@@ -98,8 +99,8 @@ public class MiniFactionController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.MiniFactionRepository.Update(miniFaction);
-            await _uow.SaveChangesAsync();
+            _bll.MiniFactionService.Update(miniFaction);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniFaction);
@@ -113,7 +114,7 @@ public class MiniFactionController : Controller
             return NotFound();
         }
 
-        var miniFaction = await _uow.MiniFactionRepository.FindAsync(id.Value);
+        var miniFaction = await _bll.MiniFactionService.FindAsync(id.Value);
         if (miniFaction == null)
         {
             return NotFound();
@@ -127,8 +128,8 @@ public class MiniFactionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.MiniFactionRepository.RemoveAsync(id);
-        await _uow.SaveChangesAsync();
+        await _bll.MiniFactionService.RemoveAsync(id);
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

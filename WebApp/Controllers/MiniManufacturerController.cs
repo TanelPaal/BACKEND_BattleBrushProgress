@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers;
@@ -15,17 +16,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniManufacturerController : Controller
 {
-    private readonly IAppUOW _uow;
+    private readonly IAppBLL _bll;
 
-    public MiniManufacturerController(IAppUOW uow)
+    public MiniManufacturerController(IAppBLL bll)
     {
-        _uow = uow;
+        _bll = bll;
     }
 
     // GET: MiniManufacturer
     public async Task<IActionResult> Index()
     {
-        var manufacturers = await _uow.MiniManufacturerRepository.AllAsync();
+        var manufacturers = await _bll.MiniManufacturerService.AllAsync();
         return View(manufacturers);
     }
 
@@ -37,7 +38,7 @@ public class MiniManufacturerController : Controller
             return NotFound();
         }
 
-        var miniManufacturer = await _uow.MiniManufacturerRepository.FindAsync(id.Value);
+        var miniManufacturer = await _bll.MiniManufacturerService.FindAsync(id.Value);
         if (miniManufacturer == null)
         {
             return NotFound();
@@ -61,8 +62,8 @@ public class MiniManufacturerController : Controller
     {
         if (ModelState.IsValid)
         {
-            _uow.MiniManufacturerRepository.Add(miniManufacturer);
-            await _uow.SaveChangesAsync();
+            _bll.MiniManufacturerService.Add(miniManufacturer);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniManufacturer);
@@ -76,7 +77,7 @@ public class MiniManufacturerController : Controller
             return NotFound();
         }
 
-        var miniManufacturer = await _uow.MiniManufacturerRepository.FindAsync(id.Value);
+        var miniManufacturer = await _bll.MiniManufacturerService.FindAsync(id.Value);
         if (miniManufacturer == null)
         {
             return NotFound();
@@ -98,8 +99,8 @@ public class MiniManufacturerController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.MiniManufacturerRepository.Update(miniManufacturer);
-            await _uow.SaveChangesAsync();
+            _bll.MiniManufacturerService.Update(miniManufacturer);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniManufacturer);
@@ -113,7 +114,7 @@ public class MiniManufacturerController : Controller
             return NotFound();
         }
 
-        var miniManufacturer = await _uow.MiniManufacturerRepository.FindAsync(id.Value);
+        var miniManufacturer = await _bll.MiniManufacturerService.FindAsync(id.Value);
         if (miniManufacturer == null)
         {
             return NotFound();
@@ -127,8 +128,8 @@ public class MiniManufacturerController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.MiniManufacturerRepository.RemoveAsync(id);
-        await _uow.SaveChangesAsync();
+        await _bll.MiniManufacturerService.RemoveAsync(id);
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

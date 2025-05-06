@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers;
@@ -15,17 +16,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class PaintLineController : Controller
 {
-    private readonly IAppUOW _uow;
+    private readonly IAppBLL _bll;
 
-    public PaintLineController(IAppUOW uow)
+    public PaintLineController(IAppBLL bll)
     {
-        _uow = uow;
+        _bll = bll;
     }
 
     // GET: PaintLine
     public async Task<IActionResult> Index()
     {
-        var paintLines = await _uow.PaintLineRepository.AllWithIncludesAsync();
+        var paintLines = await _bll.PaintLineService.AllAsync();
         return View(paintLines);
     }
 
@@ -37,7 +38,7 @@ public class PaintLineController : Controller
             return NotFound();
         }
 
-        var paintLine = await _uow.PaintLineRepository.FindWithIncludesAsync(id.Value);
+        var paintLine = await _bll.PaintLineService.FindAsync(id.Value);
         if (paintLine == null)
         {
             return NotFound();
@@ -49,7 +50,7 @@ public class PaintLineController : Controller
     // GET: PaintLine/Create
     public async Task<IActionResult> Create()
     {
-        var brands = await _uow.BrandRepository.AllAsync();
+        var brands = await _bll.BrandService.AllAsync();
         ViewData["BrandId"] = new SelectList(brands, "Id", "BrandName");
         return View();
     }
@@ -63,12 +64,12 @@ public class PaintLineController : Controller
     {
         if (ModelState.IsValid)
         {
-            _uow.PaintLineRepository.Add(paintLine);
-            await _uow.SaveChangesAsync();
+            _bll.PaintLineService.Add(paintLine);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         
-        var brands = await _uow.BrandRepository.AllAsync();
+        var brands = await _bll.BrandService.AllAsync();
         ViewData["BrandId"] = new SelectList(brands, "Id", "BrandName", paintLine.BrandId);
         return View(paintLine);
     }
@@ -81,13 +82,13 @@ public class PaintLineController : Controller
             return NotFound();
         }
 
-        var paintLine = await _uow.PaintLineRepository.FindAsync(id.Value);
+        var paintLine = await _bll.PaintLineService.FindAsync(id.Value);
         if (paintLine == null)
         {
             return NotFound();
         }
 
-        var brands = await _uow.BrandRepository.AllAsync();
+        var brands = await _bll.BrandService.AllAsync();
         ViewData["BrandId"] = new SelectList(brands, "Id", "BrandName", paintLine.BrandId);
         return View(paintLine);
     }
@@ -106,12 +107,12 @@ public class PaintLineController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.PaintLineRepository.Update(paintLine);
-            await _uow.SaveChangesAsync();
+            _bll.PaintLineService.Update(paintLine);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        var brands = await _uow.BrandRepository.AllAsync();
+        var brands = await _bll.BrandService.AllAsync();
         ViewData["BrandId"] = new SelectList(brands, "Id", "BrandName", paintLine.BrandId);
         return View(paintLine);
     }
@@ -124,7 +125,7 @@ public class PaintLineController : Controller
             return NotFound();
         }
 
-        var paintLine = await _uow.PaintLineRepository.FindWithIncludesAsync(id.Value);
+        var paintLine = await _bll.PaintLineService.FindAsync(id.Value);
         if (paintLine == null)
         {
             return NotFound();
@@ -138,8 +139,8 @@ public class PaintLineController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.PaintLineRepository.RemoveAsync(id);
-        await _uow.SaveChangesAsync();
+        await _bll.PaintLineService.RemoveAsync(id);
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

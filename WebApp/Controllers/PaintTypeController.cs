@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers;
@@ -16,17 +17,17 @@ namespace WebApp.Controllers;
 public class PaintTypeController : Controller
 {
     
-    private readonly IAppUOW _uow;
+    private readonly IAppBLL _bll;
 
-    public PaintTypeController(IAppUOW uow)
+    public PaintTypeController(IAppBLL bll)
     {
-        _uow = uow;
+        _bll = bll;
     }
 
     // GET: PaintType
     public async Task<IActionResult> Index()
     {
-        var paintTypes = await _uow.PaintTypeRepository.AllAsync();
+        var paintTypes = await _bll.PaintTypeService.AllAsync();
         return View(paintTypes);
     }
 
@@ -38,7 +39,7 @@ public class PaintTypeController : Controller
             return NotFound();
         }
 
-        var paintType = await _uow.PaintTypeRepository.FindAsync(id.Value);
+        var paintType = await _bll.PaintTypeService.FindAsync(id.Value);
         if (paintType == null)
         {
             return NotFound();
@@ -62,8 +63,8 @@ public class PaintTypeController : Controller
     {
         if (ModelState.IsValid)
         {
-            _uow.PaintTypeRepository.Add(paintType);
-            await _uow.SaveChangesAsync();
+            _bll.PaintTypeService.Add(paintType);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(paintType);
@@ -77,7 +78,7 @@ public class PaintTypeController : Controller
             return NotFound();
         }
 
-        var paintType = await _uow.PaintTypeRepository.FindAsync(id.Value);
+        var paintType = await _bll.PaintTypeService.FindAsync(id.Value);
         if (paintType == null)
         {
             return NotFound();
@@ -99,8 +100,8 @@ public class PaintTypeController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.PaintTypeRepository.Update(paintType); 
-            await _uow.SaveChangesAsync();
+            _bll.PaintTypeService.Update(paintType); 
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(paintType);
@@ -114,7 +115,7 @@ public class PaintTypeController : Controller
             return NotFound();
         }
 
-        var paintType = await _uow.PaintTypeRepository.FindAsync(id.Value);
+        var paintType = await _bll.PaintTypeService.FindAsync(id.Value);
         if (paintType == null)
         {
             return NotFound();
@@ -128,8 +129,8 @@ public class PaintTypeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.PaintTypeRepository.RemoveAsync(id);
-        await _uow.SaveChangesAsync();
+        await _bll.PaintTypeService.RemoveAsync(id);
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

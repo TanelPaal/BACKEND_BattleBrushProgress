@@ -1,6 +1,8 @@
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using App.BLL;
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using App.DAL.EF;
 using App.DAL.EF.Repositories;
@@ -50,34 +52,8 @@ else
 }
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// register all the repo interfaces and their implementations, use scoped lifetime
 builder.Services.AddScoped<IAppUOW, AppUOW>();
-
-// // register all the repo interfaces and their implementations, use scoped lifetime
-// // scoped - get created once per web client request (same as dbcontext)
-// // MiniPaintSwatch
-// builder.Services.AddScoped<IMiniPaintSwatchRepository, MiniPaintSwatchRepository>();
-//
-// // PersonPaints
-// builder.Services.AddScoped<IPersonPaintsRepository, PersonPaintsRepository>();
-//
-// //MiniatureCollection
-// builder.Services.AddScoped<IMiniStateRepository, MiniStateRepository>();
-// builder.Services.AddScoped<IMiniatureCollectionRepository, MiniatureCollectionRepository>();
-//
-// //Paint
-// builder.Services.AddScoped<IPersonRepository, PersonRepository>();
-// builder.Services.AddScoped<IBrandRepository, BrandRepository>();
-// builder.Services.AddScoped<IPaintLineRepository, PaintLineRepository>();
-// builder.Services.AddScoped<IPaintTypeRepository, PaintTypeRepository>();
-// builder.Services.AddScoped<IPaintRepository, PaintRepository>();
-//
-// //Miniature
-// builder.Services.AddScoped<IMiniPropertiesRepository, MiniPropertiesRepository>();
-// builder.Services.AddScoped<IMiniFactionRepository, MiniFactionRepository>();
-// builder.Services.AddScoped<IMiniManufacturerRepository, MiniManufacturerRepository>();
-// builder.Services.AddScoped<IMiniatureRepository, MiniatureRepository>();
-
+builder.Services.AddScoped<IAppBLL, AppBLL>();
 
 // JWT SUPPORT
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims

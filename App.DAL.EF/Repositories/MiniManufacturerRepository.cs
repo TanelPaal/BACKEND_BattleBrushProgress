@@ -5,9 +5,9 @@ using Base.DAL.EF;
 
 namespace App.DAL.EF.Repositories;
 
-public class MiniManufacturerRepository : BaseRepository<App.DAL.DTO.MiniManufacturer, App.Domain.MiniManufacturer>, IMiniManufacturerRepository
+public class MiniManufacturerRepository : BaseBaseRepository<App.DAL.DTO.MiniManufacturer, App.Domain.MiniManufacturer>, IMiniManufacturerRepository
 {
-    public MiniManufacturerRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new MiniManufacturerMapper())
+    public MiniManufacturerRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new MiniManufacturerUOWMapper())
     {
     }
     

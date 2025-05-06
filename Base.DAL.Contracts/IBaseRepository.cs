@@ -3,12 +3,12 @@ using Base.Domain;
 
 namespace Base.DAL.Contracts;
 
-public interface IBaseRepository<TEntity> : IRepository<TEntity, Guid>
+public interface IBaseRepository<TEntity> : IBaseRepository<TEntity, Guid>
     where TEntity : IDomainId
 {
 }
 
-public interface IRepository<TEntity, TKey>
+public interface IBaseRepository<TEntity, TKey>
     where TEntity : IDomainId<TKey>
     where TKey : IEquatable<TKey>
 {
@@ -27,6 +27,6 @@ public interface IRepository<TEntity, TKey>
     void Remove(TKey id, TKey? userId = default!);
     Task RemoveAsync(TKey id, TKey? userId = default!);
 
-    bool Exists(Guid id, TKey? userId = default!);
-    Task<bool> ExistsAsync(Guid id, TKey? userId = default!);
+    bool Exists(TKey id, TKey? userId = default!);
+    Task<bool> ExistsAsync(TKey id, TKey? userId = default!);
 }

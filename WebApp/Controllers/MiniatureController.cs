@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers;
@@ -15,17 +16,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniatureController : Controller
 {
-    private readonly IAppUOW _uow;
+    private readonly IAppBLL _bll;
 
-    public MiniatureController(IAppUOW uow)
+    public MiniatureController(IAppBLL bll)
     {
-        _uow = uow;
+        _bll = bll;
     }
 
     // GET: Miniature
     public async Task<IActionResult> Index()
     {
-        var miniatures = await _uow.MiniatureRepository.AllWithIncludesAsync();
+        var miniatures = await _bll.MiniatureService.AllAsync();
         return View(miniatures);
     }
 
@@ -37,7 +38,7 @@ public class MiniatureController : Controller
             return NotFound();
         }
 
-        var miniature = await _uow.MiniatureRepository.FindWithIncludesAsync(id.Value);
+        var miniature = await _bll.MiniatureService.FindAsync(id.Value);
         if (miniature == null)
         {
             return NotFound();
@@ -62,8 +63,8 @@ public class MiniatureController : Controller
     {
         if (ModelState.IsValid)
         {
-            _uow.MiniatureRepository.Add(miniature);
-            await _uow.SaveChangesAsync();
+            _bll.MiniatureService.Add(miniature);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         await PopulateDropDowns(miniature);
@@ -78,7 +79,7 @@ public class MiniatureController : Controller
             return NotFound();
         }
 
-        var miniature = await _uow.MiniatureRepository.FindAsync(id.Value);
+        var miniature = await _bll.MiniatureService.FindAsync(id.Value);
         if (miniature == null)
         {
             return NotFound();
@@ -101,8 +102,8 @@ public class MiniatureController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.MiniatureRepository.Update(miniature);
-            await _uow.SaveChangesAsync();
+            _bll.MiniatureService.Update(miniature);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         await PopulateDropDowns(miniature);
@@ -117,7 +118,7 @@ public class MiniatureController : Controller
             return NotFound();
         }
 
-        var miniature = await _uow.MiniatureRepository.FindWithIncludesAsync(id.Value);
+        var miniature = await _bll.MiniatureService.FindAsync(id.Value);
         if (miniature == null)
         {
             return NotFound();
@@ -131,17 +132,17 @@ public class MiniatureController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.MiniatureRepository.RemoveAsync(id);
-        await _uow.SaveChangesAsync();
+        await _bll.MiniatureService.RemoveAsync(id);
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
     
     // Helper method to populate dropdowns
     private async Task PopulateDropDowns(Miniature? miniature = null)
     {
-        var factions = await _uow.MiniFactionRepository.AllAsync();
-        var manufacturers = await _uow.MiniManufacturerRepository.AllAsync();
-        var properties = await _uow.MiniPropertiesRepository.AllAsync();
+        var factions = await _bll.MiniFactionService.AllAsync();
+        var manufacturers = await _bll.MiniManufacturerService.AllAsync();
+        var properties = await _bll.MiniPropertiesService.AllAsync();
 
         ViewData["MiniFactionId"] = new SelectList(
             factions, 

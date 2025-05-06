@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
@@ -16,17 +17,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniatureCollectionController : Controller
 {
-    private readonly IAppUOW _uow;
+    private readonly IAppBLL _bll;
 
-    public MiniatureCollectionController(IAppUOW uow)
+    public MiniatureCollectionController(IAppBLL bll)
     {
-        _uow = uow;
+        _bll = bll;
     }
 
     // GET: MiniatureCollection
     public async Task<IActionResult> Index()
     {
-        var res = await _uow.MiniatureCollectionRepository.AllAsync(User.GetUserId());
+        var res = await _bll.MiniatureCollectionService.AllAsync(User.GetUserId());
         return View(res);
     }
 
@@ -38,7 +39,7 @@ public class MiniatureCollectionController : Controller
             return NotFound();
         }
 
-        var miniatureCollection = await _uow.MiniatureCollectionRepository.FindAsync(id.Value, User.GetUserId());
+        var miniatureCollection = await _bll.MiniatureCollectionService.FindAsync(id.Value, User.GetUserId());
         if (miniatureCollection == null)
         {
             return NotFound();
@@ -65,8 +66,8 @@ public class MiniatureCollectionController : Controller
         
         if (ModelState.IsValid)
         {
-            _uow.MiniatureCollectionRepository.Add(entity, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            _bll.MiniatureCollectionService.Add(entity, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -82,7 +83,7 @@ public class MiniatureCollectionController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.MiniatureCollectionRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.MiniatureCollectionService.FindAsync(id.Value, User.GetUserId());
         if (entity == null)
         {
             return NotFound();
@@ -106,8 +107,8 @@ public class MiniatureCollectionController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.MiniatureCollectionRepository.Update(entity);
-            await _uow.SaveChangesAsync();
+            _bll.MiniatureCollectionService.Update(entity);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -123,7 +124,7 @@ public class MiniatureCollectionController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.MiniatureCollectionRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.MiniatureCollectionService.FindAsync(id.Value, User.GetUserId());
         if (entity == null)
         {
             return NotFound();
@@ -137,8 +138,8 @@ public class MiniatureCollectionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.MiniatureCollectionRepository.RemoveAsync(id, User.GetUserId());
-        await _uow.SaveChangesAsync();
+        await _bll.MiniatureCollectionService.RemoveAsync(id, User.GetUserId());
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
     
@@ -148,17 +149,17 @@ public class MiniatureCollectionController : Controller
         var userId = User.GetUserId();
         
         ViewData["MiniatureId"] = new SelectList(
-            await _uow.MiniatureRepository.AllAsync(),
+            await _bll.MiniatureService.AllAsync(),
             "Id",
             "MiniDesc");
             
         ViewData["MiniStateId"] = new SelectList(
-            await _uow.MiniStateRepository.AllAsync(),
+            await _bll.MiniStateService.AllAsync(),
             "Id",
             "StateName");
             
         ViewData["PersonId"] = new SelectList(
-            await _uow.PersonRepository.AllAsync(userId),
+            await _bll.PersonService.AllAsync(userId),
             "Id",
             "PersonName");
     }

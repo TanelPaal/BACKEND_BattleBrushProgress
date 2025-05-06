@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers;
@@ -15,17 +16,17 @@ namespace WebApp.Controllers;
 [Authorize]
 public class MiniStateController : Controller
 {
-    private readonly IAppUOW _uow;
+    private readonly IAppBLL _bll;
 
-    public MiniStateController(IAppUOW uow)
+    public MiniStateController(IAppBLL bll)
     {
-        _uow = uow;
+        _bll = bll;
     }
 
     // GET: MiniState
     public async Task<IActionResult> Index()
     {
-        var states = await _uow.MiniStateRepository.AllAsync();
+        var states = await _bll.MiniStateService.AllAsync();
         return View(states);
     }
 
@@ -37,7 +38,7 @@ public class MiniStateController : Controller
             return NotFound();
         }
 
-        var miniState = await _uow.MiniStateRepository.FindAsync(id.Value);
+        var miniState = await _bll.MiniStateService.FindAsync(id.Value);
         if (miniState == null)
         {
             return NotFound();
@@ -61,8 +62,8 @@ public class MiniStateController : Controller
     {
         if (ModelState.IsValid)
         {
-            _uow.MiniStateRepository.Add(miniState);
-            await _uow.SaveChangesAsync();
+            _bll.MiniStateService.Add(miniState);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniState);
@@ -76,7 +77,7 @@ public class MiniStateController : Controller
             return NotFound();
         }
 
-        var miniState = await _uow.MiniStateRepository.FindAsync(id.Value);
+        var miniState = await _bll.MiniStateService.FindAsync(id.Value);
         if (miniState == null)
         {
             return NotFound();
@@ -98,8 +99,8 @@ public class MiniStateController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.MiniStateRepository.Update(miniState);
-            await _uow.SaveChangesAsync();
+            _bll.MiniStateService.Update(miniState);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(miniState);
@@ -113,7 +114,7 @@ public class MiniStateController : Controller
             return NotFound();
         }
 
-        var miniState = await _uow.MiniStateRepository.FindAsync(id.Value);
+        var miniState = await _bll.MiniStateService.FindAsync(id.Value);
         if (miniState == null)
         {
             return NotFound();
@@ -127,8 +128,8 @@ public class MiniStateController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.MiniStateRepository.RemoveAsync(id);
-        await _uow.SaveChangesAsync();
+        await _bll.MiniStateService.RemoveAsync(id);
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

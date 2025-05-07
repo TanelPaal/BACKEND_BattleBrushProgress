@@ -87,19 +87,37 @@ public class BaseRepository<TDalEntity, TDomainEntity, TKey> : IBaseRepository<T
         RepositoryDbSet.Add(dbEntity!);
     }
 
-    // TODO: add MultilangStr support
     public virtual TDalEntity? Update(TDalEntity entity, TKey? userId = default!)
     {
-        if (ShouldUseUserId(userId))
+        var domainEntity = Mapper.Map(entity)!;
+
+        if (ShouldUseUserId(userId) || DomainTypeHasLangStrProperties())
         {
-            var dbEntity = RepositoryDbSet
+            var dbEntity =  RepositoryDbSet
                 .AsNoTracking()
                 .FirstOrDefault(e => e.Id.Equals(entity.Id));
 
             if (dbEntity == null || !((IDomainUserId<TKey>)dbEntity).UserId.Equals(userId)) return null;
+            if (ShouldUseUserId(userId) && !((IDomainUserId<TKey>)dbEntity).UserId.Equals(userId)) return null;
+
+            if (DomainTypeHasLangStrProperties())
+            {
+                foreach (var property in typeof(TDomainEntity).GetProperties()
+                             .Where(p => p.PropertyType == typeof(LangStr)))
+                {
+                    var langStr = (LangStr)property.GetValue(dbEntity)!;
+                    langStr.SetTranslation(
+                        (entity.GetType()
+                            .GetProperty(property.Name)
+                            ?.GetValue(entity) as string) ?? "???"
+                    );
+
+                    property.SetValue(domainEntity, langStr);
+                }
+            }
         }
 
-        return Mapper.Map(RepositoryDbSet.Update(Mapper.Map(entity)!).Entity)!;
+        return Mapper.Map(RepositoryDbSet.Update(domainEntity).Entity)!;
     }
 
     public virtual async Task<TDalEntity?> UpdateAsync(TDalEntity entity, TKey? userId = default!)

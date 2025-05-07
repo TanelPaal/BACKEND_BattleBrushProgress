@@ -17,4 +17,7 @@
     <data name="FactionName" xml:space="preserve">
         <value>Kirjeldus</value>
     </data>
+    <data name="Miniatures" xml:space="preserve">
+        <value>Miniatuur</value>
+    </data>
 </root>

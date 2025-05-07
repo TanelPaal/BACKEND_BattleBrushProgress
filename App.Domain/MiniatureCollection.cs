@@ -6,7 +6,7 @@ namespace App.Domain;
 
 public class MiniatureCollection : BaseEntityUser<AppUser>
 {
-    [MaxLength(256)]
+    [MaxLength(256, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
     [Display(Name = nameof(CollectionName), Prompt = nameof(CollectionName), ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]
     public string CollectionName { get; set; } = default!;
     
@@ -49,6 +49,7 @@ public class MiniatureCollection : BaseEntityUser<AppUser>
     [Display(Name = nameof(Person), Prompt = nameof(Person), ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]
     public Person? Person { get; set; }
     
+    [Display(Name = nameof(MiniPaintSwatches), Prompt = nameof(MiniPaintSwatches), ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]
     public ICollection<MiniPaintSwatch>? MiniPaintSwatches { get; set; }
 
 }

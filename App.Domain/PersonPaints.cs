@@ -32,6 +32,7 @@ public class PersonPaints : BaseEntityUser<AppUser>
     [Display(Name = nameof(Paint), Prompt = nameof(Paint), ResourceType = typeof(App.Resources.Domain.PersonPaints))]
     public Paint? Paint { get; set; }
     
+    [MaxLength(256, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
     public ICollection<MiniPaintSwatch>? MiniPaintSwatches { get; set; }
 
 }

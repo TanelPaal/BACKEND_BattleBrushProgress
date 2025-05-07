@@ -24,4 +24,7 @@
     <data name="Description" xml:space="preserve">
         <value>Description</value>
     </data>
+    <data name="Paints" xml:space="preserve">
+        <value>Paint</value>
+    </data>
 </root>

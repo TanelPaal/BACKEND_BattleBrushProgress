@@ -23,4 +23,7 @@
     <data name="AcquisitionDate" xml:space="preserve">
         <value>Hankimise Kuupäev</value>
     </data>
+    <data name="MiniPaintSwatch" xml:space="preserve">
+        <value>Värvi skeem</value>
+    </data>
 </root>

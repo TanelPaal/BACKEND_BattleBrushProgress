@@ -76,5 +76,14 @@ namespace App.Resources.Domain {
                 return ResourceManager.GetString("Name", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paint.
+        /// </summary>
+        public static string Paints {
+            get {
+                return ResourceManager.GetString("Paints", resourceCulture);
+            }
+        }
     }
 }

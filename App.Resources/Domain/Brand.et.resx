@@ -23,4 +23,10 @@
     <data name="ContactPhone" xml:space="preserve">
         <value>Telefoni Nr.</value>
     </data>
+    <data name="Paints" xml:space="preserve">
+        <value>Värvid</value>
+    </data>
+    <data name="PaintLines" xml:space="preserve">
+        <value>Värvi seeria</value>
+    </data>
 </root>

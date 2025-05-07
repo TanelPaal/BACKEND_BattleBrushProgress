@@ -60,6 +60,15 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Miniature.
+        /// </summary>
+        public static string Miniatures {
+            get {
+                return ResourceManager.GetString("Miniatures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string PropertyDesc {

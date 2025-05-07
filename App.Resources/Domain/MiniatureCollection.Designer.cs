@@ -105,6 +105,15 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paint Swatch.
+        /// </summary>
+        public static string MiniPaintSwatches {
+            get {
+                return ResourceManager.GetString("MiniPaintSwatches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
         public static string MiniState {

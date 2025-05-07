@@ -29,4 +29,7 @@
     <data name="PaintLine" xml:space="preserve">
         <value>Värvisari</value>
     </data>
+    <data name="PersonPaints" xml:space="preserve">
+        <value>Minu värvid</value>
+    </data>
 </root>

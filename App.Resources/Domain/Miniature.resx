@@ -33,4 +33,7 @@
     <data name="MiniManufacturer" xml:space="preserve">
         <value>Manufacturer</value>
     </data>
+    <data name="MiniatureCollections" xml:space="preserve">
+        <value>Miniature Collection</value>
+    </data>
 </root>

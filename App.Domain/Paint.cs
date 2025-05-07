@@ -7,15 +7,15 @@ namespace App.Domain;
 
 public class Paint : BaseEntity
 {
-    [MaxLength(128)]
+    [MaxLength(128, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
     [Display(Name = nameof(Name), Prompt = nameof(Name), ResourceType = typeof(App.Resources.Domain.Paint))]
     public string Name { get; set; } = default!;
     
-    [MaxLength(7)]
+    [MaxLength(7, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
     [Display(Name = nameof(HexCode), Prompt = nameof(HexCode), ResourceType = typeof(App.Resources.Domain.Paint))]
     public string HexCode { get; set; } = default!;
     
-    [MaxLength(12)]
+    [MaxLength(12, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
     [Display(Name = nameof(UPC), Prompt = nameof(UPC), ResourceType = typeof(App.Resources.Domain.Paint))]
     public string UPC { get; set; } = default!; // Universal Product Code
     
@@ -36,5 +36,7 @@ public class Paint : BaseEntity
     public PaintLine? PaintLine { get; set; }
     
     // Navigation property for UserPaints
+    [MaxLength(256, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
+    [Display(Name = nameof(PersonPaints), Prompt = nameof(PersonPaints), ResourceType = typeof(App.Resources.Domain.Paint))]
     public ICollection<PersonPaints>? PersonPaints { get; set; }
 }

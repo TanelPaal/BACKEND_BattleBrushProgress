@@ -26,4 +26,7 @@
     <data name="MiniProperties" xml:space="preserve">
         <value>Omadused</value>
     </data>
+    <data name="MiniatureCollections" xml:space="preserve">
+        <value>Miniatuuri kollektsioon</value>
+    </data>
 </root>

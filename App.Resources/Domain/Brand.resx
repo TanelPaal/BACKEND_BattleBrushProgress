@@ -30,4 +30,10 @@
     <data name="ContactPhone" xml:space="preserve">
         <value>Phone Nr.</value>
     </data>
+    <data name="Paints" xml:space="preserve">
+        <value>Paints</value>
+    </data>
+    <data name="PaintLines" xml:space="preserve">
+        <value>Paint Series</value>
+    </data>
 </root>

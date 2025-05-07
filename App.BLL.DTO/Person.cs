@@ -7,7 +7,7 @@ public class Person : IDomainId
 {
     public Guid Id { get; set; }
     
-    [MaxLength(128)]
+    [MaxLength(128, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
     [Display(Name = nameof(App.Resources.Domain.Person.UserName), Prompt = nameof(App.Resources.Domain.Person.UserName), ResourceType = typeof(App.Resources.Domain.Person))]
     public string PersonName { get; set; } = default!;
     

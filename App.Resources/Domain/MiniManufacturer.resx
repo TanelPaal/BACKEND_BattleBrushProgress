@@ -30,4 +30,7 @@
     <data name="ContactPhone" xml:space="preserve">
         <value>Phone Nr.</value>
     </data>
+    <data name="Miniatures" xml:space="preserve">
+        <value>Miniature</value>
+    </data>
 </root>

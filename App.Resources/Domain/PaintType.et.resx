@@ -17,4 +17,7 @@
     <data name="Name" xml:space="preserve">
         <value>Nimi</value>
     </data>
+    <data name="Paints" xml:space="preserve">
+        <value>Värv</value>
+    </data>
 </root>

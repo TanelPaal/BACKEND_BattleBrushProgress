@@ -14,4 +14,10 @@
     <data name="PersonName" xml:space="preserve">
         <value>Kasutaja Nimi</value>
     </data>
+    <data name="PersonPaints" xml:space="preserve">
+        <value>Minu värvid</value>
+    </data>
+    <data name="MiniatureCollections" xml:space="preserve">
+        <value>Miniatuuri kollektsioon</value>
+    </data>
 </root>

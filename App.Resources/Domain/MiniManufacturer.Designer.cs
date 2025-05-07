@@ -94,5 +94,14 @@ namespace App.Resources.Domain {
                 return ResourceManager.GetString("ManufacturerName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Miniature.
+        /// </summary>
+        public static string Miniatures {
+            get {
+                return ResourceManager.GetString("Miniatures", resourceCulture);
+            }
+        }
     }
 }

@@ -23,4 +23,7 @@
     <data name="ContactEmail" xml:space="preserve">
         <value>E-Mail</value>
     </data>
+    <data name="Miniatures" xml:space="preserve">
+        <value>Miniatuur</value>
+    </data>
 </root>

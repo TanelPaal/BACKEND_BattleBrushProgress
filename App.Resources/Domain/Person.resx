@@ -21,4 +21,10 @@
     <data name="PersonName" xml:space="preserve">
         <value>Username</value>
     </data>
+    <data name="MiniatureCollections" xml:space="preserve">
+        <value>Miniature Collection</value>
+    </data>
+    <data name="PersonPaints" xml:space="preserve">
+        <value>My Paints</value>
+    </data>
 </root>

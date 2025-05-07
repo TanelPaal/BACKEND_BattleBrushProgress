@@ -32,4 +32,7 @@
     <data name="Person" xml:space="preserve">
         <value>Isik</value>
     </data>
+    <data name="MiniPaintSwatches" xml:space="preserve">
+        <value>Värvi Skeem</value>
+    </data>
 </root>

@@ -7,11 +7,11 @@ public class PaintLine : IDomainId
 {
     public Guid Id { get; set; }
     
-    [MaxLength(128)]
+    [MaxLength(128, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
     [Display(Name = nameof(PaintLineName), Prompt = nameof(PaintLineName), ResourceType = typeof(App.Resources.Domain.PaintLine))]
     public string PaintLineName { get; set; } = default!;
     
-    [MaxLength(256)]
+    [MaxLength(256, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
     [Display(Name = nameof(Description), Prompt = nameof(Description), ResourceType = typeof(App.Resources.Domain.PaintLine))]
     public string Description { get; set; } = default!;
     

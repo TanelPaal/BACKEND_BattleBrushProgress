@@ -24,4 +24,7 @@
     <data name="FactionDesc" xml:space="preserve">
         <value>Faction</value>
     </data>
+    <data name="Miniatures" xml:space="preserve">
+        <value>Miniature</value>
+    </data>
 </root>

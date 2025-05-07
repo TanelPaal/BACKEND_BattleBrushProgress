@@ -7,7 +7,7 @@ public class MiniState : IDomainId
 {
     public Guid Id { get; set; }
     
-    [MaxLength(64)]
+    [MaxLength(64, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
     [Display(Name = nameof(StateName), Prompt = nameof(StateName), ResourceType = typeof(App.Resources.Domain.MiniState))]
     public string StateName { get; set; } = default!;
     

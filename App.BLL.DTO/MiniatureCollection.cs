@@ -7,7 +7,7 @@ public class MiniatureCollection : IDomainId
 {
     public Guid Id { get; set; }
     
-    [MaxLength(256)]
+    [MaxLength(256, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
     [Display(Name = nameof(CollectionName), Prompt = nameof(CollectionName), ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]
     public string CollectionName { get; set; } = default!;
     
@@ -50,5 +50,6 @@ public class MiniatureCollection : IDomainId
     [Display(Name = nameof(Person), Prompt = nameof(Person), ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]
     public Person? Person { get; set; }
     
+    [Display(Name = nameof(MiniPaintSwatches), Prompt = nameof(MiniPaintSwatches), ResourceType = typeof(App.Resources.Domain.MiniatureCollection))]
     public ICollection<MiniPaintSwatch>? MiniPaintSwatches { get; set; }
 }

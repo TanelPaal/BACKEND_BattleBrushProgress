@@ -94,5 +94,23 @@ namespace App.Resources.Domain {
                 return ResourceManager.GetString("HeadquartersLocation", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paint Series.
+        /// </summary>
+        public static string PaintLines {
+            get {
+                return ResourceManager.GetString("PaintLines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paints.
+        /// </summary>
+        public static string Paints {
+            get {
+                return ResourceManager.GetString("Paints", resourceCulture);
+            }
+        }
     }
 }

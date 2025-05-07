@@ -24,4 +24,7 @@
     <data name="PropertyDesc" xml:space="preserve">
         <value>Description</value>
     </data>
+    <data name="Miniatures" xml:space="preserve">
+        <value>Miniature</value>
+    </data>
 </root>

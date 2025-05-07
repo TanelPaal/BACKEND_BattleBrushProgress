@@ -8,7 +8,7 @@ public class Miniature : IDomainId
 {
     public Guid Id { get; set; }
     
-    [MaxLength(256)]
+    [MaxLength(256, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
     [Display(Name = nameof(MiniName), Prompt = nameof(MiniName), ResourceType = typeof(App.Resources.Domain.Miniature))]
     public string MiniName { get; set; } = default!;
     
@@ -31,5 +31,7 @@ public class Miniature : IDomainId
     [Display(Name = nameof(MiniManufacturer), Prompt = nameof(MiniManufacturer), ResourceType = typeof(App.Resources.Domain.Miniature))]
     public MiniManufacturer? MiniManufacturer { get; set; }
     
+    [MaxLength(256, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
+    [Display(Name = nameof(MiniatureCollections), Prompt = nameof(MiniatureCollections), ResourceType = typeof(App.Resources.Domain.Miniature))]
     public ICollection<MiniatureCollection>? MiniatureCollections { get; set; }
 }

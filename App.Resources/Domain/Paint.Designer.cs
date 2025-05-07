@@ -105,6 +105,15 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to My Paint.
+        /// </summary>
+        public static string PersonPaints {
+            get {
+                return ResourceManager.GetString("PersonPaints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Universal Product Code.
         /// </summary>
         public static string UPC {

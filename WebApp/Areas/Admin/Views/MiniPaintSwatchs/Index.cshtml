@@ -55,13 +55,13 @@
                 @Html.DisplayFor(modelItem => item.Notes)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniatureCollection.CollectionDesc)
+                @Html.DisplayFor(modelItem => item.MiniatureCollection!.CollectionDesc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PersonPaints.Id)
+                @Html.DisplayFor(modelItem => item.PersonPaints!.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.User!.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)

@@ -116,7 +116,7 @@ public class IdentityTests: IClassFixture<CustomWebApplicationFactory<Program>>
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/v1/account/login?jwtExpiresInSeconds=2", loginData);
+        var response = await _client.PostAsJsonAsync("/api/v1/account/login?jwtExpiresInSeconds=1", loginData);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -133,7 +133,7 @@ public class IdentityTests: IClassFixture<CustomWebApplicationFactory<Program>>
 
         
         // Wait for JWT to expire
-        await Task.Delay(3000);
+        await Task.Delay(1500);
         var getResponseAuthExpired = await _client.GetAsync("/api/v1/persons");
         
         Assert.Equal(HttpStatusCode.Unauthorized, getResponseAuthExpired.StatusCode);
@@ -151,7 +151,7 @@ public class IdentityTests: IClassFixture<CustomWebApplicationFactory<Program>>
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/v1/account/login?jwtExpiresInSeconds=2", loginData);
+        var response = await _client.PostAsJsonAsync("/api/v1/account/login?jwtExpiresInSeconds=1", loginData);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -168,7 +168,7 @@ public class IdentityTests: IClassFixture<CustomWebApplicationFactory<Program>>
 
         
         // Wait for JWT to expire
-        await Task.Delay(3000);
+        await Task.Delay(1500);
 
         var getResponseAuthExpired = await _client.GetAsync("/api/v1/persons");
         

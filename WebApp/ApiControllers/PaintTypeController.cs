@@ -94,7 +94,7 @@ namespace WebApp.ApiControllers
         /// Creates a new PaintType entity.
         /// </summary>
         /// <param name="paintType">The PaintType entity to create.</param>
-        /// <returns>
+        /// <returns></returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPost]

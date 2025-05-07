@@ -11,6 +11,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Common.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="_Layout.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -18,6 +22,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Common.resx</DependentUpon>
+      </Compile>
+      <Compile Update="_Layout.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>_Layout.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

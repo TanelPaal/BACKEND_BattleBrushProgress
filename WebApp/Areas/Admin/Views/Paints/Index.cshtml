@@ -61,13 +61,13 @@
                 @Html.DisplayFor(modelItem => item.UPC)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Brand.BrandName)
+                @Html.DisplayFor(modelItem => item.Brand!.BrandName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PaintType.Description)
+                @Html.DisplayFor(modelItem => item.PaintType!.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PaintLine.Description)
+                @Html.DisplayFor(modelItem => item.PaintLine!.Description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)

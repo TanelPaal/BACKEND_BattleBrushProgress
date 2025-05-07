@@ -261,7 +261,8 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<string>("FactionDesc")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("FactionName")
                         .IsRequired()
@@ -398,7 +399,8 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<string>("PropertyDesc")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PropertyName")
                         .IsRequired()

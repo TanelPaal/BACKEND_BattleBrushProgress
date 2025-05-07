@@ -79,7 +79,7 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     FactionName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    FactionDesc = table.Column<string>(type: "text", nullable: false),
+                    FactionDesc = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
@@ -117,7 +117,7 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     PropertyName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    PropertyDesc = table.Column<string>(type: "text", nullable: false),
+                    PropertyDesc = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),

@@ -55,13 +55,13 @@
                 @Html.DisplayFor(modelItem => item.AcquisitionDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Person.PersonName)
+                @Html.DisplayFor(modelItem => item.Person!.PersonName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Paint.HexCode)
+                @Html.DisplayFor(modelItem => item.Paint!.HexCode)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.User!.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)

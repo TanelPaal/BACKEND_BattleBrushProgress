@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250507030306_InitialCreate")]
+    [Migration("20250507154648_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -264,7 +264,8 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<string>("FactionDesc")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("FactionName")
                         .IsRequired()
@@ -401,7 +402,8 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<string>("PropertyDesc")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PropertyName")
                         .IsRequired()

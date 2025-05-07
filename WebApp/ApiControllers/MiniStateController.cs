@@ -84,7 +84,7 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _bll.MiniStateService.UpdateAsync(_mapper.Map(miniState)!);
+            await _bll.MiniStateService.UpdateAsync(_mapper.Map(miniState)!);
             await _bll.SaveChangesAsync();
 
             return NoContent();

@@ -70,16 +70,16 @@
                 @Html.DisplayFor(modelItem => item.CompletionDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Miniature.MiniDesc)
+                @Html.DisplayFor(modelItem => item.Miniature!.MiniDesc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniState.StateDesc)
+                @Html.DisplayFor(modelItem => item.MiniState!.StateDesc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Person.PersonName)
+                @Html.DisplayFor(modelItem => item.Person!.PersonName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.User!.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)

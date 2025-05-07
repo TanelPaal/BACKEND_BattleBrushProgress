@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
+    /// <summary>
+    /// Controller for handling operations related to PaintType entities.
+    /// </summary>
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -46,7 +49,11 @@ namespace WebApp.ApiControllers
             return data.Select(x => _mapper.Map(x)!).ToList();
         }
 
-        // GET: api/PaintType/5
+        /// <summary>
+        /// Retrieves a specific PaintType by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the PaintType to retrieve.</param>
+        /// <returns>Returns the PaintType object if found; otherwise, returns a NotFound result.</returns>
         [Produces("application/json")]
         [HttpGet("{id}")]
         public async Task<ActionResult<App.DTO.v1.PaintType>> GetPaintType(Guid id)
@@ -61,8 +68,12 @@ namespace WebApp.ApiControllers
             return _mapper.Map(paintType)!;
         }
 
-        // PUT: api/PaintType/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Updates the specified PaintType entity in the system.
+        /// </summary>
+        /// <param name="id">The identifier of the PaintType to update.</param>
+        /// <param name="paintType">The PaintType object containing the updated information.</param>
+        /// <returns>Returns an IActionResult indicating the outcome of the operation.</returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPut("{id}")]
@@ -79,8 +90,11 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
-        // POST: api/PaintType
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Creates a new PaintType entity.
+        /// </summary>
+        /// <param name="paintType">The PaintType entity to create.</param>
+        /// <returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPost]
@@ -93,7 +107,11 @@ namespace WebApp.ApiControllers
             return CreatedAtAction("GetPaintType", new { id = data.Id }, paintType);
         }
 
-        // DELETE: api/PaintType/5
+        /// <summary>
+        /// Deletes a PaintType entity by its identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the PaintType to delete.</param>
+        /// <returns>An IActionResult representing the result of the operation.</returns>
         [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePaintType(Guid id)

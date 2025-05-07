@@ -93,8 +93,11 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
-        // POST: api/Brand
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        ///  Creates a new brand with the provided data.
+        /// </summary>
+        /// <param name="brand"></param>
+        /// <returns></returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPost]
@@ -107,7 +110,11 @@ namespace WebApp.ApiControllers
             return CreatedAtAction("GetBrand", new { id = data.Id }, brand);
         }
 
-        // DELETE: api/Brand/5
+        /// <summary>
+        ///  Deletes a brand with the provided ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBrand(Guid id)

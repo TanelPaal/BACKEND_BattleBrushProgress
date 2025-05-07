@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
+    /// <summary>
+    /// API controller for managing MiniStates.
+    /// </summary>
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -46,7 +49,11 @@ namespace WebApp.ApiControllers
             return data.Select(x => _mapper.Map(x)!).ToList();
         }
 
-        // GET: api/MiniState/5
+        /// <summary>
+        /// Retrieves a MiniState by the specified identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the MiniState to retrieve.</param>
+        /// <returns>A MiniState object if found; otherwise, a NotFound result.</returns>
         [Produces("application/json")]
         [HttpGet("{id}")]
         public async Task<ActionResult<App.DTO.v1.MiniState>> GetMiniState(Guid id)
@@ -61,8 +68,12 @@ namespace WebApp.ApiControllers
             return _mapper.Map(miniState)!;
         }
 
-        // PUT: api/MiniState/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Updates an existing MiniState entity.
+        /// </summary>
+        /// <param name="id">The unique identifier of the MiniState to be updated.</param>
+        /// <param name="miniState">The MiniState object containing updated details.</param>
+        /// <returns>An IActionResult indicating the result of the update operation.</returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPut("{id}")]
@@ -79,8 +90,11 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
-        // POST: api/MiniState
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Creates a new MiniState.
+        /// </summary>
+        /// <param name="miniState">The MiniState object to be created.</param>
+        /// <returns>Returns the created MiniState with its assigned identifier.</returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPost]
@@ -93,7 +107,11 @@ namespace WebApp.ApiControllers
             return CreatedAtAction("GetMiniState", new { id = data.Id }, miniState);
         }
 
-        // DELETE: api/MiniState/5
+        /// <summary>
+        /// Deletes a MiniState by its identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the MiniState to delete.</param>
+        /// <returns>An IActionResult indicating the result of the operation.</returns>
         [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMiniState(Guid id)

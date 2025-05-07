@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
+    /// <summary>
+    ///  Miniature Controller
+    /// </summary>
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -46,7 +49,11 @@ namespace WebApp.ApiControllers
             return data.Select(x => _mapper.Map(x)!).ToList();
         }
 
-        // GET: api/Miniature/5
+        /// <summary>
+        ///  Get all Miniatures 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Produces("application/json")]
         [HttpGet("{id}")]
         public async Task<ActionResult<App.DTO.v1.Miniature>> GetMiniature(Guid id)
@@ -61,8 +68,12 @@ namespace WebApp.ApiControllers
             return _mapper.Map(miniature)!;
         }
 
-        // PUT: api/Miniature/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        ///  Update Miniature
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="miniature"></param>
+        /// <returns></returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPut("{id}")]
@@ -79,8 +90,11 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
-        // POST: api/Miniature
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        ///  Add Miniature
+        /// </summary>
+        /// <param name="miniature"></param>
+        /// <returns></returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPost]
@@ -93,7 +107,11 @@ namespace WebApp.ApiControllers
             return CreatedAtAction("GetMiniature", new { id = data.Id }, miniature);
         }
 
-        // DELETE: api/Miniature/5
+        /// <summary>
+        ///  Delete Miniature
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMiniature(Guid id)

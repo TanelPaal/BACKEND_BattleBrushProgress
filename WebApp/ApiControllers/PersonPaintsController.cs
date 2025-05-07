@@ -15,6 +15,13 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
+    /// <summary>
+    /// API Controller for managing PersonPaints resources.
+    /// </summary>
+    /// <remarks>
+    /// This controller provides endpoints for creating, retrieving, updating, and deleting PersonPaints entities.
+    /// Only accessible to authenticated users.
+    /// </remarks>
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -47,8 +54,7 @@ namespace WebApp.ApiControllers
             var res = data.Select(x => _mapper.Map(x)!).ToList();
             return res;
         }
-
-        // GET: api/PersonPaints/5
+        
         /// <summary>
         /// Get PersonPaints by id - owned by current user
         /// </summary>

@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
+    /// <summary>
+    /// Controller responsible for handling operations related to MiniProperties.
+    /// </summary>
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -46,7 +49,10 @@ namespace WebApp.ApiControllers
             return data.Select(x => _mapper.Map(x)!).ToList();
         }
 
-        // GET: api/MiniProperties/5
+        /// <summary>
+        /// Retrieves all MiniProperties.
+        /// </summary>
+        /// <returns>A collection of MiniProperties.</returns>
         [Produces("application/json")]
         [HttpGet("{id}")]
         public async Task<ActionResult<App.DTO.v1.MiniProperties>> GetMiniProperties(Guid id)
@@ -61,8 +67,12 @@ namespace WebApp.ApiControllers
             return _mapper.Map(miniProperties)!;
         }
 
-        // PUT: api/MiniProperties/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Updates an existing MiniProperties entity.
+        /// </summary>
+        /// <param name="id">The unique identifier of the MiniProperties entity to update.</param>
+        /// <param name="miniProperties">The updated MiniProperties entity.</param>
+        /// <returns>An IActionResult representing the result of the update operation.</returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPut("{id}")]
@@ -79,8 +89,11 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
-        // POST: api/MiniProperties
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Adds a new MiniProperties entry to the database.
+        /// </summary>
+        /// <param name="miniProperties">The MiniProperties object to be added.</param>
+        /// <returns>An ActionResult containing the created MiniProperties object.</returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPost]
@@ -93,7 +106,11 @@ namespace WebApp.ApiControllers
             return CreatedAtAction("GetMiniProperties", new { id = data.Id }, miniProperties);
         }
 
-        // DELETE: api/MiniProperties/5
+        /// <summary>
+        /// Deletes a specific MiniProperty identified by its ID.
+        /// </summary>
+        /// <param name="id">The unique identifier of the MiniProperty to be deleted.</param>
+        /// <returns>An IActionResult indicating the outcome of the deletion operation.</returns>
         [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMiniProperties(Guid id)

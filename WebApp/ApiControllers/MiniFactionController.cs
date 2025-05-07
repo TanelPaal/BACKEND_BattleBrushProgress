@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
+    /// <summary>
+    ///  MiniFaction Controller
+    /// </summary>
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -46,7 +49,11 @@ namespace WebApp.ApiControllers
             return data.Select(x => _mapper.Map(x)!).ToList();
         }
 
-        // GET: api/MiniFaction/5
+        /// <summary>
+        ///  Get MiniFaction by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Produces("application/json")]
         [HttpGet("{id}")]
         public async Task<ActionResult<App.DTO.v1.MiniFaction>> GetMiniFaction(Guid id)
@@ -61,8 +68,12 @@ namespace WebApp.ApiControllers
             return _mapper.Map(miniFaction)!;
         }
 
-        // PUT: api/MiniFaction/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        ///  Update MiniFaction by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="miniFaction"></param>
+        /// <returns></returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPut("{id}")]
@@ -79,8 +90,11 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
-        // POST: api/MiniFaction
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        ///  Add MiniFaction
+        /// </summary>
+        /// <param name="miniFaction"></param>
+        /// <returns></returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPost]
@@ -93,7 +107,11 @@ namespace WebApp.ApiControllers
             return CreatedAtAction("GetMiniFaction", new { id = data.Id }, miniFaction);
         }
 
-        // DELETE: api/MiniFaction/5
+        /// <summary>
+        ///  Delete MiniFaction by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMiniFaction(Guid id)

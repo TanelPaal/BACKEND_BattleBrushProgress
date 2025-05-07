@@ -16,6 +16,11 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
+    /// <summary>
+    /// API Controller for managing Person entities.
+    /// Provides endpoints to handle CRUD operations for Person resources.
+    /// Requires user authentication via JWT Bearer authentication scheme.
+    /// </summary>
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -50,7 +55,11 @@ namespace WebApp.ApiControllers
             return res;
         }
 
-        // GET: api/Person/5
+        /// <summary>
+        /// Retrieves a specific person by their unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the person to retrieve.</param>
+        /// <returns>The requested person if found, or a 404 Not Found response if the person does not exist.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<App.DTO.v1.Person>> GetPerson(Guid id)
         {
@@ -64,8 +73,12 @@ namespace WebApp.ApiControllers
             return _mapper.Map(person)!;
         }
 
-        // PUT: api/Person/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Updates an existing Person entity.
+        /// </summary>
+        /// <param name="id">The unique identifier of the Person to be updated.</param>
+        /// <param name="person">The updated Person object containing the new data.</param>
+        /// <returns>An IActionResult indicating the outcome of the operation.</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPerson(Guid id, App.DTO.v1.Person person)
         {
@@ -80,8 +93,11 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
-        // POST: api/Person
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Adds a new person entity to the system.
+        /// </summary>
+        /// <param name="person">The person data to be added.</param>
+        /// <returns>The created person with assigned identifier and additional details.</returns>
         [HttpPost]
         public async Task<ActionResult<App.DTO.v1.Person>> PostPerson(App.DTO.v1.Person person)
         {
@@ -96,7 +112,11 @@ namespace WebApp.ApiControllers
             }, person);
         }
 
-        // DELETE: api/Person/5
+        /// <summary>
+        /// Deletes a person by their unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the person to be deleted.</param>
+        /// <returns>A NoContent result if the deletion is successful.</returns>
         [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePerson(Guid id)

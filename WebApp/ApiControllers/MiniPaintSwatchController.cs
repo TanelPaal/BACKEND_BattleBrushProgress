@@ -15,6 +15,15 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
+    /// <summary>
+    /// Controller for handling CRUD operations related to MiniPaintSwatch.
+    /// </summary>
+    /// <remarks>
+    /// Provides endpoints to retrieve all MiniPaintSwatches, get a specific MiniPaintSwatch by ID,
+    /// create a new MiniPaintSwatch, update an existing MiniPaintSwatch, and delete a MiniPaintSwatch.
+    /// Methods in this controller handle user-specific data, enforce authorization,
+    /// and return appropriate HTTP status codes based on outcomes.
+    /// </remarks>
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]

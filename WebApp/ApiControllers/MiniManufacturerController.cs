@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
+    /// <summary>
+    ///  Mini Manufacturers API
+    /// </summary>
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -46,7 +49,11 @@ namespace WebApp.ApiControllers
             return data.Select(x => _mapper.Map(x)!).ToList();
         }
 
-        // GET: api/MiniManufacturer/5
+        /// <summary>
+        /// Retrieves a specific MiniManufacturer by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the MiniManufacturer to retrieve.</param>
+        /// <returns>Returns the MiniManufacturer object if found; otherwise, a 404 status code.</returns>
         [Produces("application/json")]
         [HttpGet("{id}")]
         public async Task<ActionResult<App.DTO.v1.MiniManufacturer>> GetMiniManufacturer(Guid id)
@@ -61,8 +68,12 @@ namespace WebApp.ApiControllers
             return _mapper.Map(miniManufacturer)!;
         }
 
-        // PUT: api/MiniManufacturer/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Updates the MiniManufacturer specified by the given ID.
+        /// </summary>
+        /// <param name="id">The unique identifier of the MiniManufacturer to update.</param>
+        /// <param name="miniManufacturer">The updated MiniManufacturer object.</param>
+        /// <returns>A task that represents the asynchronous operation. Returns an IActionResult indicating the result of the operation.</returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPut("{id}")]
@@ -79,8 +90,11 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
-        // POST: api/MiniManufacturer
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Creates a new MiniManufacturer.
+        /// </summary>
+        /// <param name="miniManufacturer">The MiniManufacturer object to be created.</param>
+        /// <returns>The newly created MiniManufacturer object.</returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPost]
@@ -94,7 +108,11 @@ namespace WebApp.ApiControllers
             return CreatedAtAction("GetMiniManufacturer", new { id = data.Id }, miniManufacturer);
         }
 
-        // DELETE: api/MiniManufacturer/5
+        /// <summary>
+        /// Deletes a MiniManufacturer by its identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the MiniManufacturer to be deleted.</param>
+        /// <returns>An IActionResult representing the result of the deletion operation.</returns>
         [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMiniManufacturer(Guid id)

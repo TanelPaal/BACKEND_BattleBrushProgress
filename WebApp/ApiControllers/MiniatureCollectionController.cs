@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
+    /// <summary>
+    ///  Controller for MiniatureCollection
+    /// </summary>
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -27,6 +30,11 @@ namespace WebApp.ApiControllers
         private readonly App.DTO.v1.Mappers.MiniatureCollectionMapper _mapper =
             new App.DTO.v1.Mappers.MiniatureCollectionMapper();
 
+        /// <summary>
+        ///  Constructor for MiniatureCollectionController
+        /// </summary>
+        /// <param name="bll"></param>
+        /// <param name="logger"></param>
         public MiniatureCollectionController(IAppBLL bll, ILogger<MiniatureCollectionController> logger)
         {
             _bll = bll;
@@ -110,7 +118,12 @@ namespace WebApp.ApiControllers
             return CreatedAtAction("GetMiniatureCollection", new { id = bllMiniatureCollection.Id }, miniatureCollection);
         }
 
-        // DELETE: api/MiniatureCollection/5
+        /// <summary>
+        ///  Delete MiniatureCollection by id - owned by current user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMiniatureCollection(Guid id)
         {

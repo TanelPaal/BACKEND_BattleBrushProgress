@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
+    /// <summary>
+    /// Represents a controller for handling brand-related API requests.
+    /// </summary>
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -26,6 +29,9 @@ namespace WebApp.ApiControllers
         private readonly App.DTO.v1.Mappers.BrandMapper _mapper =
             new App.DTO.v1.Mappers.BrandMapper();
 
+        /// <summary>
+        /// Represents a controller for handling brand-related API requests.
+        /// </summary>
         public BrandController(IAppBLL bll, ILogger<BrandController> logger)
         {
             _bll = bll;
@@ -46,7 +52,11 @@ namespace WebApp.ApiControllers
             return data.Select(x => _mapper.Map(x)!).ToList();
         }
 
-        // GET: api/Brand/5
+        /// <summary>
+        /// Retrieves a specific brand by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the brand to retrieve.</param>
+        /// <returns>An <see cref="ActionResult{T}"/> containing the requested brand if found, or a <see cref="NotFoundResult"/> if the brand does not exist.</returns>
         [Produces("application/json")]
         [HttpGet("{id}")]
         public async Task<ActionResult<App.DTO.v1.Brand>> GetBrand(Guid id)
@@ -61,8 +71,12 @@ namespace WebApp.ApiControllers
             return _mapper.Map(brand)!;
         }
 
-        // PUT: api/Brand/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Updates an existing brand with the provided data.
+        /// </summary>
+        /// <param name="id">The unique identifier of the brand to update.</param>
+        /// <param name="brand">The updated brand object containing new data.</param>
+        /// <returns>An IActionResult indicating the outcome of the operation. Returns NoContent if successful, or BadRequest if the provided ID does not match the brand's ID.</returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPut("{id}")]

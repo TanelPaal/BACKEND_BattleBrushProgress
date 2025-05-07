@@ -15,18 +15,28 @@ public class MiniatureUOWMapper : IMapper<App.DAL.DTO.Miniature, App.Domain.Mini
             MiniName = entity.MiniName,
             MiniDesc = entity.MiniDesc,
             MiniFactionId = entity.MiniFactionId,
-            // TODO: Figure out how to map or skip
-            MiniFaction = null,
-            //MiniFaction = entity.MiniFaction != null ? _miniFactionUOWMapper.Map(entity.MiniFaction) : null,
+            MiniFaction = entity.MiniFaction == null ? null : new App.DAL.DTO.MiniFaction()
+            {
+                Id = entity.MiniFaction!.Id,
+                FactionName = entity.MiniFaction.FactionName,
+                FactionDesc = entity.MiniFaction.FactionDesc,
+            },
             MiniPropertiesId = entity.MiniPropertiesId,
-            // TODO: Figure out how to map or skip
-            MiniProperties = null,
-            //MiniProperties = entity.MiniProperties != null ? _miniPropertiesUOWMapper.Map(entity.MiniProperties) : null,
+            MiniProperties = entity.MiniProperties == null ? null : new App.DAL.DTO.MiniProperties()
+            {
+                Id = entity.MiniProperties!.Id,
+                PropertyName = entity.MiniProperties.PropertyName,
+                PropertyDesc = entity.MiniProperties.PropertyDesc,
+            },
             MiniManufacturerId = entity.MiniManufacturerId,                
-            // TODO: Figure out how to map or skip
-            MiniManufacturer = null
-            //MiniManufacturer = entity.MiniManufacturer != null ? _miniManufacturerUOWMapper.Map(entity.MiniManufacturer) : null,
-            // MiniatureCollections = null // Optionally map if needed
+            MiniManufacturer = entity.MiniManufacturer == null ? null : new App.DAL.DTO.MiniManufacturer()
+            {
+                Id = entity.MiniManufacturer!.Id,
+                ManufacturerName = entity.MiniManufacturer.ManufacturerName,
+                HeadquartersLocation = entity.MiniManufacturer.HeadquartersLocation,
+                ContactEmail = entity.MiniManufacturer.ContactEmail,
+                ContactPhone = entity.MiniManufacturer.ContactPhone,
+            },           
         };
         return res;
     }
@@ -40,18 +50,8 @@ public class MiniatureUOWMapper : IMapper<App.DAL.DTO.Miniature, App.Domain.Mini
             MiniName = entity.MiniName,
             MiniDesc = entity.MiniDesc,
             MiniFactionId = entity.MiniFactionId,
-            // TODO: Figure out how to map or skip
-            MiniFaction = null,
-            //MiniFaction = entity.MiniFaction != null ? _miniFactionUOWMapper.Map(entity.MiniFaction) : null,
             MiniPropertiesId = entity.MiniPropertiesId,
-            // TODO: Figure out how to map or skip
-            MiniProperties = null,
-            //MiniProperties = entity.MiniProperties != null ? _miniPropertiesUOWMapper.Map(entity.MiniProperties) : null,
             MiniManufacturerId = entity.MiniManufacturerId,                
-            // TODO: Figure out how to map or skip
-            MiniManufacturer = null
-            //MiniManufacturer = entity.MiniManufacturer != null ? _miniManufacturerUOWMapper.Map(entity.MiniManufacturer) : null,
-            // MiniatureCollections = null // Optionally map if needed
         };
         return res;
     }

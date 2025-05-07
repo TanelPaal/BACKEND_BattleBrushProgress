@@ -16,10 +16,8 @@ public class MiniPaintSwatchUOWMapper : IMapper<App.DAL.DTO.MiniPaintSwatch, App
             Notes = entity.Notes,
             MiniatureCollectionId = entity.MiniatureCollectionId,
             MiniatureCollection = null,
-            //MiniatureCollection = entity.MiniatureCollection != null ? _miniatureCollectionUOWMapper.Map(entity.MiniatureCollection) : null,
             PersonPaintsId = entity.PersonPaintsId,
             PersonPaints = null,
-            //PersonPaints = entity.PersonPaints != null ? _personPaintsUOWMapper.Map(entity.PersonPaints) : null,    
         };
         return res;
     }
@@ -34,10 +32,8 @@ public class MiniPaintSwatchUOWMapper : IMapper<App.DAL.DTO.MiniPaintSwatch, App
             Notes = entity.Notes,
             MiniatureCollectionId = entity.MiniatureCollectionId,
             MiniatureCollection = null,
-            //MiniatureCollection = entity.MiniatureCollection != null ? _miniatureCollectionUOWMapper.Map(entity.MiniatureCollection) : null,
             PersonPaintsId = entity.PersonPaintsId,
             PersonPaints = null,
-            //PersonPaints = entity.PersonPaints != null ? _personPaintsUOWMapper.Map(entity.PersonPaints) : null,       
         };
         return res;
     }

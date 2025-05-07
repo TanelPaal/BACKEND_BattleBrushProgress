@@ -15,18 +15,8 @@ public class MiniatureBLLMapper : IMapper<App.BLL.DTO.Miniature, App.DAL.DTO.Min
             MiniName = entity.MiniName,
             MiniDesc = entity.MiniDesc,
             MiniFactionId = entity.MiniFactionId,
-            // TODO: Figure out how to map or skip
-            MiniFaction = null,
-            //MiniFaction = entity.MiniFaction != null ? _miniFactionBLLMapper.Map(entity.MiniFaction) : null,
             MiniPropertiesId = entity.MiniPropertiesId,
-            // TODO: Figure out how to map or skip
-            MiniProperties = null,
-            //MiniProperties = entity.MiniProperties != null ? _miniPropertiesBLLMapper.Map(entity.MiniProperties) : null,
-            MiniManufacturerId = entity.MiniManufacturerId,                
-            // TODO: Figure out how to map or skip
-            MiniManufacturer = null,           
-            //MiniManufacturer = entity.MiniManufacturer != null ? _miniManufacturerBLLMapper.Map(entity.MiniManufacturer) : null,
-            // MiniatureCollections = null // Optionally map if needed
+            MiniManufacturerId = entity.MiniManufacturerId,
         };
         return res;
     }
@@ -40,18 +30,28 @@ public class MiniatureBLLMapper : IMapper<App.BLL.DTO.Miniature, App.DAL.DTO.Min
             MiniName = entity.MiniName,
             MiniDesc = entity.MiniDesc,
             MiniFactionId = entity.MiniFactionId,
-            // TODO: Figure out how to map or skip
-            MiniFaction = null,
-            //MiniFaction = entity.MiniFaction != null ? _miniFactionBLLMapper.Map(entity.MiniFaction) : null,
+            MiniFaction = entity.MiniFaction == null ? null : new App.BLL.DTO.MiniFaction()
+            {
+                Id = entity.MiniFaction!.Id,
+                FactionName = entity.MiniFaction.FactionName,
+                FactionDesc = entity.MiniFaction.FactionDesc,
+            },
             MiniPropertiesId = entity.MiniPropertiesId,
-            // TODO: Figure out how to map or skip
-            MiniProperties = null,
-            //MiniProperties = entity.MiniProperties != null ? _miniPropertiesBLLMapper.Map(entity.MiniProperties) : null,
+            MiniProperties = entity.MiniProperties == null ? null : new App.BLL.DTO.MiniProperties()
+            {
+                Id = entity.MiniProperties!.Id,
+                PropertyName = entity.MiniProperties.PropertyName,
+                PropertyDesc = entity.MiniProperties.PropertyDesc,
+            },
             MiniManufacturerId = entity.MiniManufacturerId,                
-            // TODO: Figure out how to map or skip
-            MiniManufacturer = null,           
-            //MiniManufacturer = entity.MiniManufacturer != null ? _miniManufacturerBLLMapper.Map(entity.MiniManufacturer) : null,
-            // MiniatureCollections = null // Optionally map if needed
+            MiniManufacturer = entity.MiniManufacturer == null ? null : new App.BLL.DTO.MiniManufacturer()
+            {
+                Id = entity.MiniManufacturer!.Id,
+                ManufacturerName = entity.MiniManufacturer.ManufacturerName,
+                HeadquartersLocation = entity.MiniManufacturer.HeadquartersLocation,
+                ContactEmail = entity.MiniManufacturer.ContactEmail,
+                ContactPhone = entity.MiniManufacturer.ContactPhone,
+            },           
         };
         return res;
     }

@@ -17,15 +17,8 @@ public class MiniatureCollectionBLLMapper : IMapper<App.BLL.DTO.MiniatureCollect
             AcquisitionDate = entity.AcquisitionDate,
             CompletionDate = entity.CompletionDate,
             MiniatureId = entity.MiniatureId,
-            Miniature = null,
-            //Miniature = entity.Miniature != null ? _miniatureBLLMapper.Map(entity.Miniature) : null,
             MiniStateId = entity.MiniStateId,
-            MiniState = null,
-            //MiniState = entity.MiniState != null ? _miniStateBLLMapper.Map(entity.MiniState) : null,
             PersonId = entity.PersonId,
-            Person = null,
-            //Person = entity.Person != null ? _personBLLMapper.Map(entity.Person) : null,
-            // MiniPaintSwatches = null // Optionally map if needed
         };
         return res;
     }
@@ -41,15 +34,28 @@ public class MiniatureCollectionBLLMapper : IMapper<App.BLL.DTO.MiniatureCollect
             AcquisitionDate = entity.AcquisitionDate,
             CompletionDate = entity.CompletionDate,
             MiniatureId = entity.MiniatureId,
-            Miniature = null,
-            //Miniature = entity.Miniature != null ? _miniatureBLLMapper.Map(entity.Miniature) : null,
+            Miniature = entity.Miniature == null ? null : new App.BLL.DTO.Miniature()
+            {
+                Id = entity.Miniature!.Id,
+                MiniName = entity.Miniature.MiniName,
+                MiniDesc = entity.Miniature.MiniDesc,
+                MiniFactionId = entity.Miniature.MiniFactionId,
+                MiniPropertiesId = entity.Miniature.MiniPropertiesId,
+                MiniManufacturerId = entity.Miniature.MiniManufacturerId,
+            },
             MiniStateId = entity.MiniStateId,
-            MiniState = null,
-            //MiniState = entity.MiniState != null ? _miniStateBLLMapper.Map(entity.MiniState) : null,
+            MiniState = entity.MiniState == null ? null : new App.BLL.DTO.MiniState()
+            {
+                Id = entity.MiniState!.Id,
+                StateName = entity.MiniState.StateName,
+                StateDesc = entity.MiniState.StateDesc,
+            },
             PersonId = entity.PersonId,
-            Person = null,
-            //Person = entity.Person != null ? _personBLLMapper.Map(entity.Person) : null,
-            // MiniPaintSwatches = null // Optionally map if needed
+            Person = entity.Person == null ? null : new App.BLL.DTO.Person()
+            {
+                Id = entity.Person!.Id,
+                PersonName = entity.Person.PersonName,
+            },
         };
         return res;
     }

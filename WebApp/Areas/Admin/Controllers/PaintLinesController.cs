@@ -25,7 +25,8 @@ namespace WebApp.Areas_Admin_Controllers
         // GET: PaintLines
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.PaintLines.Include(p => p.Brand);
+            var appDbContext = _context.PaintLines
+                .Include(p => p.Brand);
             return View(await appDbContext.ToListAsync());
         }
 

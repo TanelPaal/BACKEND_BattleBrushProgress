@@ -25,7 +25,10 @@ namespace WebApp.Areas_Admin_Controllers
         // GET: PersonPaintsz
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.PersonPaints.Include(p => p.Paint).Include(p => p.Person).Include(p => p.User);
+            var appDbContext = _context.PersonPaints
+                .Include(p => p.Paint)
+                .Include(p => p.Person)
+                .Include(p => p.User);
             return View(await appDbContext.ToListAsync());
         }
 

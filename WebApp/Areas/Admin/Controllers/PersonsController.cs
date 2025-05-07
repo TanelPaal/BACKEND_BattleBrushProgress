@@ -25,7 +25,8 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/Persons
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Persons.Include(p => p.User);
+            var appDbContext = _context.Persons
+                .Include(p => p.User);
             return View(await appDbContext.ToListAsync());
         }
 

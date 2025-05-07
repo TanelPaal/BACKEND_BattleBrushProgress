@@ -25,7 +25,10 @@ namespace WebApp.Areas_Admin_Controllers
         // GET: MiniPaintSwatchs
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.MiniPaintSwatches.Include(m => m.MiniatureCollection).Include(m => m.PersonPaints).Include(m => m.User);
+            var appDbContext = _context.MiniPaintSwatches
+                .Include(m => m.MiniatureCollection)
+                .Include(m => m.PersonPaints)
+                .Include(m => m.User);
             return View(await appDbContext.ToListAsync());
         }
 

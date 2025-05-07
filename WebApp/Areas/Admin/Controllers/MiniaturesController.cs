@@ -25,7 +25,10 @@ namespace WebApp.Areas_Admin_Controllers
         // GET: Miniatures
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Miniatures.Include(m => m.MiniFaction).Include(m => m.MiniManufacturer).Include(m => m.MiniProperties);
+            var appDbContext = _context.Miniatures
+                .Include(m => m.MiniFaction)
+                .Include(m => m.MiniManufacturer)
+                .Include(m => m.MiniProperties);
             return View(await appDbContext.ToListAsync());
         }
 

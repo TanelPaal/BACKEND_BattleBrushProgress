@@ -25,7 +25,11 @@ namespace WebApp.Areas_Admin_Controllers
         // GET: MiniatureCollections
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.MiniatureCollections.Include(m => m.Miniature).Include(m => m.MiniState).Include(m => m.Person).Include(m => m.User);
+            var appDbContext = _context.MiniatureCollections
+                .Include(m => m.Miniature)
+                .Include(m => m.MiniState)
+                .Include(m => m.Person)
+                .Include(m => m.User);
             return View(await appDbContext.ToListAsync());
         }
 

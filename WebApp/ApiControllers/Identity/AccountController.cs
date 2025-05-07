@@ -191,33 +191,26 @@ public class AccountController : ControllerBase
         if (result.Succeeded)
         {
             _logger.LogInformation("User {Email} created a new account with password", appUser.Email);
+            
+            await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.GivenName, appUser.FirstName));
+            await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.Surname, appUser.LastName));
 
-            var user = await _userManager.FindByEmailAsync(appUser.Email);
-            if (user != null)
+            var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
+            
+            var jwt = IdentityExtensions.GenerateJwt(
+                claimsPrincipal.Claims,
+                _configuration.GetValue<string>(SettingsJWTKey)!,
+                _configuration.GetValue<string>(SettingsJWTIssuer)!,
+                _configuration.GetValue<string>(SettingsJWTAudience)!,
+                GetExpirationDateTime(jwtExpiresInSeconds, SettingsJWTExpiresInSeconds)
+            );
+            _logger.LogInformation("WebApi login. User {User}", registerModel.Email);
+            return Ok(new JWTResponse()
             {
-                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.GivenName, user.FirstName));
-                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Surname, user.LastName));
-
-                var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
-                var jwt = IdentityExtensions.GenerateJwt(
-                    claimsPrincipal.Claims,
-                    _configuration.GetValue<string>(SettingsJWTKey)!,
-                    _configuration.GetValue<string>(SettingsJWTIssuer)!,
-                    _configuration.GetValue<string>(SettingsJWTAudience)!,
-                    GetExpirationDateTime(jwtExpiresInSeconds, SettingsJWTExpiresInSeconds)
-                );
-                _logger.LogInformation("WebApi login. User {User}", registerModel.Email);
-                return Ok(new JWTResponse()
-                {
-                    JWT = jwt,
-                    RefreshToken = refreshToken.RefreshToken,
-                });
-            }
-            else
-            {
-                _logger.LogInformation("User {Email} not found after creation", appUser.Email);
-                return BadRequest(new Message("User not found after creation!"));
-            }
+                JWT = jwt,
+                RefreshToken = refreshToken.RefreshToken,
+            });
+            
         }
 
         var errors = result.Errors.Select(error => error.Description).ToList();

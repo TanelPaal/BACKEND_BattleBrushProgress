@@ -1,0 +1,65 @@
+﻿@model App.Domain.Miniature
+
+@{
+    ViewData["Title"] = "Edit Miniature";
+}
+
+<h1>Edit Miniature</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            
+            <div class="form-group mb-3">
+                <label asp-for="MiniName" class="control-label"></label>
+                <input asp-for="MiniName" class="form-control" />
+                <span asp-validation-for="MiniName" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="MiniDesc" class="control-label"></label>
+                <textarea asp-for="MiniDesc" class="form-control"></textarea>
+                <span asp-validation-for="MiniDesc" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="MiniFactionId" class="control-label">Faction</label>
+                <select asp-for="MiniFactionId" class="form-select" asp-items="ViewBag.MiniFactionId">
+                    <option value="">-- Select Faction --</option>
+                </select>
+                <span asp-validation-for="MiniFactionId" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="MiniPropertiesId" class="control-label">Properties</label>
+                <select asp-for="MiniPropertiesId" class="form-select" asp-items="ViewBag.MiniPropertiesId">
+                    <option value="">-- Select Properties --</option>
+                </select>
+                <span asp-validation-for="MiniPropertiesId" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="MiniManufacturerId" class="control-label">Manufacturer</label>
+                <select asp-for="MiniManufacturerId" class="form-select" asp-items="ViewBag.MiniManufacturerId">
+                    <option value="">-- Select Manufacturer --</option>
+                </select>
+                <span asp-validation-for="MiniManufacturerId" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group mt-4">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@{
+    Layout = "_Layout";
+}

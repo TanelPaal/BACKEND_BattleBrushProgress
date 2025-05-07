@@ -104,3 +104,4 @@ dotnet aspnet-codegenerator controller -name PersonPaintsController  -m  App.Dom
 
 ~~~
 
+

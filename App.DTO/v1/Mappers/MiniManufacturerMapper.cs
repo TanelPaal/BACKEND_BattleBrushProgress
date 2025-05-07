@@ -38,6 +38,9 @@ public class MiniManufacturerMapper : IMapper<App.DTO.v1.MiniManufacturer, App.B
         {
             Id = Guid.NewGuid(),
             ManufacturerName = entity.ManufacturerName,
+            HeadquartersLocation = entity.HeadquartersLocation,
+            ContactEmail = entity.ContactEmail,
+            ContactPhone = entity.ContactPhone,
         };
         return res;
     }

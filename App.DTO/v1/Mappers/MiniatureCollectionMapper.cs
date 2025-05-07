@@ -43,7 +43,12 @@ public class MiniatureCollectionMapper : IMapper<App.DTO.v1.MiniatureCollection,
         var res = new BLL.DTO.MiniatureCollection()
         {
             Id = Guid.NewGuid(),
-            CollectionName = entity.CollectionName
+            CollectionName = entity.CollectionName,
+            AcquisitionDate = entity.AcquisitionDate,
+            CompletionDate = entity.CompletionDate,
+            MiniatureId = entity.MiniatureId,
+            MiniStateId = entity.MiniStateId,
+            PersonId = entity.PersonId,
         };
         return res;
     }

@@ -2,109 +2,106 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
-    [ApiVersion( "1.0" )]
+    [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PaintLineController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ILogger<PaintTypeController> _logger;
+        private readonly IAppBLL _bll;
+        
+        private readonly App.DTO.v1.Mappers.PaintLineMapper _mapper =
+            new App.DTO.v1.Mappers.PaintLineMapper();
 
-        public PaintLineController(AppDbContext context)
+        public PaintLineController(IAppBLL bll, ILogger<PaintTypeController> logger)
         {
-            _context = context;
+            _bll = bll;
+            _logger = logger;
         }
 
-        // GET: api/PaintLine
+        /// <summary>
+        ///  Get all PaintLines
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PaintLine>>> GetPaintLines()
+        [Produces( "application/json" )]
+        [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.PaintLine> ), 200 )]
+        [ProducesResponseType( 404 )]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.PaintLine>>> GetPaintLines()
         {
-            return await _context.PaintLines.ToListAsync();
+            var data = await _bll.PaintLineService.AllAsync();
+            return data.Select(x => _mapper.Map(x)!).ToList();
         }
 
         // GET: api/PaintLine/5
+        [Produces("application/json")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<PaintLine>> GetPaintLine(Guid id)
+        public async Task<ActionResult<App.DTO.v1.PaintLine>> GetPaintLine(Guid id)
         {
-            var paintLine = await _context.PaintLines.FindAsync(id);
+            var paintLine = await _bll.PaintLineService.FindAsync(id);
 
             if (paintLine == null)
             {
                 return NotFound();
             }
 
-            return paintLine;
+            return _mapper.Map(paintLine)!;
         }
 
         // PUT: api/PaintLine/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPaintLine(Guid id, PaintLine paintLine)
+        public async Task<IActionResult> PutPaintLine(Guid id, App.DTO.v1.PaintLine paintLine)
         {
             if (id != paintLine.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(paintLine).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PaintLineExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _bll.PaintLineService.UpdateAsync(_mapper.Map(paintLine)!);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
         // POST: api/PaintLine
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPost]
-        public async Task<ActionResult<PaintLine>> PostPaintLine(PaintLine paintLine)
+        public async Task<ActionResult<App.DTO.v1.PaintLine>> PostPaintLine(App.DTO.v1.PaintLine paintLine)
         {
-            _context.PaintLines.Add(paintLine);
-            await _context.SaveChangesAsync();
+            var data = _mapper.Map(paintLine)!;
+            _bll.PaintLineService.Add(data);
+            await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetPaintLine", new { id = paintLine.Id }, paintLine);
+            return CreatedAtAction("GetPaintLine", new { id = data.Id }, paintLine);
         }
 
         // DELETE: api/PaintLine/5
+        [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePaintLine(Guid id)
         {
-            var paintLine = await _context.PaintLines.FindAsync(id);
-            if (paintLine == null)
-            {
-                return NotFound();
-            }
-
-            _context.PaintLines.Remove(paintLine);
-            await _context.SaveChangesAsync();
+            await _bll.PaintLineService.RemoveAsync(id);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool PaintLineExists(Guid id)
-        {
-            return _context.PaintLines.Any(e => e.Id == id);
         }
     }
 }

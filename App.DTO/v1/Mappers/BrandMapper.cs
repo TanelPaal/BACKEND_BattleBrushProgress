@@ -38,6 +38,9 @@ public class BrandMapper : IMapper<App.DTO.v1.Brand, App.BLL.DTO.Brand>
         {
             Id = Guid.NewGuid(),
             BrandName = entity.BrandName,
+            HeadquartersLocation = entity.HeadquartersLocation,
+            ContactEmail = entity.ContactEmail,
+            ContactPhone = entity.ContactPhone,
         };
         return res;
     }

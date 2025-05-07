@@ -38,6 +38,9 @@ public class PersonPaintsMapper : IMapper<App.DTO.v1.PersonPaints, App.BLL.DTO.P
         {
             Id = Guid.NewGuid(),
             Quantity = entity.Quantity,
+            AcquisitionDate = entity.AcquisitionDate,
+            PersonId = entity.PersonId,
+            PaintId = entity.PaintId,
         };
         return res;
     }

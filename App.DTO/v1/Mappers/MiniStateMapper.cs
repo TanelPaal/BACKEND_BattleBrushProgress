@@ -34,6 +34,7 @@ public class MiniStateMapper : IMapper<App.DTO.v1.MiniState, App.BLL.DTO.MiniSta
         {
             Id = Guid.NewGuid(),
             StateName = entity.StateName,
+            StateDesc = entity.StateDesc,
         };
         return res;
     }

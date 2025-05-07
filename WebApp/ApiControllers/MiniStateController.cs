@@ -2,109 +2,106 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
-    [ApiVersion( "1.0" )]
+    [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MiniStateController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ILogger<PaintTypeController> _logger;
+        private readonly IAppBLL _bll;
+        
+        private readonly App.DTO.v1.Mappers.MiniStateMapper _mapper =
+            new App.DTO.v1.Mappers.MiniStateMapper();
 
-        public MiniStateController(AppDbContext context)
+        public MiniStateController(IAppBLL bll, ILogger<PaintTypeController> logger)
         {
-            _context = context;
+            _bll = bll;
+            _logger = logger;
         }
 
-        // GET: api/MiniState
+        /// <summary>
+        ///  Get all MiniStates
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MiniState>>> GetMiniStates()
+        [Produces( "application/json" )]
+        [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.MiniState> ), 200 )]
+        [ProducesResponseType( 404 )]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.MiniState>>> GetMiniStates()
         {
-            return await _context.MiniStates.ToListAsync();
+            var data = await _bll.MiniStateService.AllAsync();
+            return data.Select(x => _mapper.Map(x)!).ToList();
         }
 
         // GET: api/MiniState/5
+        [Produces("application/json")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<MiniState>> GetMiniState(Guid id)
+        public async Task<ActionResult<App.DTO.v1.MiniState>> GetMiniState(Guid id)
         {
-            var miniState = await _context.MiniStates.FindAsync(id);
+            var miniState = await _bll.MiniStateService.FindAsync(id);
 
             if (miniState == null)
             {
                 return NotFound();
             }
 
-            return miniState;
+            return _mapper.Map(miniState)!;
         }
 
         // PUT: api/MiniState/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMiniState(Guid id, MiniState miniState)
+        public async Task<IActionResult> PutMiniState(Guid id, App.DTO.v1.MiniState miniState)
         {
             if (id != miniState.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(miniState).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MiniStateExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _bll.MiniStateService.UpdateAsync(_mapper.Map(miniState)!);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
         // POST: api/MiniState
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPost]
-        public async Task<ActionResult<MiniState>> PostMiniState(MiniState miniState)
+        public async Task<ActionResult<App.DTO.v1.MiniState>> PostMiniState(App.DTO.v1.MiniState miniState)
         {
-            _context.MiniStates.Add(miniState);
-            await _context.SaveChangesAsync();
+            var data = _mapper.Map(miniState)!;
+            _bll.MiniStateService.Add(data);
+            await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetMiniState", new { id = miniState.Id }, miniState);
+            return CreatedAtAction("GetMiniState", new { id = data.Id }, miniState);
         }
 
         // DELETE: api/MiniState/5
+        [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMiniState(Guid id)
         {
-            var miniState = await _context.MiniStates.FindAsync(id);
-            if (miniState == null)
-            {
-                return NotFound();
-            }
-
-            _context.MiniStates.Remove(miniState);
-            await _context.SaveChangesAsync();
+            await _bll.PaintTypeService.RemoveAsync(id);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool MiniStateExists(Guid id)
-        {
-            return _context.MiniStates.Any(e => e.Id == id);
         }
     }
 }

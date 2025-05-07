@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,35 +21,44 @@ namespace WebApp.ApiControllers
     public class PaintTypeController : ControllerBase
     {
         private readonly ILogger<PaintTypeController> _logger;
-        private readonly AppDbContext _context;
+        private readonly IAppBLL _bll;
+        
+        private readonly App.DTO.v1.Mappers.PaintTypeMapper _mapper =
+            new App.DTO.v1.Mappers.PaintTypeMapper();
 
-        public PaintTypeController(AppDbContext context, ILogger<PaintTypeController> logger)
+        public PaintTypeController(IAppBLL bll, ILogger<PaintTypeController> logger)
         {
-            _context = context;
+            _bll = bll;
             _logger = logger;
         }
-
-        // GET: api/PaintType
-        [Produces("application/json")]
+        
+        /// <summary>
+        ///  Get all PaintTypes
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PaintType>>> GetPaintTypes()
+        [Produces( "application/json" )]
+        [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.PaintType> ), 200 )]
+        [ProducesResponseType( 404 )]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.PaintType>>> GetPaintTypes()
         {
-            return await _context.PaintTypes.ToListAsync();
+            var data = await _bll.PaintTypeService.AllAsync();
+            return data.Select(x => _mapper.Map(x)!).ToList();
         }
 
         // GET: api/PaintType/5
         [Produces("application/json")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<PaintType>> GetPaintType(Guid id)
+        public async Task<ActionResult<App.DTO.v1.PaintType>> GetPaintType(Guid id)
         {
-            var paintType = await _context.PaintTypes.FindAsync(id);
+            var paintType = await _bll.PaintTypeService.FindAsync(id);
 
             if (paintType == null)
             {
                 return NotFound();
             }
 
-            return paintType;
+            return _mapper.Map(paintType)!;
         }
 
         // PUT: api/PaintType/5
@@ -56,30 +66,15 @@ namespace WebApp.ApiControllers
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPaintType(Guid id, PaintType paintType)
+        public async Task<IActionResult> PutPaintType(Guid id, App.DTO.v1.PaintType paintType)
         {
             if (id != paintType.Id)
             {
                 return BadRequest();
             }
-
-            _context.Entry(paintType).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PaintTypeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            
+            await _bll.PaintTypeService.UpdateAsync(_mapper.Map(paintType)!);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
@@ -89,12 +84,13 @@ namespace WebApp.ApiControllers
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPost]
-        public async Task<ActionResult<PaintType>> PostPaintType(PaintType paintType)
+        public async Task<ActionResult<App.DTO.v1.PaintType>> PostPaintType(App.DTO.v1.PaintType paintType)
         {
-            _context.PaintTypes.Add(paintType);
-            await _context.SaveChangesAsync();
+            var data = _mapper.Map(paintType)!;
+            _bll.PaintTypeService.Add(data);
+            await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetPaintType", new { id = paintType.Id }, paintType);
+            return CreatedAtAction("GetPaintType", new { id = data.Id }, paintType);
         }
 
         // DELETE: api/PaintType/5
@@ -102,21 +98,10 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePaintType(Guid id)
         {
-            var paintType = await _context.PaintTypes.FindAsync(id);
-            if (paintType == null)
-            {
-                return NotFound();
-            }
-
-            _context.PaintTypes.Remove(paintType);
-            await _context.SaveChangesAsync();
+            await _bll.PaintTypeService.RemoveAsync(id);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool PaintTypeExists(Guid id)
-        {
-            return _context.PaintTypes.Any(e => e.Id == id);
         }
     }
 }

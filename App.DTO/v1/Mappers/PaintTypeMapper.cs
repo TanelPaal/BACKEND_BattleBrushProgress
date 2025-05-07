@@ -33,7 +33,8 @@ public class PaintTypeMapper : IMapper<App.DTO.v1.PaintType, App.BLL.DTO.PaintTy
         var res = new BLL.DTO.PaintType()
         {
             Id = Guid.NewGuid(),
-            Name = entity.Name
+            Name = entity.Name,
+            Description = entity.Description,
         };
         return res;
     }

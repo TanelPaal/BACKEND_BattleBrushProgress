@@ -34,6 +34,7 @@ public class MiniFactionMapper : IMapper<App.DTO.v1.MiniFaction, App.BLL.DTO.Min
         {
             Id = Guid.NewGuid(),
             FactionName = entity.FactionName,
+            FactionDesc = entity.FactionDesc,
         };
         return res;
     }

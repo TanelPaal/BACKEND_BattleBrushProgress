@@ -25,13 +25,15 @@ namespace WebApp.ApiControllers
         private readonly ILogger<PersonController> _logger;
         private readonly IAppBLL _bll;
         
+        private readonly App.DTO.v1.Mappers.PersonMapper _mapper =
+            new App.DTO.v1.Mappers.PersonMapper();
+        
         public PersonController(IAppBLL bll, ILogger<PersonController> logger)
         {
             _bll = bll;
             _logger = logger;
         }
-
-        // GET: api/Person
+        
         /// <summary>
         /// Get all persons for currently logged-in user
         /// </summary>
@@ -40,45 +42,40 @@ namespace WebApp.ApiControllers
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.Person> ), 200 )]
         [ProducesResponseType( 404 )]
-        ///
         public async Task<ActionResult<IEnumerable<App.DTO.v1.Person>>> GetPersons()
         {
-            var data = (await _bll.PersonService.AllAsync(User.GetUserId())).ToList();
-            // TODO: add mapping to DTO
-            var res = data.Select(p => new App.DTO.v1.Person()
-            {
-                Id = p.Id,
-                PersonName = p.PersonName
-            }).ToList();
+            var data = await _bll.PersonService.AllAsync(User.GetUserId());
+            var res = data.Select(x => _mapper.Map(x)!).ToList();
+
             return res;
         }
 
         // GET: api/Person/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Person>> GetPerson(Guid id)
+        public async Task<ActionResult<App.DTO.v1.Person>> GetPerson(Guid id)
         {
-            var person = await _bll.PersonService.FindAsync(id);
+            var person = await _bll.PersonService.FindAsync(id, User.GetUserId());
 
             if (person == null)
             {
                 return NotFound();
             }
 
-            return person;
+            return _mapper.Map(person)!;
         }
 
         // PUT: api/Person/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPerson(Guid id, Person person)
+        public async Task<IActionResult> PutPerson(Guid id, App.DTO.v1.Person person)
         {
             if (id != person.Id)
             {
                 return BadRequest();
             }
 
-            _bll.PersonService.Update(person);
-            _bll.SaveChangesAsync();
+            await _bll.PersonService.UpdateAsync(_mapper.Map(person)!, User.GetUserId());
+            await _bll.SaveChangesAsync();
                 
             return NoContent();
         }
@@ -86,32 +83,26 @@ namespace WebApp.ApiControllers
         // POST: api/Person
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Person>> PostPerson(Person person)
+        public async Task<ActionResult<App.DTO.v1.Person>> PostPerson(App.DTO.v1.Person person)
         {
-            _bll.PersonService.Add(person, User.GetUserId());
+            var bllEntity = _mapper.Map(person);
+            _bll.PersonService.Add(bllEntity, User.GetUserId());
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetPerson", new
             {
-                // TODO: get person id
-                id = person.Id,
+                id = bllEntity.Id,
                 version = HttpContext.GetRequestedApiVersion()!.ToString()
             }, person);
         }
 
         // DELETE: api/Person/5
+        [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePerson(Guid id)
         {
-            var person = await _bll.PersonService.FindAsync(id, User.GetUserId());
-            if (person == null)
-            {
-                return NotFound();
-            }
-
-            _bll.PersonService.Remove(person);
+            await _bll.PersonService.RemoveAsync(id, User.GetUserId());
             await _bll.SaveChangesAsync();
-
             return NoContent();
         }
     }

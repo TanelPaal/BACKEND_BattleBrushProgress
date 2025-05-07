@@ -37,9 +37,10 @@ namespace WebApp.ApiControllers
         /// Get all PersonPaints for current user
         /// </summary>
         /// <returns></returns>
-        [Produces("application/json")]
-        [ProducesResponseType(typeof(IEnumerable<App.DTO.v1.PersonPaints>), StatusCodes.Status200OK)]
         [HttpGet]
+        [Produces( "application/json" )]
+        [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.PersonPaints> ), 200 )]
+        [ProducesResponseType( 404 )]
         public async Task<ActionResult<IEnumerable<App.DTO.v1.PersonPaints>>> GetPersonPaints()
         {
             var data = await _bll.PersonPaintsService.AllAsync(User.GetUserId());
@@ -80,7 +81,6 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut("{id}")]
-
         public async Task<IActionResult> PutPersonPaints(Guid id, App.DTO.v1.PersonPaints personPaints)
         {
             if (id != personPaints.Id)
@@ -94,18 +94,20 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
+        /// <summary>
+        ///  Create new PersonPaints - owned by current user
+        /// </summary>
+        /// <param name="personPaints"></param>
+        /// <returns></returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         [ProducesResponseType(typeof(App.DTO.v1.PersonPaints), StatusCodes.Status200OK)]
-        [HttpPost]
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<PersonPaints>> PostPersonPaints(App.DTO.v1.PersonPaints personPaints)
         {
             var bllPersonPaints = _mapper.Map(personPaints);
             _bll.PersonPaintsService.Add(bllPersonPaints, User.GetUserId());
             await _bll.SaveChangesAsync();
-
 
             return CreatedAtAction(nameof(GetPersonPaints), new { id = bllPersonPaints.Id }, personPaints);
         }
@@ -115,6 +117,7 @@ namespace WebApp.ApiControllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePersonPaints(Guid id)
         {

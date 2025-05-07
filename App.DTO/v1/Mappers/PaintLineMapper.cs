@@ -36,6 +36,8 @@ public class PaintLineMapper : IMapper<App.DTO.v1.PaintLine, App.BLL.DTO.PaintLi
         {
             Id = Guid.NewGuid(),
             PaintLineName = entity.PaintLineName,
+            Description = entity.Description,
+            BrandId = entity.BrandId,
         };
         return res;
     }

@@ -41,6 +41,10 @@ public class MiniatureMapper : IMapper<App.DTO.v1.Miniature, App.BLL.DTO.Miniatu
         {
             Id = Guid.NewGuid(),
             MiniName = entity.MiniName,
+            MiniDesc = entity.MiniDesc,
+            MiniFactionId = entity.MiniFactionId,
+            MiniPropertiesId = entity.MiniPropertiesId,
+            MiniManufacturerId = entity.MiniManufacturerId,
         };
         return res;
     }

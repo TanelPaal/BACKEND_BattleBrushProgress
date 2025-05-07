@@ -34,6 +34,7 @@ public class MiniPropertiesMapper : IMapper<App.DTO.v1.MiniProperties, App.BLL.D
         {
             Id = Guid.NewGuid(),
             PropertyName = entity.PropertyName,
+            PropertyDesc = entity.PropertyDesc,
         };
         return res;
     }

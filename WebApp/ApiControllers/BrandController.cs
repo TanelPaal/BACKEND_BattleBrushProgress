@@ -2,109 +2,107 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
-    [ApiVersion( "1.0" )]
+    [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BrandController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ILogger<BrandController> _logger;
+        private readonly IAppBLL _bll;
+        
+        private readonly App.DTO.v1.Mappers.BrandMapper _mapper =
+            new App.DTO.v1.Mappers.BrandMapper();
 
-        public BrandController(AppDbContext context)
+        public BrandController(IAppBLL bll, ILogger<BrandController> logger)
         {
-            _context = context;
+            _bll = bll;
+            _logger = logger;
         }
 
-        // GET: api/Brand
+        /// <summary>
+        ///  Get all Brands
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Brand>>> GetBrands()
+        [Produces( "application/json" )]
+        [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.Brand> ), 200 )]
+        [ProducesResponseType( 404 )]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.Brand>>> GetBrands()
         {
-            return await _context.Brands.ToListAsync();
+            var data = await _bll.BrandService.AllAsync();
+            return data.Select(x => _mapper.Map(x)!).ToList();
         }
 
         // GET: api/Brand/5
+        [Produces("application/json")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Brand>> GetBrand(Guid id)
+        public async Task<ActionResult<App.DTO.v1.Brand>> GetBrand(Guid id)
         {
-            var brand = await _context.Brands.FindAsync(id);
+            var brand = await _bll.BrandService.FindAsync(id);
 
             if (brand == null)
             {
                 return NotFound();
             }
 
-            return brand;
+            return _mapper.Map(brand)!;
         }
 
         // PUT: api/Brand/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBrand(Guid id, Brand brand)
+        public async Task<IActionResult> PutBrand(Guid id, App.DTO.v1.Brand brand)
         {
             if (id != brand.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(brand).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BrandExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _bll.BrandService.UpdateAsync(_mapper.Map(brand)!);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
         // POST: api/Brand
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPost]
-        public async Task<ActionResult<Brand>> PostBrand(Brand brand)
+        public async Task<ActionResult<App.DTO.v1.Brand>> PostBrand(App.DTO.v1.Brand brand)
         {
-            _context.Brands.Add(brand);
-            await _context.SaveChangesAsync();
+            var data = _mapper.Map(brand)!;
+            _bll.BrandService.Add(data);
+            await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetBrand", new { id = brand.Id }, brand);
+            return CreatedAtAction("GetBrand", new { id = data.Id }, brand);
         }
 
         // DELETE: api/Brand/5
+        [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBrand(Guid id)
         {
-            var brand = await _context.Brands.FindAsync(id);
-            if (brand == null)
-            {
-                return NotFound();
-            }
-
-            _context.Brands.Remove(brand);
-            await _context.SaveChangesAsync();
+            await _bll.BrandService.RemoveAsync(id);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
-
-        private bool BrandExists(Guid id)
-        {
-            return _context.Brands.Any(e => e.Id == id);
-        }
+        
     }
 }

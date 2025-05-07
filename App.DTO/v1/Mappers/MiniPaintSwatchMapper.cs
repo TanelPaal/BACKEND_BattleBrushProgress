@@ -38,6 +38,9 @@ public class MiniPaintSwatchMapper : IMapper<App.DTO.v1.MiniPaintSwatch, App.BLL
         {
             Id = Guid.NewGuid(),
             UsageType = entity.UsageType,
+            Notes = entity.Notes,
+            MiniatureCollectionId = entity.MiniatureCollectionId,
+            PersonPaintsId = entity.PersonPaintsId,
         };
         return res;
     }

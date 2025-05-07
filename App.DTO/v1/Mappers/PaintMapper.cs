@@ -42,6 +42,11 @@ public class PaintMapper : IMapper<App.DTO.v1.Paint, App.BLL.DTO.Paint>
         {
             Id = Guid.NewGuid(),
             Name = entity.Name,
+            HexCode = entity.HexCode,
+            UPC = entity.UPC,
+            BrandId = entity.BrandId,
+            PaintTypeId = entity.PaintTypeId,
+            PaintLineId = entity.PaintLineId,
         };
         return res;
     }

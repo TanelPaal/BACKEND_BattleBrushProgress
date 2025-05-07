@@ -2,109 +2,106 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
-    [ApiVersion( "1.0" )]
+    [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MiniatureController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ILogger<MiniatureController> _logger;
+        private readonly IAppBLL _bll;
+        
+        private readonly App.DTO.v1.Mappers.MiniatureMapper _mapper =
+            new App.DTO.v1.Mappers.MiniatureMapper();
 
-        public MiniatureController(AppDbContext context)
+        public MiniatureController(IAppBLL bll, ILogger<MiniatureController> logger)
         {
-            _context = context;
+            _bll = bll;
+            _logger = logger;
         }
 
-        // GET: api/Miniature
+        /// <summary>
+        ///  Get all Miniatures
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Miniature>>> GetMiniatures()
+        [Produces( "application/json" )]
+        [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.PaintLine> ), 200 )]
+        [ProducesResponseType( 404 )]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.Miniature>>> GetMiniatures()
         {
-            return await _context.Miniatures.ToListAsync();
+            var data = await _bll.MiniatureService.AllAsync();
+            return data.Select(x => _mapper.Map(x)!).ToList();
         }
 
         // GET: api/Miniature/5
+        [Produces("application/json")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Miniature>> GetMiniature(Guid id)
+        public async Task<ActionResult<App.DTO.v1.Miniature>> GetMiniature(Guid id)
         {
-            var miniature = await _context.Miniatures.FindAsync(id);
+            var miniature = await _bll.MiniatureService.FindAsync(id);
 
             if (miniature == null)
             {
                 return NotFound();
             }
 
-            return miniature;
+            return _mapper.Map(miniature)!;
         }
 
         // PUT: api/Miniature/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMiniature(Guid id, Miniature miniature)
+        public async Task<IActionResult> PutMiniature(Guid id, App.DTO.v1.Miniature miniature)
         {
             if (id != miniature.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(miniature).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MiniatureExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _bll.MiniatureService.UpdateAsync(_mapper.Map(miniature)!);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
         // POST: api/Miniature
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPost]
-        public async Task<ActionResult<Miniature>> PostMiniature(Miniature miniature)
+        public async Task<ActionResult<App.DTO.v1.Miniature>> PostMiniature(App.DTO.v1.Miniature miniature)
         {
-            _context.Miniatures.Add(miniature);
-            await _context.SaveChangesAsync();
+            var data = _mapper.Map(miniature)!;
+            _bll.MiniatureService.Add(data);
+            await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetMiniature", new { id = miniature.Id }, miniature);
+            return CreatedAtAction("GetMiniature", new { id = data.Id }, miniature);
         }
 
         // DELETE: api/Miniature/5
+        [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMiniature(Guid id)
         {
-            var miniature = await _context.Miniatures.FindAsync(id);
-            if (miniature == null)
-            {
-                return NotFound();
-            }
-
-            _context.Miniatures.Remove(miniature);
-            await _context.SaveChangesAsync();
+            await _bll.MiniatureService.RemoveAsync(id);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool MiniatureExists(Guid id)
-        {
-            return _context.Miniatures.Any(e => e.Id == id);
         }
     }
 }

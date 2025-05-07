@@ -2,109 +2,107 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
-    [ApiVersion( "1.0" )]
+    [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PaintController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ILogger<PaintTypeController> _logger;
+        private readonly IAppBLL _bll;
+        
+        private readonly App.DTO.v1.Mappers.PaintMapper _mapper =
+            new App.DTO.v1.Mappers.PaintMapper();
 
-        public PaintController(AppDbContext context)
+        public PaintController(IAppBLL bll, ILogger<PaintTypeController> logger)
         {
-            _context = context;
+            _bll = bll;
+            _logger = logger;
         }
-
-        // GET: api/Paint
+        
+        /// <summary>
+        ///  Get all Paints
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Paint>>> GetPaints()
+        [Produces( "application/json" )]
+        [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.Paint> ), 200 )]
+        [ProducesResponseType( 404 )]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.Paint>>> GetPaints()
         {
-            return await _context.Paints.ToListAsync();
+            var data = await _bll.PaintService.AllAsync();
+            return data.Select(x => _mapper.Map(x)!).ToList();
         }
 
         // GET: api/Paint/5
+        [Produces("application/json")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Paint>> GetPaint(Guid id)
+        public async Task<ActionResult<App.DTO.v1.Paint>> GetPaint(Guid id)
         {
-            var paint = await _context.Paints.FindAsync(id);
+            var paint = await _bll.PaintService.FindAsync(id);
 
             if (paint == null)
             {
                 return NotFound();
             }
 
-            return paint;
+            return _mapper.Map(paint)!;
         }
 
         // PUT: api/Paint/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPaint(Guid id, Paint paint)
+        public async Task<IActionResult> PutPaint(Guid id, App.DTO.v1.Paint paint)
         {
             if (id != paint.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(paint).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PaintExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _bll.PaintService.UpdateAsync(_mapper.Map(paint)!);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
         // POST: api/Paint
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPost]
-        public async Task<ActionResult<Paint>> PostPaint(Paint paint)
+        public async Task<ActionResult<App.DTO.v1.Paint>> PostPaint(App.DTO.v1.Paint paint)
         {
-            _context.Paints.Add(paint);
-            await _context.SaveChangesAsync();
+            var data = _mapper.Map(paint)!;
+            _bll.PaintService.Add(data);
+            await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetPaint", new { id = paint.Id }, paint);
+            return CreatedAtAction("GetPaint", new { id = data.Id }, paint);
         }
 
         // DELETE: api/Paint/5
+        [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePaint(Guid id)
         {
-            var paint = await _context.Paints.FindAsync(id);
-            if (paint == null)
-            {
-                return NotFound();
-            }
-
-            _context.Paints.Remove(paint);
-            await _context.SaveChangesAsync();
+            await _bll.PaintService.RemoveAsync(id);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
-
-        private bool PaintExists(Guid id)
-        {
-            return _context.Paints.Any(e => e.Id == id);
-        }
+        
     }
 }

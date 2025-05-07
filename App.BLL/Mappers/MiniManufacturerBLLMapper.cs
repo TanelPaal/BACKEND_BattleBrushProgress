@@ -16,8 +16,6 @@ public class MiniManufacturerBLLMapper : IMapper<App.BLL.DTO.MiniManufacturer, A
             HeadquartersLocation = entity.HeadquartersLocation,
             ContactEmail = entity.ContactEmail,
             ContactPhone = entity.ContactPhone,
-            // TODO: Figure out how to map or skip
-            // Miniatures = null
         };
         return res;
     }
@@ -32,8 +30,6 @@ public class MiniManufacturerBLLMapper : IMapper<App.BLL.DTO.MiniManufacturer, A
             HeadquartersLocation = entity.HeadquartersLocation,
             ContactEmail = entity.ContactEmail,
             ContactPhone = entity.ContactPhone,
-            // TODO: Figure out how to map or skip
-            // Miniatures = null
         };
         return res;
     }

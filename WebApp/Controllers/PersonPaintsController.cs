@@ -62,8 +62,6 @@ public class PersonPaintsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(PersonPaints entity)
     {
-        /*entity.UserId = User.GetUserId();*/
-        
         if (ModelState.IsValid)
         {
             _bll.PersonPaintsService.Add(entity, User.GetUserId());

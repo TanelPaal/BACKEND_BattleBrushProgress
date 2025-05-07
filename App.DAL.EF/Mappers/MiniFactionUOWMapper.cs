@@ -14,8 +14,6 @@ public class MiniFactionUOWMapper : IMapper<App.DAL.DTO.MiniFaction, App.Domain.
             Id = entity.Id,
             FactionName = entity.FactionName,
             FactionDesc = entity.FactionDesc,
-            // TODO: Figure out how to map or skip
-            // Miniatures = null
         };
         return res;
     }
@@ -28,8 +26,6 @@ public class MiniFactionUOWMapper : IMapper<App.DAL.DTO.MiniFaction, App.Domain.
             Id = entity.Id,
             FactionName = entity.FactionName,
             FactionDesc = entity.FactionDesc,
-            // TODO: Figure out how to map or skip
-            // Miniatures = null
         };
         return res;
     }

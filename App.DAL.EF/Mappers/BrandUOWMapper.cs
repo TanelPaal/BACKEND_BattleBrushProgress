@@ -16,8 +16,8 @@ public class BrandUOWMapper : IMapper<App.DAL.DTO.Brand, App.Domain.Brand>
             HeadquartersLocation = entity.HeadquartersLocation,
             ContactEmail = entity.ContactEmail,
             ContactPhone = entity.ContactPhone,
-            Paints = null, // Optionally use PaintUOWMapper for Mapping
-            PaintLines = null // Optionally use PaintLineUOWMapper for Mapping
+            Paints = null, 
+            PaintLines = null 
         };
         return res;
     }
@@ -32,8 +32,6 @@ public class BrandUOWMapper : IMapper<App.DAL.DTO.Brand, App.Domain.Brand>
             HeadquartersLocation = entity.HeadquartersLocation,
             ContactEmail = entity.ContactEmail,
             ContactPhone = entity.ContactPhone,
-            Paints = null, // Optionally use PaintUOWMapper for Mapping
-            PaintLines = null // Optionally use PaintLineUOWMapper for Mapping
         };
         return res;
     }

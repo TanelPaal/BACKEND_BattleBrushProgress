@@ -14,8 +14,6 @@ public class MiniPropertiesBLLMapper : IMapper<App.BLL.DTO.MiniProperties, App.D
             Id = entity.Id,
             PropertyName = entity.PropertyName,
             PropertyDesc = entity.PropertyDesc,
-            // TODO: Figure out how to map or skip
-            // Miniatures = null
         };
         return res;
     }
@@ -28,8 +26,6 @@ public class MiniPropertiesBLLMapper : IMapper<App.BLL.DTO.MiniProperties, App.D
             Id = entity.Id,
             PropertyName = entity.PropertyName,
             PropertyDesc = entity.PropertyDesc,
-            // TODO: Figure out how to map or skip
-            // Miniatures = null
         };
         return res;
     }

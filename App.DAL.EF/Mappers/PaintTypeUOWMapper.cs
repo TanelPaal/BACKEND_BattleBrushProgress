@@ -14,8 +14,6 @@ public class PaintTypeUOWMapper : IMapper<App.DAL.DTO.PaintType, App.Domain.Pain
             Id = entity.Id,
             Name = entity.Name,
             Description = entity.Description,
-            // TODO: Figure out how to map or skip
-            // Paints = null
         };
         return res;
     }
@@ -28,8 +26,6 @@ public class PaintTypeUOWMapper : IMapper<App.DAL.DTO.PaintType, App.Domain.Pain
             Id = entity.Id,
             Name = entity.Name,
             Description = entity.Description,
-            // TODO: Figure out how to map or skip
-            // Paints = null
         };
         return res;
     }

@@ -6,8 +6,6 @@ namespace App.DAL.EF.Mappers;
 
 public class PersonPaintsUOWMapper : IMapper<App.DAL.DTO.PersonPaints, App.Domain.PersonPaints>
 {
-    // private readonly PaintUOWMapper _paintUOWMapper = new();
-    // private readonly PersonUOWMapper _personUOWMapper = new();
     
     public App.DAL.DTO.PersonPaints? Map(App.Domain.PersonPaints? entity)
     {
@@ -18,12 +16,21 @@ public class PersonPaintsUOWMapper : IMapper<App.DAL.DTO.PersonPaints, App.Domai
             Quantity = entity.Quantity,
             AcquisitionDate = entity.AcquisitionDate,
             PersonId = entity.PersonId,
-            Person = null, 
-            //Person = entity.Person != null ? _personUOWMapper.Map(entity.Person) : null,
+            Person = entity.Paint == null 
+                ? null :
+                new Person()
+                {
+                    Id = entity.Person!.Id,
+                    PersonName = entity.Person.PersonName,
+                },
             PaintId = entity.PaintId,
-            Paint = null,
-            //Paint = entity.Paint != null ? _paintUOWMapper.Map(entity.Paint) : null,
-            // MiniPaintSwatches = null // Optionally map if needed       
+            Paint = entity.Paint == null 
+                ? null 
+                : new Paint()
+                {
+                    Id = entity.Paint.Id,
+                    Name = entity.Paint.Name
+                }
         };
         return res;
     }
@@ -37,12 +44,7 @@ public class PersonPaintsUOWMapper : IMapper<App.DAL.DTO.PersonPaints, App.Domai
             Quantity = entity.Quantity,
             AcquisitionDate = entity.AcquisitionDate,
             PersonId = entity.PersonId,
-            Person = null, 
-            //Person = entity.Person != null ? _personUOWMapper.Map(entity.Person) : null,
-            PaintId = entity.PaintId,
-            Paint = null,
-            //Paint = entity.Paint != null ? _paintUOWMapper.Map(entity.Paint) : null,
-            // MiniPaintSwatches = null // Optionally map if needed      
+            PaintId = entity.PaintId,    
         };
         return res;
     }

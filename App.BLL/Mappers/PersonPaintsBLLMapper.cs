@@ -6,9 +6,6 @@ namespace App.BLL.Mappers;
 
 public class PersonPaintsBLLMapper : IMapper<App.BLL.DTO.PersonPaints, App.DAL.DTO.PersonPaints>
 {
-    // private readonly PaintBLLMapper _paintBLLMapper = new();
-    // private readonly PersonBLLMapper _personBLLMapper = new();
-    
     public App.DAL.DTO.PersonPaints? Map(App.BLL.DTO.PersonPaints? entity)
     {
         if (entity == null) return null;
@@ -18,12 +15,7 @@ public class PersonPaintsBLLMapper : IMapper<App.BLL.DTO.PersonPaints, App.DAL.D
             Quantity = entity.Quantity,
             AcquisitionDate = entity.AcquisitionDate,
             PersonId = entity.PersonId,
-            Person = null,
-            // Person = entity.Person != null ? _personBLLMapper.Map(entity.Person) : null,
             PaintId = entity.PaintId,
-            Paint = null,
-            // Paint = entity.Paint != null ? _paintBLLMapper.Map(entity.Paint) : null,
-            // MiniPaintSwatches = null // Optionally map if needed       
         };
         return res;
     }
@@ -37,12 +29,21 @@ public class PersonPaintsBLLMapper : IMapper<App.BLL.DTO.PersonPaints, App.DAL.D
             Quantity = entity.Quantity,
             AcquisitionDate = entity.AcquisitionDate,
             PersonId = entity.PersonId,
-            Person = null,
-            // Person = entity.Person != null ? _personBLLMapper.Map(entity.Person) : null,
+            Person = entity.Paint == null 
+                ? null :
+                new App.BLL.DTO.Person()
+            {
+                Id = entity.Person!.Id,
+                PersonName = entity.Person.PersonName,
+            },
             PaintId = entity.PaintId,
-            Paint = null,
-            // Paint = entity.Paint != null ? _paintBLLMapper.Map(entity.Paint) : null,
-            // MiniPaintSwatches = null // Optionally map if needed       
+            Paint = entity.Paint == null 
+                ? null 
+                : new App.BLL.DTO.Paint()
+            {
+                Id = entity.Paint.Id,
+                Name = entity.Paint.Name
+            }
         };
         return res;
     }

@@ -14,8 +14,7 @@ public class PaintTypeBLLMapper : IMapper<App.BLL.DTO.PaintType, App.DAL.DTO.Pai
             Id = entity.Id,
             Name = entity.Name,
             Description = entity.Description,
-            // TODO: Figure out how to map or skip
-            // Paints = null
+
         };
         return res;
     }
@@ -28,8 +27,6 @@ public class PaintTypeBLLMapper : IMapper<App.BLL.DTO.PaintType, App.DAL.DTO.Pai
             Id = entity.Id,
             Name = entity.Name,
             Description = entity.Description,
-            // TODO: Figure out how to map or skip
-            // Paints = null
         };
         return res;
     }

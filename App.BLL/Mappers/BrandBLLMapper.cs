@@ -16,8 +16,6 @@ public class BrandBLLMapper : IMapper<App.BLL.DTO.Brand, App.DAL.DTO.Brand>
             HeadquartersLocation = entity.HeadquartersLocation,
             ContactEmail = entity.ContactEmail,
             ContactPhone = entity.ContactPhone,
-            Paints = null, 
-            PaintLines = null 
         };
         return res;
     }

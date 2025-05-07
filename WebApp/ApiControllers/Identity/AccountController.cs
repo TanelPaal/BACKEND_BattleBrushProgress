@@ -6,6 +6,8 @@ using App.DTO.v1;
 using App.DTO.v1.Identity;
 using Asp.Versioning;
 using Base.Helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -349,6 +351,47 @@ public class AccountController : ControllerBase
 
         return Ok(res);
     }
+    
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(Message), StatusCodes.Status404NotFound)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpPost]
+    public async Task<ActionResult> Logout([FromBody] LogoutInfo logout)
+    {
+        // delete the refresh token - so user is kicked out after jwt expiration
+        // We do not invalidate the jwt on serverside - that would require pipeline modification and checking against db on every request
+        // so client can actually continue to use the jwt until it expires (keep the jwt expiration time short ~1 min)
+
+        var appUser = await _context.Users
+            .Where(u => u.Id == User.GetUserId())
+            .SingleOrDefaultAsync();
+        if (appUser == null)
+        {
+            return NotFound(
+                new Message(UserPassProblem)
+            );
+        }
+
+        await _context.Entry(appUser)
+            .Collection(u => u.RefreshTokens!)
+            .Query()
+            .Where(x =>
+                (x.RefreshToken == logout.RefreshToken) ||
+                (x.PreviousRefreshToken == logout.RefreshToken)
+            )
+            .ToListAsync();
+
+        foreach (var appRefreshToken in appUser.RefreshTokens!)
+        {
+            _context.RefreshTokens.Remove(appRefreshToken);
+        }
+
+        var deleteCount = await _context.SaveChangesAsync();
+
+        return Ok(new { TokenDeleteCount = deleteCount });
+    }
+
 
 
     private DateTime GetExpirationDateTime(int? expiresInSeconds, string settingsKey)

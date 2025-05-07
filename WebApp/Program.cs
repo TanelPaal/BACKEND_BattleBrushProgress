@@ -10,6 +10,8 @@ using App.DAL.EF.Repositories;
 using App.Domain.Identity;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Base.Contracts;
+using Base.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -92,6 +94,9 @@ builder.Services.AddIdentity<AppUser, AppRole>(o =>
 builder.Services.AddScoped<IEmailSender, WebApp.Services.NoOpEmailSender>();
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserNameResolver, UserNameResolver>();
+
 builder.Services.AddRazorPages();
 
 // After your other service registrations

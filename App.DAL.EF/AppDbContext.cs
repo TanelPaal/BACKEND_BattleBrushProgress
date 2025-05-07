@@ -28,9 +28,12 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
     
     public DbSet<AppRefreshToken> RefreshTokens { get; set; } = default!;
     
-    public AppDbContext(DbContextOptions<AppDbContext> options)
+    private readonly IUserNameResolver _userNameResolver;
+    
+    public AppDbContext(DbContextOptions<AppDbContext> options, IUserNameResolver userNameResolver)
         : base(options)
     {
+        _userNameResolver = userNameResolver;
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -73,20 +76,22 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
             if (entry.State == EntityState.Added)
             {
                 (entry.Entity as IDomainMeta)!.CreatedAt = DateTime.UtcNow;
-                (entry.Entity as IDomainMeta)!.CreatedBy = "System";
-            } 
+                (entry.Entity as IDomainMeta)!.CreatedBy = _userNameResolver.CurrentUserName;
+            }
             else if (entry.State == EntityState.Modified)
             {
+                entry.Property("ChangedAt").IsModified = true;
+                entry.Property("ChangedBy").IsModified = true;
                 (entry.Entity as IDomainMeta)!.ChangedAt = DateTime.UtcNow;
-                (entry.Entity as IDomainMeta)!.ChangedBy = "System";
+                (entry.Entity as IDomainMeta)!.ChangedBy = _userNameResolver.CurrentUserName;
                 
                 // Prevent overwriting CreatedBy/CreatedAt/UserId on update
                 entry.Property("CreatedAt").IsModified = false;
                 entry.Property("CreatedBy").IsModified = false;
 
                 entry.Property("UserId").IsModified = false;
-
             }
+
         }
         
         return base.SaveChangesAsync(cancellationToken);

@@ -46,9 +46,11 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
         
         // We have custom UserRole - with separate PK and navigation for Role and User
         // Override default Identity EF config
-        builder.Entity<AppUserRole>().HasKey(a => a.Id);
-        
+        builder.Entity<AppUserRole>().HasKey(a => new {a.UserId, a.RoleId });
+        builder.Entity<AppUserRole>().HasAlternateKey(a => a.Id);
         builder.Entity<AppUserRole>().HasIndex(a => new { a.UserId, a.RoleId}).IsUnique();
+        
+        
 
         builder.Entity<AppUserRole>()
             .HasOne(a => a.User)

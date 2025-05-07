@@ -109,5 +109,9 @@
     <ItemGroup>
       <Folder Include="Areas\Identity\Data\" />
     </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Areas\Admin\" />
+    </ItemGroup>
+
 
 </Project>

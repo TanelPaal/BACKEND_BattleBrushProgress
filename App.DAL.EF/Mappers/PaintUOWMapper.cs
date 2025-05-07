@@ -17,12 +17,28 @@ public class PaintUOWMapper : IMapper<App.DAL.DTO.Paint, App.Domain.Paint>
             HexCode = entity.HexCode,
             UPC = entity.UPC,
             BrandId = entity.BrandId,
-            Brand = null,
+            Brand = entity.Brand == null ? null : new App.DAL.DTO.Brand()
+            {
+                Id = entity.Brand.Id,
+                BrandName = entity.Brand.BrandName,
+                HeadquartersLocation = entity.Brand.HeadquartersLocation,
+                ContactEmail = entity.Brand.ContactEmail,
+                ContactPhone = entity.Brand.ContactPhone,
+            },
             PaintTypeId = entity.PaintTypeId,
-            PaintType = null,
+            PaintType = entity.PaintType == null ? null : new App.DAL.DTO.PaintType()
+            {
+                Id = entity.PaintType.Id,
+                Name = entity.PaintType.Name,
+                Description = entity.PaintType.Description,
+            },
             PaintLineId = entity.PaintLineId,
-            PaintLine = null,
-            // PersonPaints = null // Optionally map if needed
+            PaintLine = entity.PaintLine == null ? null : new App.DAL.DTO.PaintLine()
+            {
+                Id = entity.PaintLine.Id,
+                PaintLineName = entity.PaintLine.PaintLineName,
+                Description = entity.PaintLine.Description
+            },
         };
         return res;
     }
@@ -37,12 +53,8 @@ public class PaintUOWMapper : IMapper<App.DAL.DTO.Paint, App.Domain.Paint>
             HexCode = entity.HexCode,
             UPC = entity.UPC,
             BrandId = entity.BrandId,
-            Brand = null,
             PaintTypeId = entity.PaintTypeId,
-            PaintType = null,
             PaintLineId = entity.PaintLineId,
-            PaintLine = null,
-            // PersonPaints = null // Optionally map if needed
         };
         return res;
     }

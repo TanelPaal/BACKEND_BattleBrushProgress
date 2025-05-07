@@ -7,8 +7,6 @@ namespace App.DAL.EF.Mappers;
 
 public class PaintLineUOWMapper : IMapper<App.DAL.DTO.PaintLine, App.Domain.PaintLine>
 {
-    //private readonly BrandUOWMapper _brandUOWMapper = new();
-    
     public App.DAL.DTO.PaintLine? Map(App.Domain.PaintLine? entity)
     {
         if (entity == null) return null;
@@ -18,9 +16,15 @@ public class PaintLineUOWMapper : IMapper<App.DAL.DTO.PaintLine, App.Domain.Pain
             PaintLineName = entity.PaintLineName,
             Description = entity.Description,
             BrandId = entity.BrandId,
-            // TODO: Figure out how to map or skip
-            Brand = null,
-            //Brand = entity.Brand != null ? _brandUOWMapper.Map(entity.Brand) : null,
+            Brand = entity.Brand == null 
+                ? null : new App.DAL.DTO.Brand()
+                {
+                    Id = entity.Brand.Id,
+                    BrandName = entity.Brand.BrandName,
+                    HeadquartersLocation = entity.Brand.HeadquartersLocation,
+                    ContactEmail = entity.Brand.ContactEmail,
+                    ContactPhone = entity.Brand.ContactPhone
+                }
         };
         return res;
     }
@@ -34,9 +38,7 @@ public class PaintLineUOWMapper : IMapper<App.DAL.DTO.PaintLine, App.Domain.Pain
             PaintLineName = entity.PaintLineName,
             Description = entity.Description,
             BrandId = entity.BrandId,
-            // TODO: Figure out how to map or skip
-            Brand = null,
-            //Brand = entity.Brand != null ? _brandUOWMapper.Map(entity.Brand) : null,
+
         };
         return res;
     }

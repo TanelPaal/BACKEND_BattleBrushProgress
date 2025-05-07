@@ -6,10 +6,6 @@ namespace App.BLL.Mappers;
 
 public class MiniatureBLLMapper : IMapper<App.BLL.DTO.Miniature, App.DAL.DTO.Miniature>
 {
-    // private readonly MiniFactionBLLMapper _miniFactionBLLMapper = new();
-    // private readonly MiniPropertiesBLLMapper _miniPropertiesBLLMapper = new();
-    // private readonly MiniManufacturerBLLMapper _miniManufacturerBLLMapper = new();
-    
     public App.DAL.DTO.Miniature? Map(App.BLL.DTO.Miniature? entity)
     {
         if (entity == null) return null;

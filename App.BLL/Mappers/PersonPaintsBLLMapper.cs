@@ -42,7 +42,7 @@ public class PersonPaintsBLLMapper : IMapper<App.BLL.DTO.PersonPaints, App.DAL.D
                 : new App.BLL.DTO.Paint()
             {
                 Id = entity.Paint.Id,
-                Name = entity.Paint.Name
+                Name = entity.Paint.Name,
             }
         };
         return res;

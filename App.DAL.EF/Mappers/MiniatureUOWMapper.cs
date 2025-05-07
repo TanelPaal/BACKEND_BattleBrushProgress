@@ -6,10 +6,6 @@ namespace App.DAL.EF.Mappers;
 
 public class MiniatureUOWMapper : IMapper<App.DAL.DTO.Miniature, App.Domain.Miniature>
 {
-    // private readonly MiniFactionUOWMapper _miniFactionUOWMapper = new();
-    // private readonly MiniPropertiesUOWMapper _miniPropertiesUOWMapper = new();
-    // private readonly MiniManufacturerUOWMapper _miniManufacturerUOWMapper = new();
-    
     public App.DAL.DTO.Miniature? Map(App.Domain.Miniature? entity)
     {
         if (entity == null) return null;

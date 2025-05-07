@@ -6,9 +6,6 @@ namespace App.BLL.Mappers;
 
 public class MiniPaintSwatchBLLMapper : IMapper<App.BLL.DTO.MiniPaintSwatch, App.DAL.DTO.MiniPaintSwatch>
 {
-    // private readonly MiniatureCollectionBLLMapper _miniatureCollectionBLLMapper = new();
-    // private readonly PersonPaintsBLLMapper _personPaintsBLLMapper = new();
-    
     public App.DAL.DTO.MiniPaintSwatch? Map(App.BLL.DTO.MiniPaintSwatch? entity)
     {
         if (entity == null) return null;

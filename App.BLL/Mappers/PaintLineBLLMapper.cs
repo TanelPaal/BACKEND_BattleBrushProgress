@@ -6,8 +6,6 @@ namespace App.BLL.Mappers;
 
 public class PaintLineBLLMapper : IMapper<App.BLL.DTO.PaintLine, App.DAL.DTO.PaintLine>
 {
-    // private readonly BrandBLLMapper _brandBLLMapper = new();
-    
     public App.DAL.DTO.PaintLine? Map(App.BLL.DTO.PaintLine? entity)
     {
         if (entity == null) return null;
@@ -17,9 +15,6 @@ public class PaintLineBLLMapper : IMapper<App.BLL.DTO.PaintLine, App.DAL.DTO.Pai
             PaintLineName = entity.PaintLineName,
             Description = entity.Description,
             BrandId = entity.BrandId,
-            // TODO: Figure out how to map or skip
-            Brand = null,
-            // Brand = entity.Brand != null ? _brandBLLMapper.Map(entity.Brand) : null,
         };
         return res;
     }
@@ -33,9 +28,16 @@ public class PaintLineBLLMapper : IMapper<App.BLL.DTO.PaintLine, App.DAL.DTO.Pai
             PaintLineName = entity.PaintLineName,
             Description = entity.Description,
             BrandId = entity.BrandId,
-            // TODO: Figure out how to map or skip
-            Brand = null,
-            // Brand = entity.Brand != null ? _brandBLLMapper.Map(entity.Brand) : null,
+            Brand = entity.Brand == null 
+                ? null : new App.BLL.DTO.Brand()
+                {
+                    Id = entity.Brand.Id,
+                    BrandName = entity.Brand.BrandName,
+                    HeadquartersLocation = entity.Brand.HeadquartersLocation,
+                    ContactEmail = entity.Brand.ContactEmail,
+                    ContactPhone = entity.Brand.ContactPhone
+                }
+
         };
         return res;
     }

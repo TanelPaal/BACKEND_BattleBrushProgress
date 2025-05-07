@@ -32,68 +32,62 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" href="/swagger">Api</a>
                     </li>
-                    <li class="nav-item">
-                        <span class="nav-link text-dark">|</span>
-                    </li>
                     
                     @if (User.Identity?.IsAuthenticated ?? false)
                     {
-                        <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Miniature" asp-action="Index">@Base.Resources.Common.Miniature</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="MiniFaction" asp-action="Index">@Base.Resources.Common.MiniFaction</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="MiniManufacturer" asp-action="Index">@Base.Resources.Common.MiniManufacturer</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="MiniProperties" asp-action="Index">@Base.Resources.Common.MiniProperties</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="MiniState" asp-action="Index">@Base.Resources.Common.MiniState</a>
-                    </li>
-                    <li class="nav-item">
-                        <span class="nav-link text-dark">|</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Paint" asp-action="Index">@Base.Resources.Common.Paint</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Brand" asp-action="Index">@Base.Resources.Common.Brand</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="PaintLine" asp-action="Index">@Base.Resources.Common.PaintLine</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="PaintType" asp-action="Index">@Base.Resources.Common.PaintType</a>
-                    </li>
-                    <li class="nav-item">
-                        <span class="nav-link text-dark">|</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="MiniatureCollection" asp-action="Index">@Base.Resources.Common.MiniatureCollection</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="PersonPaints" asp-action="Index">@Base.Resources.Common.UserPaints</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="MiniPaintSwatch" asp-action="Index">@Base.Resources.Common.MiniPaintSwatch</a>
-                    </li>
-                    <li class="nav-item">
-                        <span class="nav-link text-dark">|</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Person" asp-action="Index">@Base.Resources.Common.User</a>
-                    </li>
-                    <li class="nav-item">
-                        <span class="nav-link text-dark">|</span>
-                    </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="javascript:{}" id="userDropdwon"
+                               role="button" data-bs-toggle="dropdown" aria-expanded="false">User</a>
+                            <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Person"
+                                   asp-action="Index">Person</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniatureCollection"
+                                   asp-action="Index">MiniatureCollection</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="PersonPaints"
+                                   asp-action="Index">PersonPaints</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniPaintSwatch"
+                                   asp-action="Index">ContactTypes</a>
+                            </div>
+                        </li>
                     }
                     
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="javascript:{}" id="adminDropdown"
+                               role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                            <div class="dropdown-menu" aria-labelledby="adminDropdown">
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Person"
+                                   asp-action="Index">Person</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniatureCollection"
+                                   asp-action="Index">MiniatureCollection</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="PersonPaints"
+                                   asp-action="Index">PersonPaints</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniPaintSwatch"
+                                   asp-action="Index">MiniPaintSwatch</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Miniature"
+                                   asp-action="Index">Miniature</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniFaction"
+                                   asp-action="Index">MiniFaction</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniManufacturer"
+                                   asp-action="Index">MiniManufacturer</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniProperties"
+                                   asp-action="Index">MiniProperties</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniState"
+                                   asp-action="Index">MiniState</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Paint"
+                                   asp-action="Index">Paint</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="PaintLine"
+                                   asp-action="Index">PaintLine</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="PaintType"
+                                   asp-action="Index">PaintType</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Brand"
+                                   asp-action="Index">Brand</a>
+                            </div>
+                        </li>
+                    }
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">@Base.Resources.Common.Privacy</a>
-                    </li>
                     <li class="nav-item">
                         <span class="nav-link text-dark">|</span>
                     </li>
@@ -115,8 +109,8 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2025 - BattleBrushProgress - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> |
-        <a href="/swagger">Api</a> | 
+        &copy; 2025 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> |
+        <a href="/swagger">Api</a> |
         @Thread.CurrentThread.CurrentCulture.Name | @Thread.CurrentThread.CurrentUICulture.Name
     </div>
 </footer>

@@ -1,18 +1,19 @@
 ﻿using App.DAL.DTO;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class MiniatureCollectionUOWMapper : IUOWMapper<App.DAL.DTO.MiniatureCollection, App.Domain.MiniatureCollection>
+public class MiniatureCollectionUOWMapper : IMapper<App.DAL.DTO.MiniatureCollection, App.Domain.MiniatureCollection>
 {
-    private readonly MiniatureUOWMapper _miniatureUOWMapper = new();
-    private readonly MiniStateUOWMapper _miniStateUOWMapper = new();
-    private readonly PersonUOWMapper _personUOWMapper = new();
+    // private readonly MiniatureUOWMapper _miniatureUOWMapper = new();
+    // private readonly MiniStateUOWMapper _miniStateUOWMapper = new();
+    // private readonly PersonUOWMapper _personUOWMapper = new();
     
-    public MiniatureCollection? Map(Domain.MiniatureCollection? entity)
+    public App.DAL.DTO.MiniatureCollection? Map(App.Domain.MiniatureCollection? entity)
     {
         if (entity == null) return null;
-        var res = new MiniatureCollection()
+        var res = new App.DAL.DTO.MiniatureCollection()
         {
             Id = entity.Id,
             CollectionName = entity.CollectionName,
@@ -20,20 +21,23 @@ public class MiniatureCollectionUOWMapper : IUOWMapper<App.DAL.DTO.MiniatureColl
             AcquisitionDate = entity.AcquisitionDate,
             CompletionDate = entity.CompletionDate,
             MiniatureId = entity.MiniatureId,
-            Miniature = entity.Miniature != null ? _miniatureUOWMapper.Map(entity.Miniature) : null,
+            Miniature = null,
+            //Miniature = entity.Miniature != null ? _miniatureUOWMapper.Map(entity.Miniature) : null,
             MiniStateId = entity.MiniStateId,
-            MiniState = entity.MiniState != null ? _miniStateUOWMapper.Map(entity.MiniState) : null,
+            //MiniState = null,
+            //MiniState = entity.MiniState != null ? _miniStateUOWMapper.Map(entity.MiniState) : null,
             PersonId = entity.PersonId,
-            Person = entity.Person != null ? _personUOWMapper.Map(entity.Person) : null,
+            //Person = null,
+            //Person = entity.Person != null ? _personUOWMapper.Map(entity.Person) : null,
             // MiniPaintSwatches = null // Optionally map if needed
         };
         return res;
     }
 
-    public Domain.MiniatureCollection? Map(MiniatureCollection? entity)
+    public App.Domain.MiniatureCollection? Map(App.DAL.DTO.MiniatureCollection? entity)
     {
         if (entity == null) return null;
-        var res = new Domain.MiniatureCollection()
+        var res = new App.Domain.MiniatureCollection()
         {
             Id = entity.Id,
             CollectionName = entity.CollectionName,
@@ -41,11 +45,14 @@ public class MiniatureCollectionUOWMapper : IUOWMapper<App.DAL.DTO.MiniatureColl
             AcquisitionDate = entity.AcquisitionDate,
             CompletionDate = entity.CompletionDate,
             MiniatureId = entity.MiniatureId,
-            Miniature = null, // Optionally map if needed
+            Miniature = null,
+            //Miniature = entity.Miniature != null ? _miniatureUOWMapper.Map(entity.Miniature) : null,
             MiniStateId = entity.MiniStateId,
-            MiniState = null, // Optionally map if needed
+            //MiniState = null,
+            //MiniState = entity.MiniState != null ? _miniStateUOWMapper.Map(entity.MiniState) : null,
             PersonId = entity.PersonId,
-            Person = null, // Optionally map if needed
+            //Person = null,
+            //Person = entity.Person != null ? _personUOWMapper.Map(entity.Person) : null,
             // MiniPaintSwatches = null // Optionally map if needed
         };
         return res;

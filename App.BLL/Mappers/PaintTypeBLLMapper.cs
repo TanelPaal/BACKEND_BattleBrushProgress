@@ -1,14 +1,15 @@
 ﻿using App.DAL.DTO;
 using Base.BLL.Contracts;
+using Base.Contracts;
 
 namespace App.BLL.Mappers;
 
-public class PaintTypeBLLMapper : IBLLMapper<App.BLL.DTO.PaintType, App.DAL.DTO.PaintType>
+public class PaintTypeBLLMapper : IMapper<App.BLL.DTO.PaintType, App.DAL.DTO.PaintType>
 {
-    public PaintType? Map(DTO.PaintType? entity)
+    public App.DAL.DTO.PaintType? Map(App.BLL.DTO.PaintType? entity)
     {
         if (entity == null) return null;
-        var res = new PaintType()
+        var res = new App.DAL.DTO.PaintType()
         {
             Id = entity.Id,
             Name = entity.Name,
@@ -19,10 +20,10 @@ public class PaintTypeBLLMapper : IBLLMapper<App.BLL.DTO.PaintType, App.DAL.DTO.
         return res;
     }
 
-    public DTO.PaintType? Map(PaintType? entity)
+    public App.BLL.DTO.PaintType? Map(App.DAL.DTO.PaintType? entity)
     {
         if (entity == null) return null;
-        var res = new DTO.PaintType()
+        var res = new App.BLL.DTO.PaintType()
         {
             Id = entity.Id,
             Name = entity.Name,

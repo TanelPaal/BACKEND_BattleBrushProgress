@@ -16,17 +16,19 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
-    [ApiVersion( "1.0" )]
+    [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PersonController : ControllerBase
     {
+        private readonly ILogger<PersonController> _logger;
         private readonly IAppBLL _bll;
-
-        public PersonController(IAppBLL bll)
+        
+        public PersonController(IAppBLL bll, ILogger<PersonController> logger)
         {
             _bll = bll;
+            _logger = logger;
         }
 
         // GET: api/Person

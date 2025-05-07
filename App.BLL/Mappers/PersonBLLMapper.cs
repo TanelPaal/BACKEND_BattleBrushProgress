@@ -1,19 +1,20 @@
 ﻿using App.DAL.DTO;
 using Base.BLL.Contracts;
+using Base.Contracts;
 
 namespace App.BLL.Mappers;
 
-public class PersonBLLMapper : IBLLMapper<App.BLL.DTO.Person, App.DAL.DTO.Person>
+public class PersonBLLMapper : IMapper<App.BLL.DTO.Person, App.DAL.DTO.Person>
 {
-    public Person? Map(DTO.Person? entity)
+    public App.DAL.DTO.Person? Map(App.BLL.DTO.Person? entity)
     {
         if (entity == null) return null;
         
-        var res = new Person()
+        var res = new App.DAL.DTO.Person()
         {
             Id = entity.Id,
             PersonName = entity.PersonName,
-            PersonPaints = entity.PersonPaints?.Select(c => new PersonPaints()
+            PersonPaints = entity.PersonPaints?.Select(c => new App.DAL.DTO.PersonPaints()
             {
                 Id = c.Id,
                 Quantity = c.Quantity,
@@ -27,7 +28,7 @@ public class PersonBLLMapper : IBLLMapper<App.BLL.DTO.Person, App.DAL.DTO.Person
                 // TODO: Figure out how to map or skip
                 MiniPaintSwatches = null
             }).ToList(),
-            MiniatureCollections = entity.MiniatureCollections?.Select(c => new MiniatureCollection()
+            MiniatureCollections = entity.MiniatureCollections?.Select(c => new App.DAL.DTO.MiniatureCollection()
             {
                 Id = c.Id,
                 CollectionName = c.CollectionName,
@@ -50,15 +51,15 @@ public class PersonBLLMapper : IBLLMapper<App.BLL.DTO.Person, App.DAL.DTO.Person
         return res;
     }
 
-    public DTO.Person? Map(Person? entity)
+    public App.BLL.DTO.Person? Map(App.DAL.DTO.Person? entity)
     {
         if (entity == null) return null;
-
-        var res = new DTO.Person()
+        
+        var res = new App.BLL.DTO.Person()
         {
             Id = entity.Id,
             PersonName = entity.PersonName,
-            PersonPaints = entity.PersonPaints?.Select(c => new DTO.PersonPaints()
+            PersonPaints = entity.PersonPaints?.Select(c => new App.BLL.DTO.PersonPaints()
             {
                 Id = c.Id,
                 Quantity = c.Quantity,
@@ -72,7 +73,7 @@ public class PersonBLLMapper : IBLLMapper<App.BLL.DTO.Person, App.DAL.DTO.Person
                 // TODO: Figure out how to map or skip
                 MiniPaintSwatches = null
             }).ToList(),
-            MiniatureCollections = entity.MiniatureCollections?.Select(c => new DTO.MiniatureCollection()
+            MiniatureCollections = entity.MiniatureCollections?.Select(c => new App.BLL.DTO.MiniatureCollection()
             {
                 Id = c.Id,
                 CollectionName = c.CollectionName,

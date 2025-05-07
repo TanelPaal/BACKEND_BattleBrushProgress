@@ -3,6 +3,7 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
 using Base.BLL.Contracts;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.BLL.Services;
@@ -11,7 +12,7 @@ public class MiniPropertiesService : BaseService<App.BLL.DTO.MiniProperties, App
 {
     public MiniPropertiesService(
         IAppUOW serviceUOW,
-        IBLLMapper<DTO.MiniProperties, MiniProperties> bllMapper) : base(serviceUOW, serviceUOW.MiniPropertiesRepository, bllMapper)
+        IMapper<DTO.MiniProperties, MiniProperties> mapper) : base(serviceUOW, serviceUOW.MiniPropertiesRepository, mapper)
     {
     }
 }

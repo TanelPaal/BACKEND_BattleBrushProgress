@@ -1,41 +1,46 @@
 ﻿using App.DAL.DTO;
 using Base.BLL.Contracts;
+using Base.Contracts;
 
 namespace App.BLL.Mappers;
 
-public class MiniPaintSwatchBLLMapper : IBLLMapper<App.BLL.DTO.MiniPaintSwatch, App.DAL.DTO.MiniPaintSwatch>
+public class MiniPaintSwatchBLLMapper : IMapper<App.BLL.DTO.MiniPaintSwatch, App.DAL.DTO.MiniPaintSwatch>
 {
-    private readonly MiniatureCollectionBLLMapper _miniatureCollectionBLLMapper = new();
-    private readonly PersonPaintsBLLMapper _personPaintsBLLMapper = new();
+    // private readonly MiniatureCollectionBLLMapper _miniatureCollectionBLLMapper = new();
+    // private readonly PersonPaintsBLLMapper _personPaintsBLLMapper = new();
     
-    public MiniPaintSwatch? Map(DTO.MiniPaintSwatch? entity)
+    public App.DAL.DTO.MiniPaintSwatch? Map(App.BLL.DTO.MiniPaintSwatch? entity)
     {
         if (entity == null) return null;
-        var res = new MiniPaintSwatch()
+        var res = new App.DAL.DTO.MiniPaintSwatch()
         {
             Id = entity.Id,
             UsageType = entity.UsageType,
             Notes = entity.Notes,
             MiniatureCollectionId = entity.MiniatureCollectionId,
-            MiniatureCollection = entity.MiniatureCollection != null ? _miniatureCollectionBLLMapper.Map(entity.MiniatureCollection) : null,
+            MiniatureCollection = null,
+            //MiniatureCollection = entity.MiniatureCollection != null ? _miniatureCollectionBLLMapper.Map(entity.MiniatureCollection) : null,
             PersonPaintsId = entity.PersonPaintsId,
-            PersonPaints = entity.PersonPaints != null ? _personPaintsBLLMapper.Map(entity.PersonPaints) : null,    
+            PersonPaints = null,
+            //PersonPaints = entity.PersonPaints != null ? _personPaintsBLLMapper.Map(entity.PersonPaints) : null,    
         };
         return res;
     }
 
-    public DTO.MiniPaintSwatch? Map(MiniPaintSwatch? entity)
+    public App.BLL.DTO.MiniPaintSwatch? Map(App.DAL.DTO.MiniPaintSwatch? entity)
     {
         if (entity == null) return null;
-        var res = new DTO.MiniPaintSwatch()
+        var res = new App.BLL.DTO.MiniPaintSwatch()
         {
             Id = entity.Id,
             UsageType = entity.UsageType,
             Notes = entity.Notes,
             MiniatureCollectionId = entity.MiniatureCollectionId,
-            MiniatureCollection = null, // Optionally map if needed
+            MiniatureCollection = null,
+            //MiniatureCollection = entity.MiniatureCollection != null ? _miniatureCollectionBLLMapper.Map(entity.MiniatureCollection) : null,
             PersonPaintsId = entity.PersonPaintsId,
-            PersonPaints = null // Optionally map if needed       
+            PersonPaints = null,
+            //PersonPaints = entity.PersonPaints != null ? _personPaintsBLLMapper.Map(entity.PersonPaints) : null,        
         };
         return res;
     }

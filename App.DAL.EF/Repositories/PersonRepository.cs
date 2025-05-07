@@ -6,9 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class PersonRepository : BaseBaseRepository<App.DAL.DTO.Person, App.Domain.Person>, IPersonRepository
+public class PersonRepository : BaseRepository<App.DAL.DTO.Person, App.Domain.Person>, IPersonRepository
 {
     public PersonRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new PersonUOWMapper())
     {
     }
+
 }

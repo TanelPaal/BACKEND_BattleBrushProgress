@@ -5,7 +5,7 @@ using Base.DAL.EF;
 
 namespace App.DAL.EF.Repositories;
 
-public class MiniFactionRepository : BaseBaseRepository<App.DAL.DTO.MiniFaction, App.Domain.MiniFaction>, IMiniFactionRepository
+public class MiniFactionRepository : BaseRepository<App.DAL.DTO.MiniFaction, App.Domain.MiniFaction>, IMiniFactionRepository
 {
     public MiniFactionRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new MiniFactionUOWMapper())
     {

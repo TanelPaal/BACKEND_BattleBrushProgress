@@ -1,14 +1,15 @@
 ﻿using App.DAL.DTO;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class MiniFactionUOWMapper : IUOWMapper<App.DAL.DTO.MiniFaction, App.Domain.MiniFaction>
+public class MiniFactionUOWMapper : IMapper<App.DAL.DTO.MiniFaction, App.Domain.MiniFaction>
 {
-    public MiniFaction? Map(Domain.MiniFaction? entity)
+    public App.DAL.DTO.MiniFaction? Map(App.Domain.MiniFaction? entity)
     {
         if (entity == null) return null;
-        var res = new MiniFaction()
+        var res = new App.DAL.DTO.MiniFaction()
         {
             Id = entity.Id,
             FactionName = entity.FactionName,
@@ -19,10 +20,10 @@ public class MiniFactionUOWMapper : IUOWMapper<App.DAL.DTO.MiniFaction, App.Doma
         return res;
     }
 
-    public Domain.MiniFaction? Map(MiniFaction? entity)
+    public App.Domain.MiniFaction? Map(App.DAL.DTO.MiniFaction? entity)
     {
         if (entity == null) return null;
-        var res = new Domain.MiniFaction()
+        var res = new App.Domain.MiniFaction()
         {
             Id = entity.Id,
             FactionName = entity.FactionName,

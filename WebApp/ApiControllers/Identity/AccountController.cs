@@ -15,15 +15,15 @@ namespace WebApp.ApiControllers.Identity;
 /// <summary>
 /// User account controller - login, register, etc.
 /// </summary>
-[ApiVersion( "1.0" )]
+[ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]/[action]")]
 [ApiController]
 public class AccountController : ControllerBase
 {
+    private readonly IConfiguration _configuration;
     private readonly UserManager<AppUser> _userManager;
     private readonly ILogger<AccountController> _logger;
     private readonly SignInManager<AppUser> _signInManager;
-    private readonly IConfiguration _configuration;
     private readonly Random _random = new Random();
     private readonly AppDbContext _context;
     
@@ -31,12 +31,19 @@ public class AccountController : ControllerBase
     private const int RandomDelayMin = 500;
     private const int RandomDelayMax = 5000;
     
+    private const string SettingsJWTPrefix = "JWTSecurity";
+    private const string SettingsJWTKey = SettingsJWTPrefix + ":Key";
+    private const string SettingsJWTIssuer = SettingsJWTPrefix + ":Issuer";
+    private const string SettingsJWTAudience = SettingsJWTPrefix + ":Audience";
+    private const string SettingsJWTExpiresInSeconds = SettingsJWTPrefix + ":ExpiresInSeconds";
+    private const string SettingsJWTRefreshTokenExpiresInSeconds = SettingsJWTPrefix + ":RefreshTokenExpiresInSeconds";
+
+    
     /// <summary>
     /// Constructor
     /// </summary>
     public AccountController(IConfiguration configuration, UserManager<AppUser> userManager,
-        SignInManager<AppUser> signInManager, ILogger<AccountController> logger, AppDbContext context
-    )
+        SignInManager<AppUser> signInManager, ILogger<AccountController> logger, AppDbContext context)
     {
         _configuration = configuration;
         _userManager = userManager;
@@ -46,12 +53,12 @@ public class AccountController : ControllerBase
     }
 
     /// <summary>
-    /// Login endpoint for rest API
+    /// User authentication, returns JWT and refresh token
     /// </summary>
     /// <param name="loginInfo">Login model</param>
-    /// <param name="jwtExpiresInSeconds">Use custom jwt expiration</param>
-    /// <param name="refreshTokenExpiresInSeconds">Use custom refresh token expiration</param>
-    /// <returns></returns>
+    /// <param name="jwtExpiresInSeconds">Optional, use custom jwt expiration</param>
+    /// <param name="refreshTokenExpiresInSeconds">Optional, use custom refresh token expiration</param>
+    /// <returns>JWT and refresh token</returns>
     [Produces("application/json")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(JWTResponse), StatusCodes.Status200OK)]
@@ -108,7 +115,7 @@ public class AccountController : ControllerBase
         var refreshToken = new AppRefreshToken()
         {
             UserId = appUser.Id,
-            Expiration = GetExpirationDateTime(refreshTokenExpiresInSeconds, "JWTSecurity:RefreshTokenExpiresInSeconds")
+            Expiration = GetExpirationDateTime(refreshTokenExpiresInSeconds, SettingsJWTRefreshTokenExpiresInSeconds)
 
         };
         _context.RefreshTokens.Add(refreshToken);
@@ -116,10 +123,11 @@ public class AccountController : ControllerBase
         
         var jwt = IdentityExtensions.GenerateJwt(
             claimsPrincipal.Claims,
-            _configuration.GetValue<string>("JWTSecurity:Key")!,
-            _configuration.GetValue<string>("JWTSecurity:Issuer")!,
-            _configuration.GetValue<string>("JWTSecurity:Audience")!,
-            GetExpirationDateTime(jwtExpiresInSeconds, "JWTSecurity:ExpiresInSeconds")
+            _configuration.GetValue<string>(SettingsJWTKey)!,
+            _configuration.GetValue<string>(SettingsJWTIssuer)!,
+            _configuration.GetValue<string>(SettingsJWTAudience)!,
+            GetExpirationDateTime(jwtExpiresInSeconds, SettingsJWTExpiresInSeconds)
+
         );
         
         var responseData = new JWTResponse()
@@ -132,11 +140,11 @@ public class AccountController : ControllerBase
     }
     
     /// <summary>
-    /// Register endpoint for rest API
+    /// Register new user, returns JWT and refresh token
     /// </summary>
     /// <param name="registerModel">Reg info</param>
-    /// <param name="jwtExpiresInSeconds">Use custom jwt expiration</param>
-    /// <param name="refreshTokenExpiresInSeconds">Use custom refresh token expiration</param>
+    /// <param name="jwtExpiresInSeconds">Optional custom jwt expiration</param>
+    /// <param name="refreshTokenExpiresInSeconds">Optional custom refresh token expiration</param>
     /// <returns></returns>
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -161,7 +169,7 @@ public class AccountController : ControllerBase
 
         var refreshToken = new AppRefreshToken()
         {
-            Expiration = GetExpirationDateTime(refreshTokenExpiresInSeconds, "JWTSecurity:RefreshTokenExpiresInSeconds")
+            Expiration = GetExpirationDateTime(refreshTokenExpiresInSeconds, SettingsJWTRefreshTokenExpiresInSeconds)
         };
 
         appUser = new AppUser()
@@ -191,10 +199,10 @@ public class AccountController : ControllerBase
                 var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
                 var jwt = IdentityExtensions.GenerateJwt(
                     claimsPrincipal.Claims,
-                    _configuration.GetValue<string>("JWTSecurity:Key")!,
-                    _configuration.GetValue<string>("JWTSecurity:Issuer")!,
-                    _configuration.GetValue<string>("JWTSecurity:Audience")!,
-                    GetExpirationDateTime(jwtExpiresInSeconds, "JWTSecurity:ExpiresInSeconds")
+                    _configuration.GetValue<string>(SettingsJWTKey)!,
+                    _configuration.GetValue<string>(SettingsJWTIssuer)!,
+                    _configuration.GetValue<string>(SettingsJWTAudience)!,
+                    GetExpirationDateTime(jwtExpiresInSeconds, SettingsJWTExpiresInSeconds)
                 );
                 _logger.LogInformation("WebApi login. User {User}", registerModel.Email);
                 return Ok(new JWTResponse()
@@ -215,11 +223,11 @@ public class AccountController : ControllerBase
     }
 
     /// <summary>
-    /// Refresh token renewal endpoint for rest API
+    /// Renew JWT using refresh token
     /// </summary>
     /// <param name="refreshTokenModel">Data for renewal</param>
-    /// <param name="jwtExpiresInSeconds">Custom expiration for jwt</param>
-    /// <param name="refreshTokenExpiresInSeconds">Custom expiration for refresh token</param>
+    /// <param name="jwtExpiresInSeconds">Optional custom expiration for jwt</param>
+    /// <param name="refreshTokenExpiresInSeconds">Optional custom expiration for refresh token</param>
     /// <returns></returns>
     [ProducesResponseType(typeof(JWTResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Message), StatusCodes.Status400BadRequest)]
@@ -251,9 +259,10 @@ public class AccountController : ControllerBase
         // validate jwt, ignore expiration date
         if (!IdentityExtensions.ValidateJwt(
                 refreshTokenModel.Jwt,
-                _configuration.GetValue<string>("JWTSecurity:Key")!,
-                _configuration.GetValue<string>("JWTSecurity:Issuer")!,
-                _configuration.GetValue<string>("JWTSecurity:Audience")!
+                _configuration.GetValue<string>(SettingsJWTKey)!,
+                _configuration.GetValue<string>(SettingsJWTIssuer)!,
+                _configuration.GetValue<string>(SettingsJWTAudience)!
+
             ))
         {
             return BadRequest("JWT validation fail");
@@ -310,10 +319,11 @@ public class AccountController : ControllerBase
         // generate jwt
         var jwt = IdentityExtensions.GenerateJwt(
             claimsPrincipal.Claims,
-            _configuration.GetValue<string>("JWTSecurity:Key")!,
-            _configuration.GetValue<string>("JWTSecurity:Issuer")!,
-            _configuration.GetValue<string>("JWTSecurity:Audience")!,
-            GetExpirationDateTime(jwtExpiresInSeconds, "JWTSecurity:ExpiresInSeconds")
+            _configuration.GetValue<string>(SettingsJWTKey)!,
+            _configuration.GetValue<string>(SettingsJWTIssuer)!,
+            _configuration.GetValue<string>(SettingsJWTAudience)!,
+            GetExpirationDateTime(jwtExpiresInSeconds, SettingsJWTExpiresInSeconds)
+
         );
 
         // make new refresh token, obsolete old ones
@@ -325,7 +335,7 @@ public class AccountController : ControllerBase
 
             refreshToken.RefreshToken = Guid.NewGuid().ToString();
             refreshToken.Expiration =
-                GetExpirationDateTime(refreshTokenExpiresInSeconds, "JWTSecurity:RefreshTokenExpiresInSeconds");
+                GetExpirationDateTime(refreshTokenExpiresInSeconds, SettingsJWTRefreshTokenExpiresInSeconds);
 
             await _context.SaveChangesAsync();
 

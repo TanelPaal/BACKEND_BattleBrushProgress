@@ -1,14 +1,15 @@
 ﻿using App.DAL.DTO;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class PaintTypeUOWMapper : IUOWMapper<App.DAL.DTO.PaintType, App.Domain.PaintType>
+public class PaintTypeUOWMapper : IMapper<App.DAL.DTO.PaintType, App.Domain.PaintType>
 {
-    public PaintType? Map(Domain.PaintType? entity)
+    public App.DAL.DTO.PaintType? Map(App.Domain.PaintType? entity)
     {
         if (entity == null) return null;
-        var res = new PaintType()
+        var res = new App.DAL.DTO.PaintType()
         {
             Id = entity.Id,
             Name = entity.Name,
@@ -19,10 +20,10 @@ public class PaintTypeUOWMapper : IUOWMapper<App.DAL.DTO.PaintType, App.Domain.P
         return res;
     }
 
-    public Domain.PaintType? Map(PaintType? entity)
+    public App.Domain.PaintType? Map(App.DAL.DTO.PaintType? entity)
     {
         if (entity == null) return null;
-        var res = new Domain.PaintType()
+        var res = new App.Domain.PaintType()
         {
             Id = entity.Id,
             Name = entity.Name,

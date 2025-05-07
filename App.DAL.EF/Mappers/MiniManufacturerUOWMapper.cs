@@ -1,14 +1,15 @@
 ﻿using App.DAL.DTO;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class MiniManufacturerUOWMapper : IUOWMapper<App.DAL.DTO.MiniManufacturer, App.Domain.MiniManufacturer>
+public class MiniManufacturerUOWMapper : IMapper<App.DAL.DTO.MiniManufacturer, App.Domain.MiniManufacturer>
 {
-    public MiniManufacturer? Map(Domain.MiniManufacturer? entity)
+    public App.DAL.DTO.MiniManufacturer? Map(App.Domain.MiniManufacturer? entity)
     {
         if (entity == null) return null;
-        var res = new MiniManufacturer()
+        var res = new App.DAL.DTO.MiniManufacturer()
         {
             Id = entity.Id,
             ManufacturerName = entity.ManufacturerName,
@@ -21,10 +22,10 @@ public class MiniManufacturerUOWMapper : IUOWMapper<App.DAL.DTO.MiniManufacturer
         return res;
     }
 
-    public Domain.MiniManufacturer? Map(MiniManufacturer? entity)
+    public App.Domain.MiniManufacturer? Map(App.DAL.DTO.MiniManufacturer? entity)
     {
         if (entity == null) return null;
-        var res = new Domain.MiniManufacturer()
+        var res = new App.Domain.MiniManufacturer()
         {
             Id = entity.Id,
             ManufacturerName = entity.ManufacturerName,

@@ -3,6 +3,7 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
 using Base.BLL.Contracts;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.BLL.Services;
@@ -11,7 +12,7 @@ public class PaintLineService : BaseService<App.BLL.DTO.PaintLine, App.DAL.DTO.P
 {
     public PaintLineService(
         IAppUOW serviceUOW, 
-        IBLLMapper<DTO.PaintLine, PaintLine> bllMapper) : base(serviceUOW, serviceUOW.PaintLineRepository, bllMapper)
+        IMapper<DTO.PaintLine, PaintLine> mapper) : base(serviceUOW, serviceUOW.PaintLineRepository, mapper)
     {
     }
 }

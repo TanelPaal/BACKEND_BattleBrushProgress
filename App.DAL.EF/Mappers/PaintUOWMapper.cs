@@ -1,49 +1,56 @@
 ﻿using App.DAL.DTO;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class PaintUOWMapper : IUOWMapper<App.DAL.DTO.Paint, App.Domain.Paint>
+public class PaintUOWMapper : IMapper<App.DAL.DTO.Paint, App.Domain.Paint>
 {
-    private readonly BrandUOWMapper _brandUOWMapper = new();
-    private readonly PaintTypeUOWMapper _paintTypeUOWMapper = new();
-    private readonly PaintLineUOWMapper _paintLineUOWMapper = new();
+    // private readonly BrandUOWMapper _brandUOWMapper = new();
+    // private readonly PaintTypeUOWMapper _paintTypeUOWMapper = new();
+    // private readonly PaintLineUOWMapper _paintLineUOWMapper = new();
     
-    public Paint? Map(Domain.Paint? entity)
+    public App.DAL.DTO.Paint? Map(App.Domain.Paint? entity)
     {
         if (entity == null) return null;
-        var res = new Paint()
+        var res = new App.DAL.DTO.Paint()
         {
             Id = entity.Id,
             Name = entity.Name,
             HexCode = entity.HexCode,
             UPC = entity.UPC,
             BrandId = entity.BrandId,
-            Brand = entity.Brand != null ? _brandUOWMapper.Map(entity.Brand) : null, 
+            Brand = null,
+            //Brand = entity.Brand != null ? _brandUOWMapper.Map(entity.Brand) : null, 
             PaintTypeId = entity.PaintTypeId,
-            PaintType = entity.PaintType != null ? _paintTypeUOWMapper.Map(entity.PaintType) : null,
+            PaintType = null,
+            //PaintType = entity.PaintType != null ? _paintTypeUOWMapper.Map(entity.PaintType) : null,
             PaintLineId = entity.PaintLineId,
-            PaintLine = entity.PaintLine != null ? _paintLineUOWMapper.Map(entity.PaintLine) : null,
+            PaintLine = null,
+            //PaintLine = entity.PaintLine != null ? _paintLineUOWMapper.Map(entity.PaintLine) : null,
             // PersonPaints = null // Optionally map if needed
         };
         return res;
     }
 
-    public Domain.Paint? Map(Paint? entity)
+    public App.Domain.Paint? Map(App.DAL.DTO.Paint? entity)
     {
         if (entity == null) return null;
-        var res = new Domain.Paint()
+        var res = new App.Domain.Paint()
         {
             Id = entity.Id,
             Name = entity.Name,
             HexCode = entity.HexCode,
             UPC = entity.UPC,
             BrandId = entity.BrandId,
-            Brand = null, // Optionally map if needed
+            Brand = null,
+            //Brand = entity.Brand != null ? _brandUOWMapper.Map(entity.Brand) : null, 
             PaintTypeId = entity.PaintTypeId,
-            PaintType = null, // Optionally map if needed
+            PaintType = null,
+            //PaintType = entity.PaintType != null ? _paintTypeUOWMapper.Map(entity.PaintType) : null,
             PaintLineId = entity.PaintLineId,
-            PaintLine = null, // Optionally map if needed
+            PaintLine = null,
+            //PaintLine = entity.PaintLine != null ? _paintLineUOWMapper.Map(entity.PaintLine) : null,
             // PersonPaints = null // Optionally map if needed
         };
         return res;

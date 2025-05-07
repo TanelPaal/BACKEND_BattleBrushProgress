@@ -5,7 +5,7 @@ using Base.DAL.EF;
 
 namespace App.DAL.EF.Repositories;
 
-public class MiniPropertiesRepository : BaseBaseRepository<App.DAL.DTO.MiniProperties, App.Domain.MiniProperties>, IMiniPropertiesRepository
+public class MiniPropertiesRepository : BaseRepository<App.DAL.DTO.MiniProperties, App.Domain.MiniProperties>, IMiniPropertiesRepository
 {
     public MiniPropertiesRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new MiniPropertiesUOWMapper())
     {

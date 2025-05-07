@@ -1,14 +1,15 @@
 ﻿using App.DAL.DTO;
 using Base.BLL.Contracts;
+using Base.Contracts;
 
 namespace App.BLL.Mappers;
 
-public class MiniFactionBLLMapper : IBLLMapper<App.BLL.DTO.MiniFaction, App.DAL.DTO.MiniFaction>
+public class MiniFactionBLLMapper : IMapper<App.BLL.DTO.MiniFaction, App.DAL.DTO.MiniFaction>
 {
-    public MiniFaction? Map(DTO.MiniFaction? entity)
+    public App.DAL.DTO.MiniFaction? Map(App.BLL.DTO.MiniFaction? entity)
     {
         if (entity == null) return null;
-        var res = new MiniFaction()
+        var res = new App.DAL.DTO.MiniFaction()
         {
             Id = entity.Id,
             FactionName = entity.FactionName,
@@ -19,10 +20,10 @@ public class MiniFactionBLLMapper : IBLLMapper<App.BLL.DTO.MiniFaction, App.DAL.
         return res;
     }
 
-    public DTO.MiniFaction? Map(MiniFaction? entity)
+    public App.BLL.DTO.MiniFaction? Map(App.DAL.DTO.MiniFaction? entity)
     {
         if (entity == null) return null;
-        var res = new DTO.MiniFaction()
+        var res = new App.BLL.DTO.MiniFaction()
         {
             Id = entity.Id,
             FactionName = entity.FactionName,

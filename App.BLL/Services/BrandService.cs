@@ -3,6 +3,7 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
 using Base.BLL.Contracts;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.BLL.Services;
@@ -11,7 +12,7 @@ public class BrandService : BaseService<App.BLL.DTO.Brand, App.DAL.DTO.Brand, Ap
 {
     public BrandService(
         IAppUOW serviceUOW,
-        IBLLMapper<DTO.Brand, Brand> bllMapper) : base(serviceUOW, serviceUOW.BrandRepository, bllMapper)
+        IMapper<DTO.Brand, Brand> mapper) : base(serviceUOW, serviceUOW.BrandRepository, mapper)
     {
     }
 }

@@ -1,42 +1,47 @@
 ﻿using App.DAL.DTO;
 using Base.BLL.Contracts;
+using Base.Contracts;
 
 namespace App.BLL.Mappers;
 
-public class PersonPaintsBLLMapper : IBLLMapper<App.BLL.DTO.PersonPaints, App.DAL.DTO.PersonPaints>
+public class PersonPaintsBLLMapper : IMapper<App.BLL.DTO.PersonPaints, App.DAL.DTO.PersonPaints>
 {
-    private readonly PaintBLLMapper _paintBLLMapper = new();
-    private readonly PersonBLLMapper _personBLLMapper = new();
+    // private readonly PaintBLLMapper _paintBLLMapper = new();
+    // private readonly PersonBLLMapper _personBLLMapper = new();
     
-    public PersonPaints? Map(DTO.PersonPaints? entity)
+    public App.DAL.DTO.PersonPaints? Map(App.BLL.DTO.PersonPaints? entity)
     {
         if (entity == null) return null;
-        var res = new PersonPaints()
+        var res = new App.DAL.DTO.PersonPaints()
         {
             Id = entity.Id,
             Quantity = entity.Quantity,
             AcquisitionDate = entity.AcquisitionDate,
             PersonId = entity.PersonId,
-            Person = entity.Person != null ? _personBLLMapper.Map(entity.Person) : null,
+            Person = null,
+            // Person = entity.Person != null ? _personBLLMapper.Map(entity.Person) : null,
             PaintId = entity.PaintId,
-            Paint = entity.Paint != null ? _paintBLLMapper.Map(entity.Paint) : null,
+            Paint = null,
+            // Paint = entity.Paint != null ? _paintBLLMapper.Map(entity.Paint) : null,
             // MiniPaintSwatches = null // Optionally map if needed       
         };
         return res;
     }
 
-    public DTO.PersonPaints? Map(PersonPaints? entity)
+    public App.BLL.DTO.PersonPaints? Map(App.DAL.DTO.PersonPaints? entity)
     {
         if (entity == null) return null;
-        var res = new DTO.PersonPaints()
+        var res = new App.BLL.DTO.PersonPaints()
         {
             Id = entity.Id,
             Quantity = entity.Quantity,
             AcquisitionDate = entity.AcquisitionDate,
             PersonId = entity.PersonId,
-            Person = null, // Optionally map if needed
+            Person = null,
+            // Person = entity.Person != null ? _personBLLMapper.Map(entity.Person) : null,
             PaintId = entity.PaintId,
-            Paint = null, // Optionally map if needed
+            Paint = null,
+            // Paint = entity.Paint != null ? _paintBLLMapper.Map(entity.Paint) : null,
             // MiniPaintSwatches = null // Optionally map if needed       
         };
         return res;

@@ -8,22 +8,28 @@ using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
-    [ApiVersion( "1.0" )]
+    [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PaintTypeController : ControllerBase
     {
+        private readonly ILogger<PaintTypeController> _logger;
         private readonly AppDbContext _context;
 
-        public PaintTypeController(AppDbContext context)
+        public PaintTypeController(AppDbContext context, ILogger<PaintTypeController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/PaintType
+        [Produces("application/json")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PaintType>>> GetPaintTypes()
         {
@@ -31,6 +37,7 @@ namespace WebApp.ApiControllers
         }
 
         // GET: api/PaintType/5
+        [Produces("application/json")]
         [HttpGet("{id}")]
         public async Task<ActionResult<PaintType>> GetPaintType(Guid id)
         {
@@ -46,6 +53,8 @@ namespace WebApp.ApiControllers
 
         // PUT: api/PaintType/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPaintType(Guid id, PaintType paintType)
         {
@@ -77,6 +86,8 @@ namespace WebApp.ApiControllers
 
         // POST: api/PaintType
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPost]
         public async Task<ActionResult<PaintType>> PostPaintType(PaintType paintType)
         {
@@ -87,6 +98,7 @@ namespace WebApp.ApiControllers
         }
 
         // DELETE: api/PaintType/5
+        [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePaintType(Guid id)
         {

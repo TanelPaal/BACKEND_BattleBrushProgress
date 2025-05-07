@@ -1,14 +1,15 @@
 ﻿using App.DAL.DTO;
 using Base.BLL.Contracts;
+using Base.Contracts;
 
 namespace App.BLL.Mappers;
 
-public class BrandBLLMapper : IBLLMapper<App.BLL.DTO.Brand, App.DAL.DTO.Brand>
+public class BrandBLLMapper : IMapper<App.BLL.DTO.Brand, App.DAL.DTO.Brand>
 {
-    public Brand? Map(DTO.Brand? entity)
+    public App.DAL.DTO.Brand? Map(App.BLL.DTO.Brand? entity)
     {
         if (entity == null) return null;
-        var res = new Brand()
+        var res = new App.DAL.DTO.Brand()
         {
             Id = entity.Id,
             BrandName = entity.BrandName,
@@ -21,10 +22,10 @@ public class BrandBLLMapper : IBLLMapper<App.BLL.DTO.Brand, App.DAL.DTO.Brand>
         return res;
     }
 
-    public DTO.Brand? Map(Brand? entity)
+    public App.BLL.DTO.Brand? Map(App.DAL.DTO.Brand? entity)
     {
         if (entity == null) return null;
-        var res = new DTO.Brand()
+        var res = new App.BLL.DTO.Brand()
         {
             Id = entity.Id,
             BrandName = entity.BrandName,

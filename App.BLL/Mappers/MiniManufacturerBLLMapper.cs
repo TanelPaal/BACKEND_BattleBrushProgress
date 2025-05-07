@@ -1,14 +1,15 @@
 ﻿using App.DAL.DTO;
 using Base.BLL.Contracts;
+using Base.Contracts;
 
 namespace App.BLL.Mappers;
 
-public class MiniManufacturerBLLMapper : IBLLMapper<App.BLL.DTO.MiniManufacturer, App.DAL.DTO.MiniManufacturer>
+public class MiniManufacturerBLLMapper : IMapper<App.BLL.DTO.MiniManufacturer, App.DAL.DTO.MiniManufacturer>
 {
-    public MiniManufacturer? Map(DTO.MiniManufacturer? entity)
+    public App.DAL.DTO.MiniManufacturer? Map(App.BLL.DTO.MiniManufacturer? entity)
     {
         if (entity == null) return null;
-        var res = new MiniManufacturer()
+        var res = new App.DAL.DTO.MiniManufacturer()
         {
             Id = entity.Id,
             ManufacturerName = entity.ManufacturerName,
@@ -21,10 +22,10 @@ public class MiniManufacturerBLLMapper : IBLLMapper<App.BLL.DTO.MiniManufacturer
         return res;
     }
 
-    public DTO.MiniManufacturer? Map(MiniManufacturer? entity)
+    public App.BLL.DTO.MiniManufacturer? Map(App.DAL.DTO.MiniManufacturer? entity)
     {
         if (entity == null) return null;
-        var res = new DTO.MiniManufacturer()
+        var res = new App.BLL.DTO.MiniManufacturer()
         {
             Id = entity.Id,
             ManufacturerName = entity.ManufacturerName,

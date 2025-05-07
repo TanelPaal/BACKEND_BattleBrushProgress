@@ -1,19 +1,20 @@
 ﻿using App.DAL.DTO;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class PersonUOWMapper : IUOWMapper<App.DAL.DTO.Person, App.Domain.Person>
+public class PersonUOWMapper : IMapper<App.DAL.DTO.Person, App.Domain.Person>
 {
-    public Person? Map(Domain.Person? entity)
+    public App.DAL.DTO.Person? Map(App.Domain.Person? entity)
     {
         if (entity == null) return null;
         
-        var res = new Person()
+        var res = new App.DAL.DTO.Person()
         {
             Id = entity.Id,
             PersonName = entity.PersonName,
-            PersonPaints = entity.PersonPaints?.Select(c => new PersonPaints()
+            PersonPaints = entity.PersonPaints?.Select(c => new App.DAL.DTO.PersonPaints()
             {
                 Id = c.Id,
                 Quantity = c.Quantity,
@@ -27,7 +28,7 @@ public class PersonUOWMapper : IUOWMapper<App.DAL.DTO.Person, App.Domain.Person>
                 // TODO: Figure out how to map or skip
                 MiniPaintSwatches = null
             }).ToList(),
-            MiniatureCollections = entity.MiniatureCollections?.Select(c => new MiniatureCollection()
+            MiniatureCollections = entity.MiniatureCollections?.Select(c => new App.DAL.DTO.MiniatureCollection()
             {
                 Id = c.Id,
                 CollectionName = c.CollectionName,
@@ -50,15 +51,15 @@ public class PersonUOWMapper : IUOWMapper<App.DAL.DTO.Person, App.Domain.Person>
         return res;
     }
 
-    public Domain.Person? Map(Person? entity)
+    public App.Domain.Person? Map(App.DAL.DTO.Person? entity)
     {
         if (entity == null) return null;
 
-        var res = new Domain.Person()
+        var res = new App.Domain.Person()
         {
             Id = entity.Id,
             PersonName = entity.PersonName,
-            PersonPaints = entity.PersonPaints?.Select(c => new Domain.PersonPaints()
+            PersonPaints = entity.PersonPaints?.Select(c => new App.Domain.PersonPaints()
             {
                 Id = c.Id,
                 Quantity = c.Quantity,
@@ -72,7 +73,7 @@ public class PersonUOWMapper : IUOWMapper<App.DAL.DTO.Person, App.Domain.Person>
                 // TODO: Figure out how to map or skip
                 MiniPaintSwatches = null
             }).ToList(),
-            MiniatureCollections = entity.MiniatureCollections?.Select(c => new Domain.MiniatureCollection()
+            MiniatureCollections = entity.MiniatureCollections?.Select(c => new App.Domain.MiniatureCollection()
             {
                 Id = c.Id,
                 CollectionName = c.CollectionName,

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class PaintRepository : BaseBaseRepository<App.DAL.DTO.Paint, App.Domain.Paint>, IPaintRepository
+public class PaintRepository : BaseRepository<App.DAL.DTO.Paint, App.Domain.Paint>, IPaintRepository
 {
     public PaintRepository(AppDbContext dbContext) : base(dbContext, new PaintUOWMapper())
     {

@@ -5,7 +5,7 @@ using Base.DAL.EF;
 
 namespace App.DAL.EF.Repositories;
 
-public class BrandRepository : BaseBaseRepository<App.DAL.DTO.Brand, App.Domain.Brand>, IBrandRepository
+public class BrandRepository : BaseRepository<App.DAL.DTO.Brand, App.Domain.Brand>, IBrandRepository
 {
     public BrandRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new BrandUOWMapper())
     {

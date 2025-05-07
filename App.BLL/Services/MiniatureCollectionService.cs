@@ -3,6 +3,7 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
 using Base.BLL.Contracts;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.BLL.Services;
@@ -11,7 +12,7 @@ public class MiniatureCollectionService : BaseService<App.BLL.DTO.MiniatureColle
 {
     public MiniatureCollectionService(
         IAppUOW serviceUOW, 
-        IBLLMapper<DTO.MiniatureCollection, MiniatureCollection> bllMapper) : base(serviceUOW, serviceUOW.MiniatureCollectionRepository, bllMapper)
+        IMapper<DTO.MiniatureCollection, MiniatureCollection> mapper) : base(serviceUOW, serviceUOW.MiniatureCollectionRepository, mapper)
     {
     }
 }

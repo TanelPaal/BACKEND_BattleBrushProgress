@@ -1,14 +1,15 @@
 ﻿using App.DAL.DTO;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class MiniPropertiesUOWMapper : IUOWMapper<App.DAL.DTO.MiniProperties, App.Domain.MiniProperties>
+public class MiniPropertiesUOWMapper : IMapper<App.DAL.DTO.MiniProperties, App.Domain.MiniProperties>
 {
-    public MiniProperties? Map(Domain.MiniProperties? entity)
+    public App.DAL.DTO.MiniProperties? Map(App.Domain.MiniProperties? entity)
     {
         if (entity == null) return null;
-        var res = new MiniProperties()
+        var res = new App.DAL.DTO.MiniProperties()
         {
             Id = entity.Id,
             PropertyName = entity.PropertyName,
@@ -19,10 +20,10 @@ public class MiniPropertiesUOWMapper : IUOWMapper<App.DAL.DTO.MiniProperties, Ap
         return res;
     }
 
-    public Domain.MiniProperties? Map(MiniProperties? entity)
+    public App.Domain.MiniProperties? Map(App.DAL.DTO.MiniProperties? entity)
     {
         if (entity == null) return null;
-        var res = new Domain.MiniProperties()
+        var res = new App.Domain.MiniProperties()
         {
             Id = entity.Id,
             PropertyName = entity.PropertyName,

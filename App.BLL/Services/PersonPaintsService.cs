@@ -3,6 +3,7 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
 using Base.BLL.Contracts;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.BLL.Services;
@@ -11,7 +12,7 @@ public class PersonPaintsService : BaseService<App.BLL.DTO.PersonPaints, App.DAL
 {
     public PersonPaintsService(
         IAppUOW serviceUOW, 
-        IBLLMapper<DTO.PersonPaints, PersonPaints> bllMapper) : base(serviceUOW, serviceUOW.PersonPaintsRepository, bllMapper)
+        IMapper<DTO.PersonPaints, PersonPaints> mapper) : base(serviceUOW, serviceUOW.PersonPaintsRepository, mapper)
     {
     }
 }

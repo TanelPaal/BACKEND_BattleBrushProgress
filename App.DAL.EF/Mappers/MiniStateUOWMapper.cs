@@ -1,14 +1,15 @@
 ﻿using App.DAL.DTO;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class MiniStateUOWMapper : IUOWMapper<App.DAL.DTO.MiniState, App.Domain.MiniState>
+public class MiniStateUOWMapper : IMapper<App.DAL.DTO.MiniState, App.Domain.MiniState>
 {
-    public MiniState? Map(Domain.MiniState? entity)
+    public App.DAL.DTO.MiniState? Map(App.Domain.MiniState? entity)
     {
         if (entity == null) return null;
-        var res = new MiniState
+        var res = new App.DAL.DTO.MiniState
         {
             Id = entity.Id,
             StateName = entity.StateName,
@@ -17,10 +18,10 @@ public class MiniStateUOWMapper : IUOWMapper<App.DAL.DTO.MiniState, App.Domain.M
         return res;
     }
 
-    public Domain.MiniState? Map(MiniState? entity)
+    public App.Domain.MiniState? Map(App.DAL.DTO.MiniState? entity)
     {
         if (entity == null) return null;
-        var res = new Domain.MiniState
+        var res = new App.Domain.MiniState
         {
             Id = entity.Id,
             StateName = entity.StateName,

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class PaintLineRepository : BaseBaseRepository<App.DAL.DTO.PaintLine, App.Domain.PaintLine>, IPaintLineRepository
+public class PaintLineRepository : BaseRepository<App.DAL.DTO.PaintLine, App.Domain.PaintLine>, IPaintLineRepository
 {
     public PaintLineRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new PaintLineUOWMapper())
     {

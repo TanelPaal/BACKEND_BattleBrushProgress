@@ -1,49 +1,56 @@
 ﻿using App.DAL.DTO;
 using Base.BLL.Contracts;
+using Base.Contracts;
 
 namespace App.BLL.Mappers;
 
-public class PaintBLLMapper : IBLLMapper<App.BLL.DTO.Paint, App.DAL.DTO.Paint>
+public class PaintBLLMapper : IMapper<App.BLL.DTO.Paint, App.DAL.DTO.Paint>
 {
-    private readonly BrandBLLMapper _brandBLLMapper = new();
-    private readonly PaintTypeBLLMapper _paintTypeBLLMapper = new();
-    private readonly PaintLineBLLMapper _paintLineBLLMapper = new();
+    // private readonly BrandBLLMapper _brandBLLMapper = new();
+    // private readonly PaintTypeBLLMapper _paintTypeBLLMapper = new();
+    // private readonly PaintLineBLLMapper _paintLineBLLMapper = new();
     
-    public Paint? Map(DTO.Paint? entity)
+    public App.DAL.DTO.Paint? Map(App.BLL.DTO.Paint? entity)
     {
         if (entity == null) return null;
-        var res = new Paint()
+        var res = new App.DAL.DTO.Paint()
         {
             Id = entity.Id,
             Name = entity.Name,
             HexCode = entity.HexCode,
             UPC = entity.UPC,
             BrandId = entity.BrandId,
-            Brand = entity.Brand != null ? _brandBLLMapper.Map(entity.Brand) : null, 
+            Brand = null,
+            //Brand = entity.Brand != null ? _brandBLLMapper.Map(entity.Brand) : null, 
             PaintTypeId = entity.PaintTypeId,
-            PaintType = entity.PaintType != null ? _paintTypeBLLMapper.Map(entity.PaintType) : null,
+            PaintType = null,
+            //PaintType = entity.PaintType != null ? _paintTypeBLLMapper.Map(entity.PaintType) : null,
             PaintLineId = entity.PaintLineId,
-            PaintLine = entity.PaintLine != null ? _paintLineBLLMapper.Map(entity.PaintLine) : null,
+            PaintLine = null,
+            //PaintLine = entity.PaintLine != null ? _paintLineBLLMapper.Map(entity.PaintLine) : null,
             // PersonPaints = null // Optionally map if needed
         };
         return res;
     }
 
-    public DTO.Paint? Map(Paint? entity)
+    public App.BLL.DTO.Paint? Map(App.DAL.DTO.Paint? entity)
     {
         if (entity == null) return null;
-        var res = new DTO.Paint()
+        var res = new App.BLL.DTO.Paint()
         {
             Id = entity.Id,
             Name = entity.Name,
             HexCode = entity.HexCode,
             UPC = entity.UPC,
             BrandId = entity.BrandId,
-            Brand = null, // Optionally map if needed
+            Brand = null,
+            //Brand = entity.Brand != null ? _brandBLLMapper.Map(entity.Brand) : null, 
             PaintTypeId = entity.PaintTypeId,
-            PaintType = null, // Optionally map if needed
+            PaintType = null,
+            //PaintType = entity.PaintType != null ? _paintTypeBLLMapper.Map(entity.PaintType) : null,
             PaintLineId = entity.PaintLineId,
-            PaintLine = null, // Optionally map if needed
+            PaintLine = null,
+            //PaintLine = entity.PaintLine != null ? _paintLineBLLMapper.Map(entity.PaintLine) : null,
             // PersonPaints = null // Optionally map if needed
         };
         return res;

@@ -3,6 +3,7 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
 using Base.BLL.Contracts;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.BLL.Services;
@@ -11,7 +12,7 @@ public class MiniFactionService : BaseService<App.BLL.DTO.MiniFaction, App.DAL.D
 {
     public MiniFactionService(
         IAppUOW serviceUOW,
-        IBLLMapper<DTO.MiniFaction, MiniFaction> bllMapper) : base(serviceUOW, serviceUOW.MiniFactionRepository, bllMapper)
+        IMapper<DTO.MiniFaction, MiniFaction> mapper) : base(serviceUOW, serviceUOW.MiniFactionRepository, mapper)
     {
     }
 }

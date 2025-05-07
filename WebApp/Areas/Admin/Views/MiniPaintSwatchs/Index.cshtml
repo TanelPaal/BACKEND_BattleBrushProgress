@@ -1,4 +1,4 @@
-@model IEnumerable<App.Domain.Miniature>
+@model IEnumerable<App.Domain.MiniPaintSwatch>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,19 +13,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MiniName)
+                @Html.DisplayNameFor(model => model.UsageType)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiniDesc)
+                @Html.DisplayNameFor(model => model.Notes)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiniFaction)
+                @Html.DisplayNameFor(model => model.MiniatureCollection)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiniProperties)
+                @Html.DisplayNameFor(model => model.PersonPaints)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiniManufacturer)
+                @Html.DisplayNameFor(model => model.User)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedBy)
@@ -49,19 +49,19 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniName)
+                @Html.DisplayFor(modelItem => item.UsageType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniDesc)
+                @Html.DisplayFor(modelItem => item.Notes)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniFaction.FactionDesc)
+                @Html.DisplayFor(modelItem => item.MiniatureCollection.CollectionDesc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniProperties.PropertyDesc)
+                @Html.DisplayFor(modelItem => item.PersonPaints.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniManufacturer.ContactEmail)
+                @Html.DisplayFor(modelItem => item.User.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)

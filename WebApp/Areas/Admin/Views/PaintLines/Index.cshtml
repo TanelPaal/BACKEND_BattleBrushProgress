@@ -1,4 +1,4 @@
-@model IEnumerable<App.Domain.Miniature>
+@model IEnumerable<App.Domain.PaintLine>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,19 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MiniName)
+                @Html.DisplayNameFor(model => model.PaintLineName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiniDesc)
+                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiniFaction)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MiniProperties)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MiniManufacturer)
+                @Html.DisplayNameFor(model => model.Brand)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedBy)
@@ -49,19 +43,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniName)
+                @Html.DisplayFor(modelItem => item.PaintLineName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniDesc)
+                @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniFaction.FactionDesc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MiniProperties.PropertyDesc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MiniManufacturer.ContactEmail)
+                @Html.DisplayFor(modelItem => item.Brand.BrandName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)

@@ -1,4 +1,4 @@
-@model App.Domain.Miniature
+@model App.Domain.PersonPaints
 
 @{
     ViewData["Title"] = "Create";
@@ -6,33 +6,33 @@
 
 <h1>Create</h1>
 
-<h4>Miniature</h4>
+<h4>PersonPaints</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="MiniName" class="control-label"></label>
-                <input asp-for="MiniName" class="form-control" />
-                <span asp-validation-for="MiniName" class="text-danger"></span>
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MiniDesc" class="control-label"></label>
-                <input asp-for="MiniDesc" class="form-control" />
-                <span asp-validation-for="MiniDesc" class="text-danger"></span>
+                <label asp-for="AcquisitionDate" class="control-label"></label>
+                <input asp-for="AcquisitionDate" class="form-control" />
+                <span asp-validation-for="AcquisitionDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MiniFactionId" class="control-label"></label>
-                <select asp-for="MiniFactionId" class ="form-control" asp-items="ViewBag.MiniFactionId"></select>
+                <label asp-for="PersonId" class="control-label"></label>
+                <select asp-for="PersonId" class ="form-control" asp-items="ViewBag.PersonId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="MiniPropertiesId" class="control-label"></label>
-                <select asp-for="MiniPropertiesId" class ="form-control" asp-items="ViewBag.MiniPropertiesId"></select>
+                <label asp-for="PaintId" class="control-label"></label>
+                <select asp-for="PaintId" class ="form-control" asp-items="ViewBag.PaintId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="MiniManufacturerId" class="control-label"></label>
-                <select asp-for="MiniManufacturerId" class ="form-control" asp-items="ViewBag.MiniManufacturerId"></select>
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="CreatedBy" class="control-label"></label>

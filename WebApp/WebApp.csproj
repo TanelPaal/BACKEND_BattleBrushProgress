@@ -109,14 +109,14 @@
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\Brands\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\Brands\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\Brands\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Miniatures\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Miniatures\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Miniatures\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Miniatures\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Miniatures\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Areas\Admin\Views\MiniFactions\" />
-      <Folder Include="Areas\Admin\Views\MiniManufacturers\" />
-      <Folder Include="Areas\Admin\Views\MiniProperties\" />
-      <Folder Include="Areas\Admin\Views\PaintLines\" />
-      <Folder Include="Areas\Admin\Views\Paints\" />
       <Folder Include="Areas\Identity\Data\" />
     </ItemGroup>
 

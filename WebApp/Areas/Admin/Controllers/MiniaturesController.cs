@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +9,7 @@ using App.DAL.EF;
 using App.Domain;
 using Microsoft.AspNetCore.Authorization;
 
-namespace WebApp.Areas.Admin.Controllers
+namespace WebApp.Areas_Admin_Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "admin")]
@@ -22,17 +22,14 @@ namespace WebApp.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/Miniatures
+        // GET: Miniatures
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Miniatures
-                .Include(m => m.MiniFaction)
-                .Include(m => m.MiniProperties)
-                .Include(m => m.MiniManufacturer);
+            var appDbContext = _context.Miniatures.Include(m => m.MiniFaction).Include(m => m.MiniManufacturer).Include(m => m.MiniProperties);
             return View(await appDbContext.ToListAsync());
         }
 
-        // GET: Admin/Miniatures/Details/5
+        // GET: Miniatures/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -42,8 +39,8 @@ namespace WebApp.Areas.Admin.Controllers
 
             var miniature = await _context.Miniatures
                 .Include(m => m.MiniFaction)
-                .Include(m => m.MiniProperties)
                 .Include(m => m.MiniManufacturer)
+                .Include(m => m.MiniProperties)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (miniature == null)
             {
@@ -53,16 +50,18 @@ namespace WebApp.Areas.Admin.Controllers
             return View(miniature);
         }
 
-        // GET: Admin/Miniatures/Create
+        // GET: Miniatures/Create
         public IActionResult Create()
         {
-            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "Name");
-            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "Name");
-            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "Name");
+            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc");
+            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ContactEmail");
+            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyDesc");
             return View();
         }
 
-        // POST: Admin/Miniatures/Create
+        // POST: Miniatures/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MiniName,MiniDesc,MiniFactionId,MiniPropertiesId,MiniManufacturerId,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] Miniature miniature)
@@ -74,13 +73,13 @@ namespace WebApp.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "Name", miniature.MiniFactionId);
-            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "Name", miniature.MiniPropertiesId);
-            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "Name", miniature.MiniManufacturerId);
+            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc", miniature.MiniFactionId);
+            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ContactEmail", miniature.MiniManufacturerId);
+            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyDesc", miniature.MiniPropertiesId);
             return View(miniature);
         }
 
-        // GET: Admin/Miniatures/Edit/5
+        // GET: Miniatures/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -93,13 +92,15 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "Name", miniature.MiniFactionId);
-            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "Name", miniature.MiniPropertiesId);
-            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "Name", miniature.MiniManufacturerId);
+            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc", miniature.MiniFactionId);
+            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ContactEmail", miniature.MiniManufacturerId);
+            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyDesc", miniature.MiniPropertiesId);
             return View(miniature);
         }
 
-        // POST: Admin/Miniatures/Edit/5
+        // POST: Miniatures/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("MiniName,MiniDesc,MiniFactionId,MiniPropertiesId,MiniManufacturerId,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] Miniature miniature)
@@ -129,13 +130,13 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "Name", miniature.MiniFactionId);
-            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "Name", miniature.MiniPropertiesId);
-            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "Name", miniature.MiniManufacturerId);
+            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc", miniature.MiniFactionId);
+            ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ContactEmail", miniature.MiniManufacturerId);
+            ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyDesc", miniature.MiniPropertiesId);
             return View(miniature);
         }
 
-        // GET: Admin/Miniatures/Delete/5
+        // GET: Miniatures/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -145,8 +146,8 @@ namespace WebApp.Areas.Admin.Controllers
 
             var miniature = await _context.Miniatures
                 .Include(m => m.MiniFaction)
-                .Include(m => m.MiniProperties)
                 .Include(m => m.MiniManufacturer)
+                .Include(m => m.MiniProperties)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (miniature == null)
             {
@@ -156,7 +157,7 @@ namespace WebApp.Areas.Admin.Controllers
             return View(miniature);
         }
 
-        // POST: Admin/Miniatures/Delete/5
+        // POST: Miniatures/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

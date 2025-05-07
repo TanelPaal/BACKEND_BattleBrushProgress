@@ -1,39 +1,28 @@
-@model App.Domain.Miniature
+@model App.Domain.MiniFaction
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>Create</h1>
+<h1>Edit</h1>
 
-<h4>Miniature</h4>
+<h4>MiniFaction</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="MiniName" class="control-label"></label>
-                <input asp-for="MiniName" class="form-control" />
-                <span asp-validation-for="MiniName" class="text-danger"></span>
+                <label asp-for="FactionName" class="control-label"></label>
+                <input asp-for="FactionName" class="form-control" />
+                <span asp-validation-for="FactionName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MiniDesc" class="control-label"></label>
-                <input asp-for="MiniDesc" class="form-control" />
-                <span asp-validation-for="MiniDesc" class="text-danger"></span>
+                <label asp-for="FactionDesc" class="control-label"></label>
+                <input asp-for="FactionDesc" class="form-control" />
+                <span asp-validation-for="FactionDesc" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="MiniFactionId" class="control-label"></label>
-                <select asp-for="MiniFactionId" class ="form-control" asp-items="ViewBag.MiniFactionId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="MiniPropertiesId" class="control-label"></label>
-                <select asp-for="MiniPropertiesId" class ="form-control" asp-items="ViewBag.MiniPropertiesId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="MiniManufacturerId" class="control-label"></label>
-                <select asp-for="MiniManufacturerId" class ="form-control" asp-items="ViewBag.MiniManufacturerId"></select>
-            </div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="CreatedBy" class="control-label"></label>
                 <input asp-for="CreatedBy" class="form-control" />
@@ -60,7 +49,7 @@
                 <span asp-validation-for="SysNotes" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

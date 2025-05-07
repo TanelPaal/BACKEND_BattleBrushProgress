@@ -1,4 +1,4 @@
-@model IEnumerable<App.Domain.Miniature>
+@model IEnumerable<App.Domain.Brand>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,19 +13,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MiniName)
+                @Html.DisplayNameFor(model => model.BrandName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiniDesc)
+                @Html.DisplayNameFor(model => model.HeadquartersLocation)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiniFaction)
+                @Html.DisplayNameFor(model => model.ContactEmail)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiniProperties)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MiniManufacturer)
+                @Html.DisplayNameFor(model => model.ContactPhone)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedBy)
@@ -49,19 +46,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniName)
+                @Html.DisplayFor(modelItem => item.BrandName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniDesc)
+                @Html.DisplayFor(modelItem => item.HeadquartersLocation)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniFaction.FactionDesc)
+                @Html.DisplayFor(modelItem => item.ContactEmail)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniProperties.PropertyDesc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MiniManufacturer.ContactEmail)
+                @Html.DisplayFor(modelItem => item.ContactPhone)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)

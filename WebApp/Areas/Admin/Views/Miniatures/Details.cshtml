@@ -1,33 +1,78 @@
-﻿@model App.Domain.Miniature
+@model App.Domain.Miniature
 
 @{
-    ViewData["Title"] = "Miniature Details";
+    ViewData["Title"] = "Details";
 }
 
-<h1>Miniature Details</h1>
+<h1>Details</h1>
 
-<div class="card">
-    <div class="card-body">
-        <dl class="row">
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.MiniName)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.MiniName)</dd>
-
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.MiniDesc)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.MiniDesc)</dd>
-
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.MiniFaction)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.MiniFaction!.FactionName)</dd>
-
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.MiniProperties)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.MiniProperties!.PropertyName)</dd>
-
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.MiniManufacturer)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.MiniManufacturer!.ManufacturerName)</dd>
-        </dl>
-    </div>
+<div>
+    <h4>Miniature</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MiniName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MiniName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MiniDesc)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MiniDesc)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MiniFaction)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MiniFaction.FactionDesc)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MiniProperties)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MiniProperties.PropertyDesc)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MiniManufacturer)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MiniManufacturer.ContactEmail)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ChangedBy)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ChangedBy)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ChangedAt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ChangedAt)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SysNotes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SysNotes)
+        </dd>
+    </dl>
 </div>
-
-<div class="mt-4">
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
 </div>

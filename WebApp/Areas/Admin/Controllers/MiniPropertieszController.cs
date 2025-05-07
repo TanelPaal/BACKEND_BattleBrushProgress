@@ -13,22 +13,22 @@ namespace WebApp.Areas_Admin_Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "admin")]
-    public class MiniManufacturersController : Controller
+    public class MiniPropertieszController : Controller
     {
         private readonly AppDbContext _context;
 
-        public MiniManufacturersController(AppDbContext context)
+        public MiniPropertieszController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: MiniManufacturers
+        // GET: MiniPropertiesz
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MiniManufacturers.ToListAsync());
+            return View(await _context.MiniProperties.ToListAsync());
         }
 
-        // GET: MiniManufacturers/Details/5
+        // GET: MiniPropertiesz/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -36,40 +36,40 @@ namespace WebApp.Areas_Admin_Controllers
                 return NotFound();
             }
 
-            var miniManufacturer = await _context.MiniManufacturers
+            var miniProperties = await _context.MiniProperties
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (miniManufacturer == null)
+            if (miniProperties == null)
             {
                 return NotFound();
             }
 
-            return View(miniManufacturer);
+            return View(miniProperties);
         }
 
-        // GET: MiniManufacturers/Create
+        // GET: MiniPropertiesz/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: MiniManufacturers/Create
+        // POST: MiniPropertiesz/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ManufacturerName,HeadquartersLocation,ContactEmail,ContactPhone,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] MiniManufacturer miniManufacturer)
+        public async Task<IActionResult> Create([Bind("PropertyName,PropertyDesc,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] MiniProperties miniProperties)
         {
             if (ModelState.IsValid)
             {
-                miniManufacturer.Id = Guid.NewGuid();
-                _context.Add(miniManufacturer);
+                miniProperties.Id = Guid.NewGuid();
+                _context.Add(miniProperties);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(miniManufacturer);
+            return View(miniProperties);
         }
 
-        // GET: MiniManufacturers/Edit/5
+        // GET: MiniPropertiesz/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -77,22 +77,22 @@ namespace WebApp.Areas_Admin_Controllers
                 return NotFound();
             }
 
-            var miniManufacturer = await _context.MiniManufacturers.FindAsync(id);
-            if (miniManufacturer == null)
+            var miniProperties = await _context.MiniProperties.FindAsync(id);
+            if (miniProperties == null)
             {
                 return NotFound();
             }
-            return View(miniManufacturer);
+            return View(miniProperties);
         }
 
-        // POST: MiniManufacturers/Edit/5
+        // POST: MiniPropertiesz/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ManufacturerName,HeadquartersLocation,ContactEmail,ContactPhone,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] MiniManufacturer miniManufacturer)
+        public async Task<IActionResult> Edit(Guid id, [Bind("PropertyName,PropertyDesc,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] MiniProperties miniProperties)
         {
-            if (id != miniManufacturer.Id)
+            if (id != miniProperties.Id)
             {
                 return NotFound();
             }
@@ -101,12 +101,12 @@ namespace WebApp.Areas_Admin_Controllers
             {
                 try
                 {
-                    _context.Update(miniManufacturer);
+                    _context.Update(miniProperties);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MiniManufacturerExists(miniManufacturer.Id))
+                    if (!MiniPropertiesExists(miniProperties.Id))
                     {
                         return NotFound();
                     }
@@ -117,10 +117,10 @@ namespace WebApp.Areas_Admin_Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(miniManufacturer);
+            return View(miniProperties);
         }
 
-        // GET: MiniManufacturers/Delete/5
+        // GET: MiniPropertiesz/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -128,34 +128,34 @@ namespace WebApp.Areas_Admin_Controllers
                 return NotFound();
             }
 
-            var miniManufacturer = await _context.MiniManufacturers
+            var miniProperties = await _context.MiniProperties
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (miniManufacturer == null)
+            if (miniProperties == null)
             {
                 return NotFound();
             }
 
-            return View(miniManufacturer);
+            return View(miniProperties);
         }
 
-        // POST: MiniManufacturers/Delete/5
+        // POST: MiniPropertiesz/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var miniManufacturer = await _context.MiniManufacturers.FindAsync(id);
-            if (miniManufacturer != null)
+            var miniProperties = await _context.MiniProperties.FindAsync(id);
+            if (miniProperties != null)
             {
-                _context.MiniManufacturers.Remove(miniManufacturer);
+                _context.MiniProperties.Remove(miniProperties);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MiniManufacturerExists(Guid id)
+        private bool MiniPropertiesExists(Guid id)
         {
-            return _context.MiniManufacturers.Any(e => e.Id == id);
+            return _context.MiniProperties.Any(e => e.Id == id);
         }
     }
 }

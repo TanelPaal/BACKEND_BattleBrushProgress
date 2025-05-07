@@ -1,4 +1,4 @@
-@model IEnumerable<App.Domain.Miniature>
+@model IEnumerable<App.Domain.Paint>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,19 +13,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MiniName)
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiniDesc)
+                @Html.DisplayNameFor(model => model.HexCode)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiniFaction)
+                @Html.DisplayNameFor(model => model.UPC)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiniProperties)
+                @Html.DisplayNameFor(model => model.Brand)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiniManufacturer)
+                @Html.DisplayNameFor(model => model.PaintType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaintLine)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedBy)
@@ -49,19 +52,22 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniName)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniDesc)
+                @Html.DisplayFor(modelItem => item.HexCode)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniFaction.FactionDesc)
+                @Html.DisplayFor(modelItem => item.UPC)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniProperties.PropertyDesc)
+                @Html.DisplayFor(modelItem => item.Brand.BrandName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniManufacturer.ContactEmail)
+                @Html.DisplayFor(modelItem => item.PaintType.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaintLine.Description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)

@@ -1,4 +1,4 @@
-@model App.Domain.Miniature
+@model App.Domain.MiniatureCollection
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,36 +6,51 @@
 
 <h1>Edit</h1>
 
-<h4>Miniature</h4>
+<h4>MiniatureCollection</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="MiniName" class="control-label"></label>
-                <input asp-for="MiniName" class="form-control" />
-                <span asp-validation-for="MiniName" class="text-danger"></span>
+                <label asp-for="CollectionName" class="control-label"></label>
+                <input asp-for="CollectionName" class="form-control" />
+                <span asp-validation-for="CollectionName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MiniDesc" class="control-label"></label>
-                <input asp-for="MiniDesc" class="form-control" />
-                <span asp-validation-for="MiniDesc" class="text-danger"></span>
+                <label asp-for="CollectionDesc" class="control-label"></label>
+                <input asp-for="CollectionDesc" class="form-control" />
+                <span asp-validation-for="CollectionDesc" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MiniFactionId" class="control-label"></label>
-                <select asp-for="MiniFactionId" class="form-control" asp-items="ViewBag.MiniFactionId"></select>
-                <span asp-validation-for="MiniFactionId" class="text-danger"></span>
+                <label asp-for="AcquisitionDate" class="control-label"></label>
+                <input asp-for="AcquisitionDate" class="form-control" />
+                <span asp-validation-for="AcquisitionDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MiniPropertiesId" class="control-label"></label>
-                <select asp-for="MiniPropertiesId" class="form-control" asp-items="ViewBag.MiniPropertiesId"></select>
-                <span asp-validation-for="MiniPropertiesId" class="text-danger"></span>
+                <label asp-for="CompletionDate" class="control-label"></label>
+                <input asp-for="CompletionDate" class="form-control" />
+                <span asp-validation-for="CompletionDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MiniManufacturerId" class="control-label"></label>
-                <select asp-for="MiniManufacturerId" class="form-control" asp-items="ViewBag.MiniManufacturerId"></select>
-                <span asp-validation-for="MiniManufacturerId" class="text-danger"></span>
+                <label asp-for="MiniatureId" class="control-label"></label>
+                <select asp-for="MiniatureId" class="form-control" asp-items="ViewBag.MiniatureId"></select>
+                <span asp-validation-for="MiniatureId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MiniStateId" class="control-label"></label>
+                <select asp-for="MiniStateId" class="form-control" asp-items="ViewBag.MiniStateId"></select>
+                <span asp-validation-for="MiniStateId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PersonId" class="control-label"></label>
+                <select asp-for="PersonId" class="form-control" asp-items="ViewBag.PersonId"></select>
+                <span asp-validation-for="PersonId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">

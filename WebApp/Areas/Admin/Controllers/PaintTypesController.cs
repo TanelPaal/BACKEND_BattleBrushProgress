@@ -13,22 +13,22 @@ namespace WebApp.Areas_Admin_Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "admin")]
-    public class MiniManufacturersController : Controller
+    public class PaintTypesController : Controller
     {
         private readonly AppDbContext _context;
 
-        public MiniManufacturersController(AppDbContext context)
+        public PaintTypesController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: MiniManufacturers
+        // GET: PaintTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MiniManufacturers.ToListAsync());
+            return View(await _context.PaintTypes.ToListAsync());
         }
 
-        // GET: MiniManufacturers/Details/5
+        // GET: PaintTypes/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -36,40 +36,40 @@ namespace WebApp.Areas_Admin_Controllers
                 return NotFound();
             }
 
-            var miniManufacturer = await _context.MiniManufacturers
+            var paintType = await _context.PaintTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (miniManufacturer == null)
+            if (paintType == null)
             {
                 return NotFound();
             }
 
-            return View(miniManufacturer);
+            return View(paintType);
         }
 
-        // GET: MiniManufacturers/Create
+        // GET: PaintTypes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: MiniManufacturers/Create
+        // POST: PaintTypes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ManufacturerName,HeadquartersLocation,ContactEmail,ContactPhone,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] MiniManufacturer miniManufacturer)
+        public async Task<IActionResult> Create([Bind("Name,Description,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] PaintType paintType)
         {
             if (ModelState.IsValid)
             {
-                miniManufacturer.Id = Guid.NewGuid();
-                _context.Add(miniManufacturer);
+                paintType.Id = Guid.NewGuid();
+                _context.Add(paintType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(miniManufacturer);
+            return View(paintType);
         }
 
-        // GET: MiniManufacturers/Edit/5
+        // GET: PaintTypes/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -77,22 +77,22 @@ namespace WebApp.Areas_Admin_Controllers
                 return NotFound();
             }
 
-            var miniManufacturer = await _context.MiniManufacturers.FindAsync(id);
-            if (miniManufacturer == null)
+            var paintType = await _context.PaintTypes.FindAsync(id);
+            if (paintType == null)
             {
                 return NotFound();
             }
-            return View(miniManufacturer);
+            return View(paintType);
         }
 
-        // POST: MiniManufacturers/Edit/5
+        // POST: PaintTypes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ManufacturerName,HeadquartersLocation,ContactEmail,ContactPhone,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] MiniManufacturer miniManufacturer)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Description,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] PaintType paintType)
         {
-            if (id != miniManufacturer.Id)
+            if (id != paintType.Id)
             {
                 return NotFound();
             }
@@ -101,12 +101,12 @@ namespace WebApp.Areas_Admin_Controllers
             {
                 try
                 {
-                    _context.Update(miniManufacturer);
+                    _context.Update(paintType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MiniManufacturerExists(miniManufacturer.Id))
+                    if (!PaintTypeExists(paintType.Id))
                     {
                         return NotFound();
                     }
@@ -117,10 +117,10 @@ namespace WebApp.Areas_Admin_Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(miniManufacturer);
+            return View(paintType);
         }
 
-        // GET: MiniManufacturers/Delete/5
+        // GET: PaintTypes/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -128,34 +128,34 @@ namespace WebApp.Areas_Admin_Controllers
                 return NotFound();
             }
 
-            var miniManufacturer = await _context.MiniManufacturers
+            var paintType = await _context.PaintTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (miniManufacturer == null)
+            if (paintType == null)
             {
                 return NotFound();
             }
 
-            return View(miniManufacturer);
+            return View(paintType);
         }
 
-        // POST: MiniManufacturers/Delete/5
+        // POST: PaintTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var miniManufacturer = await _context.MiniManufacturers.FindAsync(id);
-            if (miniManufacturer != null)
+            var paintType = await _context.PaintTypes.FindAsync(id);
+            if (paintType != null)
             {
-                _context.MiniManufacturers.Remove(miniManufacturer);
+                _context.PaintTypes.Remove(paintType);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MiniManufacturerExists(Guid id)
+        private bool PaintTypeExists(Guid id)
         {
-            return _context.MiniManufacturers.Any(e => e.Id == id);
+            return _context.PaintTypes.Any(e => e.Id == id);
         }
     }
 }

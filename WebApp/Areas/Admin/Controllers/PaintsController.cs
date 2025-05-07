@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +9,7 @@ using App.DAL.EF;
 using App.Domain;
 using Microsoft.AspNetCore.Authorization;
 
-namespace WebApp.Areas.Admin.Controllers
+namespace WebApp.Areas_Admin_Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "admin")]
@@ -22,14 +22,14 @@ namespace WebApp.Areas.Admin.Controllers
             _context = context;
         }
 
+        // GET: Paints
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Paints
-                .Include(p => p.PaintLine)
-                .Include(p => p.PaintType);
+            var appDbContext = _context.Paints.Include(p => p.Brand).Include(p => p.PaintLine).Include(p => p.PaintType);
             return View(await appDbContext.ToListAsync());
         }
 
+        // GET: Paints/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -38,6 +38,7 @@ namespace WebApp.Areas.Admin.Controllers
             }
 
             var paint = await _context.Paints
+                .Include(p => p.Brand)
                 .Include(p => p.PaintLine)
                 .Include(p => p.PaintType)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -49,16 +50,21 @@ namespace WebApp.Areas.Admin.Controllers
             return View(paint);
         }
 
+        // GET: Paints/Create
         public IActionResult Create()
         {
-            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Name");
-            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name");
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName");
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description");
+            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description");
             return View();
         }
 
+        // POST: Paints/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PaintName,PaintHex,PaintLineId,PaintTypeId,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] Paint paint)
+        public async Task<IActionResult> Create([Bind("Name,HexCode,UPC,BrandId,PaintTypeId,PaintLineId,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] Paint paint)
         {
             if (ModelState.IsValid)
             {
@@ -67,11 +73,13 @@ namespace WebApp.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Name", paint.PaintLineId);
-            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name", paint.PaintTypeId);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description", paint.PaintLineId);
+            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description", paint.PaintTypeId);
             return View(paint);
         }
 
+        // GET: Paints/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -84,14 +92,18 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Name", paint.PaintLineId);
-            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name", paint.PaintTypeId);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description", paint.PaintLineId);
+            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description", paint.PaintTypeId);
             return View(paint);
         }
 
+        // POST: Paints/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("PaintName,PaintHex,PaintLineId,PaintTypeId,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] Paint paint)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Name,HexCode,UPC,BrandId,PaintTypeId,PaintLineId,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] Paint paint)
         {
             if (id != paint.Id)
             {
@@ -118,11 +130,13 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Name", paint.PaintLineId);
-            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name", paint.PaintTypeId);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description", paint.PaintLineId);
+            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description", paint.PaintTypeId);
             return View(paint);
         }
 
+        // GET: Paints/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -131,6 +145,7 @@ namespace WebApp.Areas.Admin.Controllers
             }
 
             var paint = await _context.Paints
+                .Include(p => p.Brand)
                 .Include(p => p.PaintLine)
                 .Include(p => p.PaintType)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -142,6 +157,7 @@ namespace WebApp.Areas.Admin.Controllers
             return View(paint);
         }
 
+        // POST: Paints/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

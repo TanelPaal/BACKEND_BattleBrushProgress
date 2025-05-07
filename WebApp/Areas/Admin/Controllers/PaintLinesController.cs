@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,11 +9,11 @@ using App.DAL.EF;
 using App.Domain;
 using Microsoft.AspNetCore.Authorization;
 
-namespace WebApp.Areas.Admin.Controllers
+namespace WebApp.Areas_Admin_Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "admin")]
-    public class PaintLinesController : Controller
+    internal class PaintLinesController : Controller
     {
         private readonly AppDbContext _context;
 
@@ -22,12 +22,14 @@ namespace WebApp.Areas.Admin.Controllers
             _context = context;
         }
 
+        // GET: PaintLines
         public async Task<IActionResult> Index()
         {
             var appDbContext = _context.PaintLines.Include(p => p.Brand);
             return View(await appDbContext.ToListAsync());
         }
 
+        // GET: PaintLines/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -46,15 +48,19 @@ namespace WebApp.Areas.Admin.Controllers
             return View(paintLine);
         }
 
+        // GET: PaintLines/Create
         public IActionResult Create()
         {
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Name");
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName");
             return View();
         }
 
+        // POST: PaintLines/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,BrandId,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] PaintLine paintLine)
+        public async Task<IActionResult> Create([Bind("PaintLineName,Description,BrandId,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] PaintLine paintLine)
         {
             if (ModelState.IsValid)
             {
@@ -63,10 +69,11 @@ namespace WebApp.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Name", paintLine.BrandId);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paintLine.BrandId);
             return View(paintLine);
         }
 
+        // GET: PaintLines/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -79,13 +86,16 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Name", paintLine.BrandId);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paintLine.BrandId);
             return View(paintLine);
         }
 
+        // POST: PaintLines/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,BrandId,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] PaintLine paintLine)
+        public async Task<IActionResult> Edit(Guid id, [Bind("PaintLineName,Description,BrandId,Id,CreatedBy,CreatedAt,ChangedBy,ChangedAt,SysNotes")] PaintLine paintLine)
         {
             if (id != paintLine.Id)
             {
@@ -112,10 +122,11 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Name", paintLine.BrandId);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paintLine.BrandId);
             return View(paintLine);
         }
 
+        // GET: PaintLines/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -134,6 +145,7 @@ namespace WebApp.Areas.Admin.Controllers
             return View(paintLine);
         }
 
+        // POST: PaintLines/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

@@ -12,4 +12,8 @@
       <ProjectReference Include="..\Base.BLL\Base.BLL.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+    </ItemGroup>
+
 </Project>

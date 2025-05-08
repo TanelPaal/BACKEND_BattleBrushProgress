@@ -26,4 +26,52 @@
     <data name="Register" xml:space="preserve">
         <value>Registreeru</value>
     </data>
+    <data name="Home" xml:space="preserve">
+        <value>Avaleht</value>
+    </data>
+    <data name="User" xml:space="preserve">
+        <value>Kasutaja</value>
+    </data>
+    <data name="Person" xml:space="preserve">
+        <value>Isik</value>
+    </data>
+    <data name="MiniatureCollection" xml:space="preserve">
+        <value>Miniatuuride Kollektsioon</value>
+    </data>
+    <data name="PersonPaints" xml:space="preserve">
+        <value>Minu Värvid</value>
+    </data>
+    <data name="MiniPaintSwatch" xml:space="preserve">
+        <value>Värvi Skeem</value>
+    </data>
+    <data name="Admin" xml:space="preserve">
+        <value>Administraator</value>
+    </data>
+    <data name="Miniature" xml:space="preserve">
+        <value>Miniatuur</value>
+    </data>
+    <data name="MiniFaction" xml:space="preserve">
+        <value>Miniatuuri Fraktsioon</value>
+    </data>
+    <data name="MiniManufacturer" xml:space="preserve">
+        <value>Miniatuuri Tootja</value>
+    </data>
+    <data name="MiniProperties" xml:space="preserve">
+        <value>Miniatuuri Omadused</value>
+    </data>
+    <data name="MiniState" xml:space="preserve">
+        <value>Miniatuuri Staatus</value>
+    </data>
+    <data name="Paint" xml:space="preserve">
+        <value>Värv</value>
+    </data>
+    <data name="PaintLine" xml:space="preserve">
+        <value>Värvisari</value>
+    </data>
+    <data name="PaintType" xml:space="preserve">
+        <value>Värvitüüp</value>
+    </data>
+    <data name="Brand" xml:space="preserve">
+        <value>Bränd</value>
+    </data>
 </root>

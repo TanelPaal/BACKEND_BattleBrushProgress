@@ -52,11 +52,11 @@
         <LastGenOutput>PaintType.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Update="Views\Home\Index.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Index.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Update="Views\Shared\_Layout.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>

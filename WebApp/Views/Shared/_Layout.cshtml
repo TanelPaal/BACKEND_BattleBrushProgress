@@ -27,61 +27,62 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@App.Resources.Views.Shared._Layout.Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" href="/swagger">Api</a>
                     </li>
                     
+                    @*Kasutaja*@
                     @if (User.Identity?.IsAuthenticated ?? false)
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" href="javascript:{}" id="userDropdwon"
-                               role="button" data-bs-toggle="dropdown" aria-expanded="false">User</a>
+                               role="button" data-bs-toggle="dropdown" aria-expanded="false">@App.Resources.Views.Shared._Layout.User</a>
                             <div class="dropdown-menu" aria-labelledby="userDropdown">
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Person"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.Person"
                                    asp-action="Index">Person</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniatureCollection"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.MiniatureCollection"
                                    asp-action="Index">MiniatureCollection</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="PersonPaints"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.PersonPaints"
                                    asp-action="Index">PersonPaints</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniPaintSwatch"
-                                   asp-action="Index">ContactTypes</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.MiniPaintSwatch"
+                                   asp-action="Index">MiniPaintSwatch</a>
                             </div>
                         </li>
                     }
-                    
+                    @*Administrator*@
                     @if (User.IsInRole("admin"))
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" href="javascript:{}" id="adminDropdown"
-                               role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                               role="button" data-bs-toggle="dropdown" aria-expanded="false">@App.Resources.Views.Shared._Layout.Admin</a>
                             <div class="dropdown-menu" aria-labelledby="adminDropdown">
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Person"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.Person"
                                    asp-action="Index">Person</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniatureCollection"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.MiniatureCollection"
                                    asp-action="Index">MiniatureCollection</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="PersonPaints"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.PersonPaints"
                                    asp-action="Index">PersonPaints</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniPaintSwatch"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.MiniPaintSwatch"
                                    asp-action="Index">MiniPaintSwatch</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Miniature"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.Miniature"
                                    asp-action="Index">Miniature</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniFaction"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.MiniFaction"
                                    asp-action="Index">MiniFaction</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniManufacturer"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.MiniManufacturer"
                                    asp-action="Index">MiniManufacturer</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniProperties"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.MiniProperties"
                                    asp-action="Index">MiniProperties</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="MiniState"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.MiniState"
                                    asp-action="Index">MiniState</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Paint"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.Paint"
                                    asp-action="Index">Paint</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="PaintLine"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.PaintLine"
                                    asp-action="Index">PaintLine</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="PaintType"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.PaintType"
                                    asp-action="Index">PaintType</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Brand"
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.Brand"
                                    asp-action="Index">Brand</a>
                             </div>
                         </li>

@@ -12,7 +12,7 @@
         <LastGenOutput>Common.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Update="_Layout.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>

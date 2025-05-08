@@ -63,4 +63,16 @@
     <data name="MaxLength" xml:space="preserve">
         <value>Max Length</value>
     </data>
+    <data name="CreateNew" xml:space="preserve">
+        <value>Create New</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="Details" xml:space="preserve">
+        <value>Details</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
 </root>

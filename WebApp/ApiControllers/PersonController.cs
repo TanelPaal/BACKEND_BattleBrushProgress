@@ -50,8 +50,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<IEnumerable<App.DTO.v1.Person>>> GetPersons()
         {
             var data = await _bll.PersonService.AllAsync(User.GetUserId());
-            var res = data.Select(x => _mapper.Map(x)!).ToList();
-
+            var res = data.Select(x => _mapper.Map(x)!).OrderBy(x => x.PersonName).ToList();
             return res;
         }
 

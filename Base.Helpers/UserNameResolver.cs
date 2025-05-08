@@ -11,5 +11,5 @@ public class UserNameResolver : IUserNameResolver
         _httpContextAccessor = httpContextAccessor;
     }
     
-    public string CurrentUserName => _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "system";
+    public string CurrentUserName => _httpContextAccessor.HttpContext?.User.Identity?.Name ?? "system";
 }

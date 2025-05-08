@@ -104,4 +104,15 @@ dotnet aspnet-codegenerator controller -name PersonPaintsController  -m  App.Dom
 
 ~~~
 
+~~~sh
+
+dotnet aspnet-codegenerator controller -name RefreshTokensController        -actions -m  App.Domain.Identity.AppRefreshToken        -dc AppDbContext -outDir Areas/Admin/Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name UsersController        -actions -m  App.Domain.Identity.AppUser        -dc AppDbContext -outDir Areas/Admin/Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name RolesController        -actions -m  App.Domain.Identity.AppRole        -dc AppDbContext -outDir Areas/Admin/Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name UserRolesController        -actions -m  App.Domain.Identity.AppUserRole        -dc AppDbContext -outDir Areas/Admin/Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+
+dotnet aspnet-codegenerator controller -name UserManagementController         -actions -m  App.Domain.Identity.AppUser        -dc AppDbContext -outDir Areas/Admin/Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+
+~~~~
+
 

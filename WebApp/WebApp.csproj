@@ -114,6 +114,16 @@
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\Miniatures\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\Miniatures\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\Miniatures\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\RefreshTokens\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\RefreshTokens\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\RefreshTokens\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\RefreshTokens\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\RefreshTokens\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Users\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Users\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Users\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Users\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Users\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

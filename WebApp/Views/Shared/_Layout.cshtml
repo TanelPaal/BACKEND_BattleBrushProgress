@@ -84,6 +84,23 @@
                                    asp-action="Index">PaintType</a>
                                 <a class="dropdown-item text-dark" asp-area="" asp-controller="@App.Resources.Views.Shared._Layout.Brand"
                                    asp-action="Index">Brand</a>
+                                
+                                <hr class="dropdown-divider">
+
+                                <a class="dropdown-item text-dark" asp-area="admin" asp-controller="Users"
+                                   asp-action="Index">Users</a>
+                                <a class="dropdown-item text-dark" asp-area="admin" asp-controller="Roles"
+                                   asp-action="Index">Roles</a>
+                                <a class="dropdown-item text-dark" asp-area="admin" asp-controller="UserRoles"
+                                   asp-action="Index">User Roles</a>
+                                <a class="dropdown-item text-dark" asp-area="admin" asp-controller="RefreshTokens"
+                                   asp-action="Index">Refresh Tokens</a>
+
+                                <hr class="dropdown-divider">
+                                
+                                <a class="dropdown-item text-dark" asp-area="admin" asp-controller="UserManagement"
+                                   asp-action="Index">User Management</a>
+
                             </div>
                         </li>
                     }

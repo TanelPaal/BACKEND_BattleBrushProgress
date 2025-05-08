@@ -232,13 +232,11 @@ namespace App.DAL.EF.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
-                    table.UniqueConstraint("AK_AspNetUserRoles_Id", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
                         column: x => x.RoleId,
@@ -579,12 +577,6 @@ namespace App.DAL.EF.Migrations
                 name: "IX_AspNetUserRoles_RoleId",
                 table: "AspNetUserRoles",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_UserId_RoleId",
-                table: "AspNetUserRoles",
-                columns: new[] { "UserId", "RoleId" },
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",

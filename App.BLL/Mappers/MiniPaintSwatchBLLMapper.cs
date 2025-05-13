@@ -15,9 +15,7 @@ public class MiniPaintSwatchBLLMapper : IMapper<App.BLL.DTO.MiniPaintSwatch, App
             UsageType = entity.UsageType,
             Notes = entity.Notes,
             MiniatureCollectionId = entity.MiniatureCollectionId,
-            MiniatureCollection = null,
             PersonPaintsId = entity.PersonPaintsId,
-            PersonPaints = null,
         };
         return res;
     }
@@ -31,9 +29,36 @@ public class MiniPaintSwatchBLLMapper : IMapper<App.BLL.DTO.MiniPaintSwatch, App
             UsageType = entity.UsageType,
             Notes = entity.Notes,
             MiniatureCollectionId = entity.MiniatureCollectionId,
-            MiniatureCollection = null,
+            MiniatureCollection = entity.MiniatureCollection == null ? null : new App.BLL.DTO.MiniatureCollection()
+            {
+                Id = entity.MiniatureCollection!.Id,
+                CollectionName = entity.MiniatureCollection.CollectionName,
+                CollectionDesc = entity.MiniatureCollection.CollectionDesc,
+                AcquisitionDate = entity.MiniatureCollection.AcquisitionDate,
+                CompletionDate = entity.MiniatureCollection.CompletionDate,
+                MiniatureId = entity.MiniatureCollection.MiniatureId,
+                MiniStateId = entity.MiniatureCollection.MiniStateId,
+                PersonId = entity.MiniatureCollection.PersonId,
+            },
             PersonPaintsId = entity.PersonPaintsId,
-            PersonPaints = null,
+            PersonPaints = entity.PersonPaints == null ? null : new App.BLL.DTO.PersonPaints()
+            {
+                Id = entity.PersonPaints!.Id,
+                Quantity = entity.PersonPaints.Quantity,
+                AcquisitionDate = entity.PersonPaints.AcquisitionDate,
+                PersonId = entity.PersonPaints.PersonId,
+                PaintId = entity.PersonPaints.PaintId,
+                Paint = entity.PersonPaints.Paint == null ? null : new App.BLL.DTO.Paint
+                {
+                    Id = entity.PersonPaints.Paint.Id,
+                    Name = entity.PersonPaints.Paint.Name,
+                    HexCode = entity.PersonPaints.Paint.HexCode,
+                    UPC = entity.PersonPaints.Paint.UPC,
+                    BrandId = entity.PersonPaints.Paint.BrandId,
+                    PaintTypeId = entity.PersonPaints.Paint.PaintTypeId,
+                    PaintLineId = entity.PersonPaints.Paint.PaintLineId,
+                }
+            }
         };
         return res;
     }

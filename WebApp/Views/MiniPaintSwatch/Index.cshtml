@@ -37,10 +37,10 @@
                 @Html.DisplayFor(modelItem => item.Notes)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiniatureCollection!.CollectionDesc)
+                @Html.DisplayFor(modelItem => item.MiniatureCollection!.CollectionName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PersonPaints!.Id)
+                @Html.DisplayFor(modelItem => item.PersonPaints!.Paint!.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Base.Resources.Common.Edit</a> |

@@ -27,13 +27,13 @@
             @Html.DisplayNameFor(model => model.MiniatureCollection)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MiniatureCollection!.CollectionDesc)
+            @Html.DisplayFor(model => model.MiniatureCollection!.CollectionName)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.PersonPaints)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PersonPaints!.Id)
+            @Html.DisplayFor(model => model.PersonPaints!.Paint!.Name)
         </dd>
         @*<dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.User)

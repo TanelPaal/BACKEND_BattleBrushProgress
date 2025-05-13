@@ -151,7 +151,7 @@ public class MiniatureCollectionController : Controller
         ViewData["MiniatureId"] = new SelectList(
             await _bll.MiniatureService.AllAsync(),
             "Id",
-            "MiniDesc");
+            "MiniName");
             
         ViewData["MiniStateId"] = new SelectList(
             await _bll.MiniStateService.AllAsync(),

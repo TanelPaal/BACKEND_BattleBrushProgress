@@ -57,8 +57,8 @@ namespace WebApp.Areas_Admin_Controllers
         public IActionResult Create()
         {
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName");
-            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description");
-            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description");
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "PaintLineName");
+            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name");
             return View();
         }
 
@@ -77,8 +77,8 @@ namespace WebApp.Areas_Admin_Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
-            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description", paint.PaintLineId);
-            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description", paint.PaintTypeId);
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "PaintLineName", paint.PaintLineId);
+            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name", paint.PaintTypeId);
             return View(paint);
         }
 
@@ -96,8 +96,8 @@ namespace WebApp.Areas_Admin_Controllers
                 return NotFound();
             }
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
-            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description", paint.PaintLineId);
-            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description", paint.PaintTypeId);
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "PaintLineName", paint.PaintLineId);
+            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name", paint.PaintTypeId);
             return View(paint);
         }
 
@@ -134,8 +134,8 @@ namespace WebApp.Areas_Admin_Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", paint.BrandId);
-            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "Description", paint.PaintLineId);
-            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Description", paint.PaintTypeId);
+            ViewData["PaintLineId"] = new SelectList(_context.PaintLines, "Id", "PaintLineName", paint.PaintLineId);
+            ViewData["PaintTypeId"] = new SelectList(_context.PaintTypes, "Id", "Name", paint.PaintTypeId);
             return View(paint);
         }
 

@@ -59,7 +59,7 @@ namespace WebApp.Areas_Admin_Controllers
         public IActionResult Create()
         {
             ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniDesc");
-            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateDesc");
+            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateName");
             ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName");
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
@@ -79,8 +79,8 @@ namespace WebApp.Areas_Admin_Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniDesc", miniatureCollection.MiniatureId);
-            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateDesc", miniatureCollection.MiniStateId);
+            ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniName", miniatureCollection.MiniatureId);
+            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateName", miniatureCollection.MiniStateId);
             ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", miniatureCollection.PersonId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", miniatureCollection.UserId);
             return View(miniatureCollection);
@@ -99,8 +99,8 @@ namespace WebApp.Areas_Admin_Controllers
             {
                 return NotFound();
             }
-            ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniDesc", miniatureCollection.MiniatureId);
-            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateDesc", miniatureCollection.MiniStateId);
+            ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniName", miniatureCollection.MiniatureId);
+            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateName", miniatureCollection.MiniStateId);
             ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", miniatureCollection.PersonId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", miniatureCollection.UserId);
             return View(miniatureCollection);
@@ -138,8 +138,8 @@ namespace WebApp.Areas_Admin_Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniDesc", miniatureCollection.MiniatureId);
-            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateDesc", miniatureCollection.MiniStateId);
+            ViewData["MiniatureId"] = new SelectList(_context.Miniatures, "Id", "MiniName", miniatureCollection.MiniatureId);
+            ViewData["MiniStateId"] = new SelectList(_context.MiniStates, "Id", "StateName", miniatureCollection.MiniStateId);
             ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", miniatureCollection.PersonId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", miniatureCollection.UserId);
             return View(miniatureCollection);

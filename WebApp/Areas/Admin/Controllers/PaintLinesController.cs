@@ -9,11 +9,11 @@ using App.DAL.EF;
 using App.Domain;
 using Microsoft.AspNetCore.Authorization;
 
-namespace WebApp.Areas_Admin_Controllers
+namespace WebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "admin")]
-    internal class PaintLinesController : Controller
+    public class PaintLinesController : Controller
     {
         private readonly AppDbContext _context;
 

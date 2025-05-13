@@ -28,6 +28,7 @@ namespace WebApp.Areas_Admin_Controllers
             var appDbContext = _context.MiniPaintSwatches
                 .Include(m => m.MiniatureCollection)
                 .Include(m => m.PersonPaints)
+                    .ThenInclude(pp => pp.Paint)
                 .Include(m => m.User);
             return View(await appDbContext.ToListAsync());
         }
@@ -43,6 +44,7 @@ namespace WebApp.Areas_Admin_Controllers
             var miniPaintSwatch = await _context.MiniPaintSwatches
                 .Include(m => m.MiniatureCollection)
                 .Include(m => m.PersonPaints)
+                    .ThenInclude(pp => pp.Paint)
                 .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (miniPaintSwatch == null)
@@ -56,8 +58,12 @@ namespace WebApp.Areas_Admin_Controllers
         // GET: MiniPaintSwatchs/Create
         public IActionResult Create()
         {
-            ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc");
-            ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id");
+            ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionName");
+            ViewData["PersonPaintsId"] = new SelectList(
+                _context.PersonPaints.Include(pp => pp.Paint),
+                "Id",
+                "Paint.Name"
+            );
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
@@ -76,8 +82,13 @@ namespace WebApp.Areas_Admin_Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc", miniPaintSwatch.MiniatureCollectionId);
-            ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id", miniPaintSwatch.PersonPaintsId);
+            ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionName", miniPaintSwatch.MiniatureCollectionId);
+            ViewData["PersonPaintsId"] = new SelectList(
+                _context.PersonPaints.Include(pp => pp.Paint),
+                "Id",
+                "Paint.Name",
+                miniPaintSwatch.PersonPaintsId
+            );
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.UserId);
             return View(miniPaintSwatch);
         }
@@ -95,8 +106,13 @@ namespace WebApp.Areas_Admin_Controllers
             {
                 return NotFound();
             }
-            ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc", miniPaintSwatch.MiniatureCollectionId);
-            ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id", miniPaintSwatch.PersonPaintsId);
+            ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionName", miniPaintSwatch.MiniatureCollectionId);
+            ViewData["PersonPaintsId"] = new SelectList(
+                _context.PersonPaints.Include(pp => pp.Paint),
+                "Id",
+                "Paint.Name",
+                miniPaintSwatch.PersonPaintsId
+            );
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.UserId);
             return View(miniPaintSwatch);
         }
@@ -133,8 +149,13 @@ namespace WebApp.Areas_Admin_Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionDesc", miniPaintSwatch.MiniatureCollectionId);
-            ViewData["PersonPaintsId"] = new SelectList(_context.PersonPaints, "Id", "Id", miniPaintSwatch.PersonPaintsId);
+            ViewData["MiniatureCollectionId"] = new SelectList(_context.MiniatureCollections, "Id", "CollectionName", miniPaintSwatch.MiniatureCollectionId);
+            ViewData["PersonPaintsId"] = new SelectList(
+                _context.PersonPaints.Include(pp => pp.Paint),
+                "Id",
+                "Paint.Name",
+                miniPaintSwatch.PersonPaintsId
+            );
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", miniPaintSwatch.UserId);
             return View(miniPaintSwatch);
         }
@@ -150,6 +171,7 @@ namespace WebApp.Areas_Admin_Controllers
             var miniPaintSwatch = await _context.MiniPaintSwatches
                 .Include(m => m.MiniatureCollection)
                 .Include(m => m.PersonPaints)
+                    .ThenInclude(pp => pp.Paint)
                 .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (miniPaintSwatch == null)

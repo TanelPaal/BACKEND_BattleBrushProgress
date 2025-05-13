@@ -56,7 +56,7 @@ namespace WebApp.Areas_Admin_Controllers
         // GET: PersonPaintsz/Create
         public IActionResult Create()
         {
-            ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "HexCode");
+            ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "Name");
             ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName");
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
@@ -76,7 +76,7 @@ namespace WebApp.Areas_Admin_Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "HexCode", personPaints.PaintId);
+            ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "Name", personPaints.PaintId);
             ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", personPaints.PersonId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", personPaints.UserId);
             return View(personPaints);
@@ -95,7 +95,7 @@ namespace WebApp.Areas_Admin_Controllers
             {
                 return NotFound();
             }
-            ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "HexCode", personPaints.PaintId);
+            ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "Name", personPaints.PaintId);
             ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", personPaints.PersonId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", personPaints.UserId);
             return View(personPaints);
@@ -133,7 +133,7 @@ namespace WebApp.Areas_Admin_Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "HexCode", personPaints.PaintId);
+            ViewData["PaintId"] = new SelectList(_context.Paints, "Id", "Name", personPaints.PaintId);
             ViewData["PersonId"] = new SelectList(_context.Persons, "Id", "PersonName", personPaints.PersonId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", personPaints.UserId);
             return View(personPaints);

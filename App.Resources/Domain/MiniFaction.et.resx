@@ -12,10 +12,10 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="FactionDesc" xml:space="preserve">
-        <value>Fraktsioon</value>
+        <value>Kirjeldus</value>
     </data>
     <data name="FactionName" xml:space="preserve">
-        <value>Kirjeldus</value>
+        <value>Fraktsioon</value>
     </data>
     <data name="Miniatures" xml:space="preserve">
         <value>Miniatuur</value>

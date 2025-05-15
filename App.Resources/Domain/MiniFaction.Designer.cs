@@ -60,7 +60,7 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Faction.
+        ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string FactionDesc {
             get {
@@ -69,7 +69,7 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Description.
+        ///   Looks up a localized string similar to Faction.
         /// </summary>
         public static string FactionName {
             get {

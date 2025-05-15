@@ -14,4 +14,122 @@ public static class InitialData
             ("admin@taltech.ee", "admin", "taltech", "Foo.Bar.1", null, ["admin"]),
             ("user@taltech.ee", "user", "taltech", "Foo.Bar.2", null, []),
         ];
+    
+    
+    // Define GUIDs explicitly for brands so they can be referenced in other tables
+    private static readonly Guid GwBrandId = new Guid("2228c4a4-ecec-4ed0-a002-3746f05c4177");
+    private static readonly Guid VallejoBrandId = new Guid("0ccbffd9-5ae2-4d2e-b033-756c24ff67bf");
+    private static readonly Guid ArmypainterBrandId = new Guid("860d2163-c35c-4fbe-b428-cd3ef7a09299");
+
+    // Add initial data for Brands with explicit GUIDs
+    public static readonly (string brandName, string headquartersLocation, string contactEmail, string contactPhone, Guid id)[]
+        Brands =
+        [
+            ("Games Workshop", "Nottingham, UK", "contact@games-workshop.com", "+44-115-900-4994", GwBrandId),
+            ("Vallejo", "Barcelona, Spain", "vallejo@acrylicosvallejo.com", "+34-935-60-0070", VallejoBrandId),
+            ("Army Painter", "Randers, Denmark", "info@thearmypainter.com", "+45-7022-0890", ArmypainterBrandId),
+        ];
+
+    // Define GUIDs for paint lines
+    private static readonly Guid CitadelLineId = new Guid("96562f1a-51fb-440e-a47c-ca8de9f07bf1");
+    private static readonly Guid ModelColorLineId = new Guid("a79868a9-a441-4bc8-ad3c-64953ac772f0");
+    private static readonly Guid WarpaintsLineId = new Guid("4ad3284b-de35-4d89-8b70-b6277f01c9ce");
+
+    // Add initial data for PaintLines with brand references
+    public static readonly (string paintLineName, string description, Guid brandId, Guid id)[]
+        PaintLines =
+        [
+            ("Citadel", "Premium paints designed for Warhammer miniatures", GwBrandId, CitadelLineId),
+            ("Model Color", "High-density acrylic colors for brushwork", VallejoBrandId, ModelColorLineId),
+            ("Warpaints", "Complete range for miniature painting", ArmypainterBrandId, WarpaintsLineId),
+        ];
+    
+    // Define GUIDs for paint types
+    private static readonly Guid AcrylicTypeId = new Guid("5a79a01f-5c97-477d-8236-122c422bbc76");
+    private static readonly Guid OilTypeId = new Guid("cd9a0d22-5cac-46c6-99b3-539ba133ed93");
+    private static readonly Guid ContrastTypeId = new Guid("9138f172-d527-42e4-96ae-7648ce493802");
+
+    // Add initial data for PaintTypes
+    public static readonly (string paintTypeName, string paintTypeDesc, Guid id)[]
+        PaintTypes =
+        [
+            ("Acrylic", "Water-based paint that dries quickly", AcrylicTypeId),
+            ("Oil", "Oil-based paint with longer drying time, good for blending", OilTypeId),
+            ("Contrast", "Specialized paint that shades and highlights in one coat", ContrastTypeId),
+        ];
+    
+    
+    public static readonly (string paintName, string hexCode, string upc, Guid brandb, Guid painttype, Guid paintline, Guid? id)[]
+        Paints =
+        [
+            ("Abaddon Black", "000000", "111122223333", GwBrandId, AcrylicTypeId, CitadelLineId, null),
+            ("Mephiston Red", "9B0000", "222233334444", GwBrandId, AcrylicTypeId, CitadelLineId, null),
+            ("Ultramarine Blue", "0047AB", "333344445555", GwBrandId, AcrylicTypeId, CitadelLineId, null),
+        ];
+    
+    // Add initial data for MiniStates
+    public static readonly (string stateName, string stateDesc, Guid? id)[]
+        MiniStates =
+        [
+            ("Unpainted", "Model in its raw form, not painted", null),
+            ("Base Coated", "Model with primary base colors applied", null),
+            ("Fully Painted", "Model with complete paint job and details", null),
+        ];
+
+    // Define GUIDs for MiniFactions
+    private static readonly Guid TyranidId = new Guid("a933fbb8-308e-408b-8a99-a3fe3f695c77");
+    private static readonly Guid TauId = new Guid("6a778a7a-6840-4ab3-94fd-55811a583a4a");
+    private static readonly Guid OrksId = new Guid("0126efbc-d3d7-4277-94c6-df650d6d271c");
+    
+    // Add initial data for MiniFactions
+    public static readonly (string factionName, string factionDesc, Guid id)[]
+        MiniFactions =
+        [
+            ("Tyranid", "The Tyranids are an extragalactic composite species of hideous, insectoid xenos.", TyranidId),
+            ("Tau", "The T'au Empire, also spelled Tau Empire in older Imperial records, is a rapidly expanding, multispecies xenos stellar empire situated within the Imperium of Man's Ultima Segmentum, near the Eastern Fringes of the Milky Way Galaxy.", TauId),
+            ("Orks", "The Orks, also called Greenskins, are a savage, warlike, green-skinned species of bestial, asexual humanoids who are spread all across the galaxy.", OrksId),
+        ];
+    
+    // Define GUIDs for MiniManufacturers
+    private static readonly Guid ManufacturerGWId = new Guid("ab93d852-6097-48fe-b5e6-5f8666f31dfa");
+    
+    // Add initial data for MiniManufacturers
+    public static readonly (string manufacturerName, string manuHQ, string contactEmail, string contactPhone, Guid id)[]
+        MiniManufacturers =
+        [
+            ("Games Workshop", "Nottingham, UK", "contact@games-workshop.com", "+44-115-900-4994", ManufacturerGWId),
+        ];
+    
+    // Define GUIDs for MiniProperties
+    private static readonly Guid PropMetalId = new Guid("a83b1b2a-7749-4ed3-a74b-ba47fe1d0160");
+    private static readonly Guid PropPlasticId = new Guid("58fc59d9-fafd-4592-82e3-a2d8262a915c");
+    private static readonly Guid PropResinId = new Guid("c5056892-430e-4107-a430-bc3ee3933b87");
+    
+    // Add initial data for MiniProperties
+    public static readonly (string propertyName, string propertyDesc, Guid id)[]
+        MiniProperties =
+        [
+            ("Metal", "Made out of metal", PropMetalId),
+            ("Plastic", "Made out of plastic", PropPlasticId),
+            ("Resin", "Made out of epoxy resin", PropResinId),
+        ];
+    
+    // TODO: Solve FK Constraint issue
+    // Add initial data for Miniatures
+    /*public static readonly (string miniName, string miniDesc, Guid factionId, Guid manuId, Guid propertyId, Guid? id)[]
+        Miniature =
+        [
+            ("Hive Tyrant", "Lorem ipsum", TyranidId, ManufacturerGWId, PropPlasticId, null),
+            ("Tyranid Warrior", "Lorem ipsum", TyranidId, ManufacturerGWId, PropPlasticId, null),
+            ("Ethereal", "Lorem ipsum", TauId, ManufacturerGWId, PropPlasticId,  null),
+            ("Ork Boyz", "Lorem ipsum", OrksId, ManufacturerGWId, PropMetalId, null),
+        ];*/
+    
+    
+
+
+
+
+
+
 }

@@ -56,7 +56,7 @@ namespace WebApp.Areas_Admin_Controllers
         // GET: Miniatures/Create
         public IActionResult Create()
         {
-            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc");
+            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionName");
             ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ManufacturerName");
             ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyName");
             return View();
@@ -76,7 +76,7 @@ namespace WebApp.Areas_Admin_Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc", miniature.MiniFactionId);
+            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionName", miniature.MiniFactionId);
             ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ManufacturerName", miniature.MiniManufacturerId);
             ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyName", miniature.MiniPropertiesId);
             return View(miniature);
@@ -95,7 +95,7 @@ namespace WebApp.Areas_Admin_Controllers
             {
                 return NotFound();
             }
-            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc", miniature.MiniFactionId);
+            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionName", miniature.MiniFactionId);
             ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ManufacturerName", miniature.MiniManufacturerId);
             ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyName", miniature.MiniPropertiesId);
             return View(miniature);
@@ -133,7 +133,7 @@ namespace WebApp.Areas_Admin_Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionDesc", miniature.MiniFactionId);
+            ViewData["MiniFactionId"] = new SelectList(_context.MiniFactions, "Id", "FactionName", miniature.MiniFactionId);
             ViewData["MiniManufacturerId"] = new SelectList(_context.MiniManufacturers, "Id", "ManufacturerName", miniature.MiniManufacturerId);
             ViewData["MiniPropertiesId"] = new SelectList(_context.MiniProperties, "Id", "PropertyName", miniature.MiniPropertiesId);
             return View(miniature);

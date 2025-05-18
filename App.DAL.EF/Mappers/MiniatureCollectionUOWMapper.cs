@@ -39,6 +39,13 @@ public class MiniatureCollectionUOWMapper : IMapper<App.DAL.DTO.MiniatureCollect
                 Id = entity.Person!.Id,
                 PersonName = entity.Person.PersonName,
             },
+            MiniPaintSwatches = entity.MiniPaintSwatches?
+                .Select(s => new App.DAL.DTO.MiniPaintSwatch
+                {
+                    Id = s.Id,
+                    UsageType = s.UsageType,
+                    Notes = s.Notes,
+                }).ToList()
         };
         return res;
     }

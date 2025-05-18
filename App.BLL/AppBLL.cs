@@ -111,4 +111,8 @@ public class AppBLL : BaseBLL<IAppUOW>, IAppBLL
     private IPersonPaintsStatsService? _personPaintsStatsService;
     public IPersonPaintsStatsService PersonPaintsStatsService =>
         _personPaintsStatsService ??= new PersonPaintsStatsService(BLLUOW);
+    
+    private IRandomMiniaturePickerService? _randomMiniaturePickerService;
+    public IRandomMiniaturePickerService RandomMiniaturePickerService =>
+        _randomMiniaturePickerService ??= new RandomMiniaturePickerService(BLLUOW);
 }

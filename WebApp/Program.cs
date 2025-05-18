@@ -61,6 +61,7 @@ else
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddScoped<IAppUOW, AppUOW>();
+//builder.Services.AddScoped<IRandomMiniaturePickerService, RandomMiniaturePickerService>();
 builder.Services.AddScoped<IAppBLL, AppBLL>();
 
 

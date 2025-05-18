@@ -41,4 +41,14 @@ public class MiniatureCollectionRepository : BaseRepository<App.DAL.DTO.Miniatur
             .Include(mc => mc.MiniState)
             .ToListAsync();
     }
+    
+    public async Task<List<App.DAL.DTO.MiniatureCollection>> AllWithPaintSwatchesAsync(Guid userId)
+    {
+        var domainEntities = await RepositoryDbSet
+            .Where(mc => mc.UserId == userId)
+            .Include(mc => mc.MiniPaintSwatches)
+            .ToListAsync();
+
+        return domainEntities.Select(e => Mapper.Map(e)!).ToList();
+    }
 }

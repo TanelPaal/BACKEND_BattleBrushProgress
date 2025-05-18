@@ -33,4 +33,12 @@ public class MiniatureCollectionRepository : BaseRepository<App.DAL.DTO.Miniatur
 
         return Mapper.Map(entity);
     }
+    
+    public async Task<List<MiniatureCollection>> GetAllByUserIdAsync(Guid userId)
+    {
+        return await RepositoryDbSet
+            .Where(mc => mc.UserId == userId)
+            .Include(mc => mc.MiniState)
+            .ToListAsync();
+    }
 }

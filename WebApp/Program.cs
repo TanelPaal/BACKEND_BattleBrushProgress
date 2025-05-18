@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using App.BLL;
 using App.BLL.Contracts;
+using App.BLL.Services;
 using App.DAL.Contracts;
 using App.DAL.EF;
 using App.DAL.EF.DataSeeding;
@@ -61,6 +62,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddScoped<IAppUOW, AppUOW>();
 builder.Services.AddScoped<IAppBLL, AppBLL>();
+builder.Services.AddScoped<IMiniatureCollectionRepository, MiniatureCollectionRepository>();
+builder.Services.AddScoped<IMiniStateRepository, MiniStateRepository>();
+builder.Services.AddScoped<IMiniatureCollectionStatsService, MiniatureCollectionStatsService>();
 
 // JWT SUPPORT
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
@@ -320,3 +324,5 @@ static void WaitDbConnection(AppDbContext ctx, ILogger<IApplicationBuilder> logg
 public partial class Program
 {
 }
+
+

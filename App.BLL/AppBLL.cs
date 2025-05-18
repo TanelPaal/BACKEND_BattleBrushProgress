@@ -103,4 +103,17 @@ public class AppBLL : BaseBLL<IAppUOW>, IAppBLL
             BLLUOW,
             new PersonBLLMapper()
             );
+    
+    public IMiniatureCollectionStatsService MiniatureCollectionStatsService { get; }
+
+    public AppBLL(
+        IAppUOW uow,
+        IMiniatureCollectionRepository miniatureCollectionRepository,
+        IMiniStateRepository miniStateRepository
+    ) : base(uow)
+    {
+        MiniatureCollectionStatsService = new MiniatureCollectionStatsService(
+            miniatureCollectionRepository, miniStateRepository
+        );
+    }
 }

@@ -18,4 +18,5 @@ public interface IAppBLL : IBaseBLL
     IPersonPaintsService PersonPaintsService { get; }
     IPersonService PersonService { get; }
     IMiniatureCollectionStatsService MiniatureCollectionStatsService { get; }
+    IPersonPaintsStatsService PersonPaintsStatsService { get; }
 }

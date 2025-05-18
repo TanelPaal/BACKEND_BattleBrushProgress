@@ -16,11 +16,11 @@ public class PersonPaintsUOWMapper : IMapper<App.DAL.DTO.PersonPaints, App.Domai
             Quantity = entity.Quantity,
             AcquisitionDate = entity.AcquisitionDate,
             PersonId = entity.PersonId,
-            Person = entity.Paint == null 
-                ? null :
-                new Person()
+            Person = entity.Person == null 
+                ? null 
+                : new Person()
                 {
-                    Id = entity.Person!.Id,
+                    Id = entity.Person.Id,
                     PersonName = entity.Person.PersonName,
                 },
             PaintId = entity.PaintId,
@@ -29,7 +29,17 @@ public class PersonPaintsUOWMapper : IMapper<App.DAL.DTO.PersonPaints, App.Domai
                 : new Paint()
                 {
                     Id = entity.Paint.Id,
-                    Name = entity.Paint.Name
+                    Name = entity.Paint.Name,
+                    Brand = entity.Paint.Brand == null ? null : new Brand()
+                    {
+                        Id = entity.Paint.Brand.Id,
+                        BrandName = entity.Paint.Brand.BrandName
+                    },
+                    PaintType = entity.Paint.PaintType == null ? null : new PaintType()
+                    {
+                        Id = entity.Paint.PaintType.Id,
+                        Name = entity.Paint.PaintType.Name
+                    }
                 }
         };
         return res;

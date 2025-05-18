@@ -8,6 +8,8 @@ namespace App.DAL.EF.Repositories;
 
 public class PersonPaintsRepository : BaseRepository<App.DAL.DTO.PersonPaints, App.Domain.PersonPaints>, IPersonPaintsRepository
 {
+    private readonly PersonPaintsUOWMapper _mapper = new PersonPaintsUOWMapper();
+
     public PersonPaintsRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new PersonPaintsUOWMapper())
     {
     }
@@ -16,6 +18,7 @@ public class PersonPaintsRepository : BaseRepository<App.DAL.DTO.PersonPaints, A
     {
         return await RepositoryDbSet
             .Include(x => x.Person)
+            .Include(x => x.Paint)
             .Include(x => x.Paint)
             .Where(x => x.UserId == userId)
             .Select(x => Mapper.Map(x)!)
@@ -30,5 +33,19 @@ public class PersonPaintsRepository : BaseRepository<App.DAL.DTO.PersonPaints, A
             .FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
 
         return Mapper.Map(entity);
+    }
+
+    public async Task<List<App.DAL.DTO.PersonPaints>> AllWithPaintDetailsAsync(Guid userId)
+    {
+        var domainEntities = await RepositoryDbSet
+            .Where(pp => pp.UserId == userId)
+            .Include(pp => pp.Paint)
+                .ThenInclude(p => p.Brand)
+            .Include(pp => pp.Paint)
+                .ThenInclude(p => p.PaintType)
+            .ToListAsync();
+
+        // Use the mapper to convert each domain entity to DTO
+        return domainEntities.Select(e => _mapper.Map(e)!).ToList();
     }
 }

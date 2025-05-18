@@ -6,26 +6,22 @@ namespace App.BLL.Services;
 
 public class MiniatureCollectionStatsService : IMiniatureCollectionStatsService
 {
-    private readonly IMiniatureCollectionRepository _miniatureCollectionRepository;
-    private readonly IMiniStateRepository _miniStateRepository;
+    private readonly IAppUOW _uow;
 
-    public MiniatureCollectionStatsService(
-        IMiniatureCollectionRepository miniatureCollectionRepository,
-        IMiniStateRepository miniStateRepository)
+    public MiniatureCollectionStatsService(IAppUOW uow)
     {
-        _miniatureCollectionRepository = miniatureCollectionRepository;
-        _miniStateRepository = miniStateRepository;
+        _uow = uow;
     }
 
     public async Task<MiniatureCollectionStats> GetUserCollectionStats(Guid userId)
     {
         var stats = new MiniatureCollectionStats();
         
-        // Get all miniatures for the user
-        var userMiniatures = await _miniatureCollectionRepository.GetAllByUserIdAsync(userId);
+        // Get all miniatures for the user using UoW
+        var userMiniatures = (await _uow.MiniatureCollectionRepository.AllAsync(userId)).ToList();
         
-        // Get all possible states
-        var states = await _miniStateRepository.AllAsync();
+        // Get all possible states using UoW
+        var states = (await _uow.MiniStateRepository.AllAsync()).ToList();
         
         // Initialize state counts
         foreach (var state in states)

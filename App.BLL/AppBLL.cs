@@ -104,16 +104,11 @@ public class AppBLL : BaseBLL<IAppUOW>, IAppBLL
             new PersonBLLMapper()
             );
     
-    public IMiniatureCollectionStatsService MiniatureCollectionStatsService { get; }
-
-    public AppBLL(
-        IAppUOW uow,
-        IMiniatureCollectionRepository miniatureCollectionRepository,
-        IMiniStateRepository miniStateRepository
-    ) : base(uow)
-    {
-        MiniatureCollectionStatsService = new MiniatureCollectionStatsService(
-            miniatureCollectionRepository, miniStateRepository
-        );
-    }
+    private IMiniatureCollectionStatsService? _miniatureCollectionStatsService;
+    public IMiniatureCollectionStatsService MiniatureCollectionStatsService =>
+        _miniatureCollectionStatsService ??= new MiniatureCollectionStatsService(BLLUOW);
+    
+    private IPersonPaintsStatsService? _personPaintsStatsService;
+    public IPersonPaintsStatsService PersonPaintsStatsService =>
+        _personPaintsStatsService ??= new PersonPaintsStatsService(BLLUOW);
 }

@@ -8,17 +8,17 @@ namespace WebApp.ApiControllers;
 [Route("api/v1/[controller]")]
 public class MiniatureCollectionStatsController : ControllerBase
 {
-    private readonly IMiniatureCollectionStatsService _statsService;
+    private readonly IAppBLL _bll;
 
-    public MiniatureCollectionStatsController(IMiniatureCollectionStatsService statsService)
+    public MiniatureCollectionStatsController(IAppBLL bll)
     {
-        _statsService = statsService;
+        _bll = bll;
     }
 
     [HttpGet("user/{userId}")]
     public async Task<ActionResult<MiniatureCollectionStats>> GetUserStats(Guid userId)
     {
-        var stats = await _statsService.GetUserCollectionStats(userId);
+        var stats = await _bll.MiniatureCollectionStatsService.GetUserCollectionStats(userId);
         return Ok(stats);
     }
 }

@@ -62,9 +62,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddScoped<IAppUOW, AppUOW>();
 builder.Services.AddScoped<IAppBLL, AppBLL>();
-builder.Services.AddScoped<IMiniatureCollectionRepository, MiniatureCollectionRepository>();
-builder.Services.AddScoped<IMiniStateRepository, MiniStateRepository>();
-builder.Services.AddScoped<IMiniatureCollectionStatsService, MiniatureCollectionStatsService>();
+
 
 // JWT SUPPORT
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims

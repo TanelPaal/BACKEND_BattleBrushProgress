@@ -1,4 +1,5 @@
 ﻿using Base.Contracts;
+using App.DTO.v1;
 
 namespace App.DTO.v1.Mappers;
 
@@ -15,8 +16,29 @@ public class MiniatureCollectionMapper : IMapper<App.DTO.v1.MiniatureCollection,
             AcquisitionDate = entity.AcquisitionDate,
             CompletionDate = entity.CompletionDate,
             MiniatureId = entity.MiniatureId,
+            Miniature = entity.Miniature == null ? null : new App.DTO.v1.Miniature()
+            {
+                Id = entity.Miniature.Id,
+                MiniName = entity.Miniature.MiniName,
+                MiniDesc = entity.Miniature.MiniDesc,
+                MiniFactionId = entity.Miniature.MiniFactionId,
+                MiniPropertiesId = entity.Miniature.MiniPropertiesId,
+                MiniManufacturerId = entity.Miniature.MiniManufacturerId,
+            },
             MiniStateId = entity.MiniStateId,
-            PersonId = entity.PersonId
+            MiniState = entity.MiniState == null ? null : new App.DTO.v1.MiniState()
+            {
+                Id = entity.MiniState.Id,
+                StateName = entity.MiniState.StateName,
+                StateDesc = entity.MiniState.StateDesc,
+            },
+            PersonId = entity.PersonId,
+            Person = entity.Person == null ? null : new App.DTO.v1.Person()
+            {
+                Id = entity.Person.Id,
+                PersonName = entity.Person.PersonName,
+                
+            }
         };
         return res;
     }

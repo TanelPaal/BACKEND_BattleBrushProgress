@@ -30,9 +30,12 @@ public class MiniatureCollection : IDomainId
 
     // Relationships
     public Guid MiniatureId { get; set; }
+    public Miniature? Miniature { get; set; }
 
     public Guid MiniStateId { get; set; }
+    public MiniState? MiniState { get; set; }
 
     public Guid PersonId { get; set; }
-    
+    public Person? Person { get; set; }
+
 }

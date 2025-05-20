@@ -17,4 +17,6 @@ public class MiniPaintSwatch : IDomainId
     
     public Guid PersonPaintsId { get; set; }
 
+    public MiniatureCollection? MiniatureCollection { get; set; }
+    public PersonPaints? PersonPaints { get; set; }
 }

@@ -52,7 +52,7 @@ namespace WebApp.ApiControllers
         [ProducesResponseType( 404 )]
         public async Task<ActionResult<IEnumerable<App.DTO.v1.MiniPaintSwatch>>> GetMiniPaintSwatches()
         {
-            var data = await _bll.MiniPaintSwatchService.AllAsync();
+            var data = await _bll.MiniPaintSwatchService.AllAsync(User.GetUserId());
             return data.Select(x => _mapper.Map(x)!).ToList();
         }
 

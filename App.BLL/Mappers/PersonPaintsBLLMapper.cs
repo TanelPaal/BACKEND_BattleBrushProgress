@@ -29,20 +29,21 @@ public class PersonPaintsBLLMapper : IMapper<App.BLL.DTO.PersonPaints, App.DAL.D
             Quantity = entity.Quantity,
             AcquisitionDate = entity.AcquisitionDate,
             PersonId = entity.PersonId,
-            Person = entity.Paint == null 
-                ? null :
-                new App.BLL.DTO.Person()
+            Person = entity.Paint == null ? null : new App.BLL.DTO.Person()
             {
                 Id = entity.Person!.Id,
                 PersonName = entity.Person.PersonName,
             },
             PaintId = entity.PaintId,
-            Paint = entity.Paint == null 
-                ? null 
-                : new App.BLL.DTO.Paint()
+            Paint = entity.Paint == null ? null : new App.BLL.DTO.Paint()
             {
                 Id = entity.Paint.Id,
                 Name = entity.Paint.Name,
+                HexCode = entity.Paint.HexCode,
+                UPC = entity.Paint.UPC,
+                BrandId = entity.Paint.BrandId,
+                PaintTypeId = entity.Paint.PaintTypeId,
+                PaintLineId = entity.Paint.PaintLineId
             }
         };
         return res;

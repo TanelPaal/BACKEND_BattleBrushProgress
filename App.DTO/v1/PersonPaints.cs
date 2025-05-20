@@ -20,6 +20,8 @@ public class PersonPaints : IDomainId
     
     // Relationships
     public Guid PersonId { get; set; }
+    public Person? Person { get; set; }
     
     public Guid PaintId { get; set; }
+    public Paint? Paint { get; set; }
 }

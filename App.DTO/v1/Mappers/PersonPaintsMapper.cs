@@ -13,7 +13,24 @@ public class PersonPaintsMapper : IMapper<App.DTO.v1.PersonPaints, App.BLL.DTO.P
             Quantity = entity.Quantity,
             AcquisitionDate = entity.AcquisitionDate,
             PersonId = entity.PersonId,
+            Person = entity.Person == null 
+                ? null : 
+                new App.DTO.v1.Person()
+            {
+                Id = entity.Person.Id,
+                PersonName = entity.Person.PersonName,
+            },
             PaintId = entity.PaintId,
+            Paint = entity.Paint == null ? null : new App.DTO.v1.Paint()
+            {
+                Id = entity.PaintId,
+                Name = entity.Paint.Name,
+                HexCode = entity.Paint.HexCode,
+                UPC = entity.Paint.UPC,
+                BrandId = entity.Paint.BrandId,
+                PaintTypeId = entity.Paint.PaintTypeId,
+                PaintLineId = entity.Paint.PaintLineId
+            }
         };
         return res;
     }

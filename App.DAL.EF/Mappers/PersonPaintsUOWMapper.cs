@@ -30,6 +30,11 @@ public class PersonPaintsUOWMapper : IMapper<App.DAL.DTO.PersonPaints, App.Domai
                 {
                     Id = entity.Paint.Id,
                     Name = entity.Paint.Name,
+                    HexCode = entity.Paint.HexCode,
+                    UPC = entity.Paint.UPC,
+                    BrandId = entity.Paint.BrandId,
+                    PaintTypeId = entity.Paint.PaintTypeId,
+                    PaintLineId = entity.Paint.PaintLineId,
                     Brand = entity.Paint.Brand == null ? null : new Brand()
                     {
                         Id = entity.Paint.Brand.Id,

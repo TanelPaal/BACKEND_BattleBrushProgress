@@ -7,13 +7,24 @@ public static class InitialData
         [
             ("admin", null),
         ];
+    
+    private static readonly Guid RegularUserId = new Guid("11000000-0000-0000-0000-000000000001");
+    private static readonly Guid AdminUserId = new Guid("11000000-0000-0000-0000-000000000002");
 
-    public static readonly (string name, string firstName, string lastName, string password, Guid? id, string[] roles)[]
+    public static readonly (string name, string firstName, string lastName, string password, Guid id, string[] roles)[]
         Users =
         [
-            ("admin@taltech.ee", "admin", "taltech", "Foo.Bar.1", null, ["admin"]),
-            ("user@taltech.ee", "user", "taltech", "Foo.Bar.2", null, []),
+            ("admin@taltech.ee", "admin", "taltech", "Foo.Bar.1", AdminUserId, ["admin"]),
+            ("user@taltech.ee", "user", "taltech", "Foo.Bar.2", RegularUserId, []),
         ];
+    
+    private static readonly Guid RegularUserPersonId = new Guid("11000000-0000-0000-0000-000000000003");
+
+    public static readonly (string personName, Guid userId, Guid id)[]
+        Persons =
+        {
+            ("Test Person", RegularUserId, RegularUserPersonId),
+        };
     
     
     // Define GUIDs explicitly for brands so they can be referenced in other tables
@@ -118,13 +129,18 @@ public static class InitialData
             ("Moot Green", "57aa2d", "888899990000", GwBrandId, AcrylicTypeId, CitadelLineId, null),
         ];
     
+    private static readonly Guid StateUnpaitedId = new Guid("10000000-0000-0000-0000-000000000001");
+    private static readonly Guid StateBaseCoatedId = new Guid("10000000-0000-0000-0000-000000000002");
+    private static readonly Guid StateFullyPaintedId = new Guid("10000000-0000-0000-0000-000000000003");
+    
+    
     // Add initial data for MiniStates
-    public static readonly (string stateName, string stateDesc, Guid? id)[]
+    public static readonly (string stateName, string stateDesc, Guid id)[]
         MiniStates =
         [
-            ("Unpainted", "Model in its raw form, not painted", null),
-            ("Base Coated", "Model with primary base colors applied", null),
-            ("Fully Painted", "Model with complete paint job and details", null),
+            ("Unpainted", "Model in its raw form, not painted", StateUnpaitedId),
+            ("Base Coated", "Model with primary base colors applied", StateBaseCoatedId),
+            ("Fully Painted", "Model with complete paint job and details", StateFullyPaintedId),
         ];
 
     // Define GUIDs for MiniFactions
@@ -164,7 +180,15 @@ public static class InitialData
             ("Plastic", "Made out of plastic", PropPlasticId),
             ("Resin", "Made out of epoxy resin", PropResinId),
         ];
+
+    private static readonly Guid HTyrantId = new Guid("00000000-0000-0000-0000-000000000001");
     
+    public static readonly (string miniName, string miniDesc, Guid factionId, Guid manuId, Guid propertyId, Guid id)[]
+        Miniature =
+        [
+            ("Hive Tyrant", "Lorem Ipsum", TyranidId, ManufacturerGWId, PropPlasticId, HTyrantId),
+        ];
+
     // TODO: Solve FK Constraint issue
     // Add initial data for Miniatures
     /*public static readonly (string miniName, string miniDesc, Guid factionId, Guid manuId, Guid propertyId, Guid? id)[]
@@ -175,5 +199,5 @@ public static class InitialData
             ("Ethereal", "Lorem ipsum", TauId, ManufacturerGWId, PropPlasticId,  null),
             ("Ork Boyz", "Lorem ipsum", OrksId, ManufacturerGWId, PropMetalId, null),
         ];*/
-    
+
 }

@@ -16,13 +16,13 @@ public static class AppDataInit
         SeedPaintTypes(context);
         SeedPaints(context);
         
+        SeedPersons(context);
         SeedMiniStates(context);
         
         SeedMiniFactions(context);
         SeedMiniManufacturers(context);
         SeedMiniProperties(context);
-        // TODO: FK constraint issue
-        /*SeedMiniatures(context);*/
+        SeedMiniatures(context);
 
 
 
@@ -67,7 +67,7 @@ public static class AppDataInit
             {
                 user = new AppUser()
                 {
-                    Id = userInfo.id ?? Guid.NewGuid(),
+                    Id = userInfo.id,
                     Email = userInfo.name,
                     UserName = userInfo.name,
                     EmailConfirmed = true,
@@ -117,6 +117,24 @@ public static class AppDataInit
         }
     }
 
+    private static void SeedPersons(AppDbContext context)
+    {
+        if (context.Persons.Any()) return;
+
+        foreach (var personData in InitialData.Persons)
+        {
+            var person = new Person()
+            {
+                Id = personData.id,
+                PersonName = personData.personName,
+                UserId = personData.userId,
+            };
+            
+            context.Persons.Add(person);
+        }
+        context.SaveChanges();
+    }
+
     private static void SeedBrands(AppDbContext context)
     {
         if (context.Brands.Any()) return;
@@ -131,12 +149,9 @@ public static class AppDataInit
                 ContactEmail = brandData.contactEmail,
                 ContactPhone = brandData.contactPhone
             };
-        
             context.Brands.Add(brand);
         }
-    
         context.SaveChanges();
-
     }
     
     private static void SeedPaintLines(AppDbContext context)
@@ -208,6 +223,7 @@ public static class AppDataInit
         {
             var miniState = new MiniState
             {
+                Id = stateData.id,
                 StateName = stateData.stateName,
                 StateDesc = stateData.stateDesc,
             };
@@ -226,6 +242,7 @@ public static class AppDataInit
         {
             var miniFaction = new MiniFaction
             {
+                Id = factionData.id,
                 FactionName = factionData.factionName,
                 FactionDesc = factionData.factionDesc,
             };
@@ -244,6 +261,7 @@ public static class AppDataInit
         {
             var miniManufacturer = new MiniManufacturer()
             {
+                Id = manufacturerData.id,
                 ManufacturerName = manufacturerData.manufacturerName,
                 HeadquartersLocation = manufacturerData.manuHQ,
                 ContactEmail = manufacturerData.contactEmail,
@@ -272,6 +290,27 @@ public static class AppDataInit
             context.MiniProperties.Add(miniProperties);
         }
         
+        context.SaveChanges();
+    }
+
+    private static void SeedMiniatures(AppDbContext context)
+    {
+        if (context.Miniatures.Any()) return;
+
+        foreach (var miniatureData in InitialData.Miniature)
+        {
+            var miniature = new Miniature()
+            {
+                Id = miniatureData.id,
+                MiniName = miniatureData.miniName,
+                MiniDesc = miniatureData.miniDesc,
+                MiniFactionId = miniatureData.factionId,
+                MiniManufacturerId = miniatureData.manuId,
+                MiniPropertiesId = miniatureData.propertyId
+            };
+            
+            context.Miniatures.Add(miniature);
+        }
         context.SaveChanges();
     }
 

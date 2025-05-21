@@ -59,12 +59,17 @@ public static class InitialData
         ];
     
     
+    // Define GUIDs for some test paints
+    private static readonly Guid AbaddonBlackId = new Guid("11111111-1111-1111-1111-111111111111");
+    private static readonly Guid UltramarineBlueId = new Guid("22222222-2222-2222-2222-222222222222");
+    private static readonly Guid CerWhId = new Guid("33333333-3333-3333-3333-333333333333");
+
     public static readonly (string paintName, string hexCode, string upc, Guid brandb, Guid painttype, Guid paintline, Guid? id)[]
         Paints =
         [
-            ("Abaddon Black", "000000", "111122223333", GwBrandId, AcrylicTypeId, CitadelLineId, null),//
-            ("Ultramarine Blue", "0047AB", "333344445555", GwBrandId, AcrylicTypeId, CitadelLineId, null),//
-            ("Ceramite White", "ffffff", "444455556666", GwBrandId, AcrylicTypeId, CitadelLineId, null),
+            ("Abaddon Black", "000000", "111122223333", GwBrandId, AcrylicTypeId, CitadelLineId, AbaddonBlackId),
+            ("Ultramarine Blue", "0047AB", "333344445555", GwBrandId, AcrylicTypeId, CitadelLineId, UltramarineBlueId),
+            ("Ceramite White", "ffffff", "444455556666", GwBrandId, AcrylicTypeId, CitadelLineId, CerWhId),
             ("White Scar", "ffffff", "555566667777", GwBrandId, AcrylicTypeId, CitadelLineId, null),
             ("Averland Sunset", "fbba00", "666677778888", GwBrandId, AcrylicTypeId, CitadelLineId, null),
             ("Yriel Yellow", "ffda00", "777788889999", GwBrandId, AcrylicTypeId, CitadelLineId, null),

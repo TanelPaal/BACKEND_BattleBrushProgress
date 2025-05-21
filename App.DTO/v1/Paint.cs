@@ -18,9 +18,12 @@ public class Paint : IDomainId
     
     // Add relationships
     public Guid BrandId { get; set; }
+    public Brand? Brand { get; set; }
     
     public Guid PaintTypeId { get; set; }
+    public PaintType? PaintType { get; set; }
     
     public Guid? PaintLineId { get; set; }
+    public PaintLine? PaintLine { get; set; }
     
 }

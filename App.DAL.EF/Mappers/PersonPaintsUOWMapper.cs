@@ -33,17 +33,22 @@ public class PersonPaintsUOWMapper : IMapper<App.DAL.DTO.PersonPaints, App.Domai
                     HexCode = entity.Paint.HexCode,
                     UPC = entity.Paint.UPC,
                     BrandId = entity.Paint.BrandId,
-                    PaintTypeId = entity.Paint.PaintTypeId,
-                    PaintLineId = entity.Paint.PaintLineId,
                     Brand = entity.Paint.Brand == null ? null : new Brand()
                     {
                         Id = entity.Paint.Brand.Id,
                         BrandName = entity.Paint.Brand.BrandName
                     },
+                    PaintTypeId = entity.Paint.PaintTypeId,
                     PaintType = entity.Paint.PaintType == null ? null : new PaintType()
                     {
                         Id = entity.Paint.PaintType.Id,
                         Name = entity.Paint.PaintType.Name
+                    },
+                    PaintLineId = entity.Paint.PaintLineId,
+                    PaintLine = entity.Paint.PaintLine == null ? null : new PaintLine()
+                    {
+                        Id = entity.Paint.PaintLine.Id,
+                        PaintLineName = entity.Paint.PaintLine.PaintLineName
                     }
                 }
         };

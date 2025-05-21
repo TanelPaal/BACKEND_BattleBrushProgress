@@ -14,22 +14,37 @@ public class PersonPaintsMapper : IMapper<App.DTO.v1.PersonPaints, App.BLL.DTO.P
             AcquisitionDate = entity.AcquisitionDate,
             PersonId = entity.PersonId,
             Person = entity.Person == null 
-                ? null : 
-                new App.DTO.v1.Person()
-            {
-                Id = entity.Person.Id,
-                PersonName = entity.Person.PersonName,
-            },
+                ? null 
+                : new App.DTO.v1.Person()
+                {
+                    Id = entity.Person.Id,
+                    PersonName = entity.Person.PersonName,
+                },
             PaintId = entity.PaintId,
             Paint = entity.Paint == null ? null : new App.DTO.v1.Paint()
             {
-                Id = entity.PaintId,
+                Id = entity.Paint.Id,
                 Name = entity.Paint.Name,
                 HexCode = entity.Paint.HexCode,
                 UPC = entity.Paint.UPC,
                 BrandId = entity.Paint.BrandId,
+                Brand = entity.Paint.Brand == null ? null : new App.DTO.v1.Brand()
+                {
+                    Id = entity.Paint.Brand.Id,
+                    BrandName = entity.Paint.Brand.BrandName
+                },
                 PaintTypeId = entity.Paint.PaintTypeId,
-                PaintLineId = entity.Paint.PaintLineId
+                PaintType = entity.Paint.PaintType == null ? null : new App.DTO.v1.PaintType()
+                {
+                    Id = entity.Paint.PaintType.Id,
+                    Name = entity.Paint.PaintType.Name
+                },
+                PaintLineId = entity.Paint.PaintLineId,
+                PaintLine = entity.Paint.PaintLine == null ? null : new App.DTO.v1.PaintLine()
+                {
+                    Id = entity.Paint.PaintLine.Id,
+                    PaintLineName = entity.Paint.PaintLine.PaintLineName
+                }
             }
         };
         return res;

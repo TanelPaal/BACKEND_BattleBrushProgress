@@ -19,7 +19,11 @@ public class PersonPaintsRepository : BaseRepository<App.DAL.DTO.PersonPaints, A
         return await RepositoryDbSet
             .Include(x => x.Person)
             .Include(x => x.Paint)
+                .ThenInclude(p => p.Brand)
             .Include(x => x.Paint)
+                .ThenInclude(p => p.PaintType)
+            .Include(x => x.Paint)
+                .ThenInclude(p => p.PaintLine)
             .Where(x => x.UserId == userId)
             .Select(x => Mapper.Map(x)!)
             .ToListAsync();
@@ -30,6 +34,11 @@ public class PersonPaintsRepository : BaseRepository<App.DAL.DTO.PersonPaints, A
         var entity = await RepositoryDbSet
             .Include(x => x.Person)
             .Include(x => x.Paint)
+                .ThenInclude(p => p.Brand)
+            .Include(x => x.Paint)
+                .ThenInclude(p => p.PaintType)
+            .Include(x => x.Paint)
+                .ThenInclude(p => p.PaintLine)
             .FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
 
         return Mapper.Map(entity);

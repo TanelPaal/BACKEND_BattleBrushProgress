@@ -29,9 +29,9 @@ public class PersonPaintsBLLMapper : IMapper<App.BLL.DTO.PersonPaints, App.DAL.D
             Quantity = entity.Quantity,
             AcquisitionDate = entity.AcquisitionDate,
             PersonId = entity.PersonId,
-            Person = entity.Paint == null ? null : new App.BLL.DTO.Person()
+            Person = entity.Person == null ? null : new App.BLL.DTO.Person()
             {
-                Id = entity.Person!.Id,
+                Id = entity.Person.Id,
                 PersonName = entity.Person.PersonName,
             },
             PaintId = entity.PaintId,
@@ -42,8 +42,23 @@ public class PersonPaintsBLLMapper : IMapper<App.BLL.DTO.PersonPaints, App.DAL.D
                 HexCode = entity.Paint.HexCode,
                 UPC = entity.Paint.UPC,
                 BrandId = entity.Paint.BrandId,
+                Brand = entity.Paint.Brand == null ? null : new App.BLL.DTO.Brand()
+                {
+                    Id = entity.Paint.Brand.Id,
+                    BrandName = entity.Paint.Brand.BrandName
+                },
                 PaintTypeId = entity.Paint.PaintTypeId,
-                PaintLineId = entity.Paint.PaintLineId
+                PaintType = entity.Paint.PaintType == null ? null : new App.BLL.DTO.PaintType()
+                {
+                    Id = entity.Paint.PaintType.Id,
+                    Name = entity.Paint.PaintType.Name
+                },
+                PaintLineId = entity.Paint.PaintLineId,
+                PaintLine = entity.Paint.PaintLine == null ? null : new App.BLL.DTO.PaintLine()
+                {
+                    Id = entity.Paint.PaintLine.Id,
+                    PaintLineName = entity.Paint.PaintLine.PaintLineName
+                }
             }
         };
         return res;

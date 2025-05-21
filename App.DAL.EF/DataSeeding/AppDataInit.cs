@@ -1,4 +1,5 @@
-﻿using App.Domain;
+﻿using System.Security.Claims;
+using App.Domain;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -78,6 +79,18 @@ public static class AppDataInit
                 {
                     throw new ApplicationException("User creation failed!");
                 }
+                
+                result = userManager.AddClaimAsync(user, new Claim(ClaimTypes.GivenName, user.FirstName)).Result;
+                if (!result.Succeeded)
+                {
+                    throw new ApplicationException("Claim adding failed!");
+                }
+                result = userManager.AddClaimAsync(user, new Claim(ClaimTypes.Surname, user.LastName)).Result;
+                if (!result.Succeeded)
+                {
+                    throw new ApplicationException("Claim adding failed!");
+                }
+
             }
 
             foreach (var role in userInfo.roles)
@@ -284,5 +297,6 @@ public static class AppDataInit
     
         context.SaveChanges();
     }*/
+    
 
 }

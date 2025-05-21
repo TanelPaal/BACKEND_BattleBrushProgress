@@ -94,8 +94,8 @@ public class AccountController : ControllerBase
             return NotFound(new Message(UserPassProblem));
         }
         
-        await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.GivenName, appUser.FirstName));
-        await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.Surname, appUser.LastName));
+        /*await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.GivenName, appUser.FirstName));
+        await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.Surname, appUser.LastName));*/
         
         var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
         
@@ -118,9 +118,9 @@ public class AccountController : ControllerBase
         {
             UserId = appUser.Id,
             Expiration = GetExpirationDateTime(refreshTokenExpiresInSeconds, SettingsJWTRefreshTokenExpiresInSeconds)
-
         };
-        _context.RefreshTokens.Add(refreshToken);
+        appUser.RefreshTokens ??= new List<AppRefreshToken>();
+        appUser.RefreshTokens.Add(refreshToken);
         await _context.SaveChangesAsync();
         
         var jwt = IdentityExtensions.GenerateJwt(
@@ -276,20 +276,18 @@ public class AccountController : ControllerBase
             return NotFound($"User with email {userEmail} not found");
         }
         
-        await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.GivenName, appUser.FirstName));
-        await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.Surname, appUser.LastName));
+        /*await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.GivenName, appUser.FirstName));
+        await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.Surname, appUser.LastName));*/
 
 
         // load and compare refresh tokens
-
-        await _context.Entry(appUser).Collection(u => u.RefreshTokens!)
-            .Query()
-            .Where(x =>
-                (x.RefreshToken == refreshTokenModel.RefreshToken && x.Expiration > DateTime.UtcNow) ||
-                (x.PreviousRefreshToken == refreshTokenModel.RefreshToken &&
-                 x.PreviousExpiration > DateTime.UtcNow)
-            )
+        var refreshTokens = await _context.RefreshTokens
+            .Where(x => x.UserId == appUser.Id &&
+                        ((x.RefreshToken == refreshTokenModel.RefreshToken && x.Expiration > DateTime.UtcNow) ||
+                         (x.PreviousRefreshToken == refreshTokenModel.RefreshToken && x.PreviousExpiration > DateTime.UtcNow)))
             .ToListAsync();
+
+        appUser.RefreshTokens = refreshTokens;
 
         if (appUser.RefreshTokens == null)
         {

@@ -1,18 +1,16 @@
-﻿﻿using System.Data.Common;
+﻿using System.Data.Common;
 using App.DAL.EF;
 using App.DAL.EF.DataSeeding;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-
 
 namespace App.Tests;
 
@@ -26,7 +24,7 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
             // Remove the existing DbContextOptions
             services.RemoveAll(typeof(DbContextOptions<AppDbContext>));
             
-            var connectionString = "Host=localhost;Port=5432;Database=TEST;Username=postgres;Password=postgres";
+            var connectionString = "Host=localhost;Port=5432;Database=TEST;Username=admin;Password=steady123";
             services.AddDbContext<AppDbContext>(options =>
                 options
                     .UseNpgsql(
@@ -36,10 +34,9 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
                     .ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))
                     .EnableDetailedErrors()
                     .EnableSensitiveDataLogging()
-                    // disable tracking, allow id based shared entity creation
-                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution)
+                    // Use tracking for this test
+                    .UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll)
             );
-
 
             // create db and seed data
             var sp = services.BuildServiceProvider();
@@ -55,7 +52,6 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
 
             using var userManager = scopedServices.GetRequiredService<UserManager<AppUser>>();
             using var roleManager = scopedServices.GetRequiredService<RoleManager<AppRole>>();
-
 
             try
             {

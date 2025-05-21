@@ -171,11 +171,4 @@ public static class InitialData
             ("Ork Boyz", "Lorem ipsum", OrksId, ManufacturerGWId, PropMetalId, null),
         ];*/
     
-    
-
-
-
-
-
-
 }

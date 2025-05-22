@@ -182,22 +182,29 @@ public static class InitialData
         ];
 
     private static readonly Guid HTyrantId = new Guid("00000000-0000-0000-0000-000000000001");
+    private static readonly Guid TermagantId = new Guid("00000000-0000-0000-0000-000000000002");
+    private static readonly Guid CarnifexId = new Guid("00000000-0000-0000-0000-000000000003");
+    private static readonly Guid OrkBoyId = new Guid("00000000-0000-0000-0000-000000000004");
+    private static readonly Guid NobId = new Guid("00000000-0000-0000-0000-000000000005");
+    private static readonly Guid DeffDreadId = new Guid("00000000-0000-0000-0000-000000000006");
+    private static readonly Guid FireWarriorId = new Guid("00000000-0000-0000-0000-000000000007");
+    private static readonly Guid CrisisSuitId = new Guid("00000000-0000-0000-0000-000000000008");
+    private static readonly Guid RiptideId = new Guid("00000000-0000-0000-0000-000000000009");
     
     public static readonly (string miniName, string miniDesc, Guid factionId, Guid manuId, Guid propertyId, Guid id)[]
         Miniature =
         [
             ("Hive Tyrant", "Lorem Ipsum", TyranidId, ManufacturerGWId, PropPlasticId, HTyrantId),
-        ];
+            ("Termagant", "Fast, numerous and expendable infantry", TyranidId, ManufacturerGWId, PropPlasticId, TermagantId),
+            ("Carnifex", "Living battering ram, heavily armored", TyranidId, ManufacturerGWId, PropPlasticId, CarnifexId),
 
-    // TODO: Solve FK Constraint issue
-    // Add initial data for Miniatures
-    /*public static readonly (string miniName, string miniDesc, Guid factionId, Guid manuId, Guid propertyId, Guid? id)[]
-        Miniature =
-        [
-            ("Hive Tyrant", "Lorem ipsum", TyranidId, ManufacturerGWId, PropPlasticId, null),
-            ("Tyranid Warrior", "Lorem ipsum", TyranidId, ManufacturerGWId, PropPlasticId, null),
-            ("Ethereal", "Lorem ipsum", TauId, ManufacturerGWId, PropPlasticId,  null),
-            ("Ork Boyz", "Lorem ipsum", OrksId, ManufacturerGWId, PropMetalId, null),
-        ];*/
+            ("Ork Boy", "Brutal close combat infantry", OrksId, ManufacturerGWId, PropPlasticId, OrkBoyId),
+            ("Nob", "Larger and stronger Ork leader", OrksId, ManufacturerGWId, PropPlasticId, NobId),
+            ("Deff Dread", "Ork walker loaded with brutal melee weapons", OrksId, ManufacturerGWId, PropPlasticId, DeffDreadId),
+
+            ("Fire Warrior", "Mainstay ranged infantry of the Tau Empire", TauId, ManufacturerGWId, PropPlasticId, FireWarriorId),
+            ("Crisis Battlesuit", "Versatile elite battlesuit unit", TauId, ManufacturerGWId, PropPlasticId, CrisisSuitId),
+            ("Riptide Battlesuit", "Massive battlesuit with heavy weaponry", TauId, ManufacturerGWId, PropPlasticId, RiptideId)
+        ];
 
 }

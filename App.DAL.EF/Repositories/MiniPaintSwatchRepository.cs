@@ -15,9 +15,9 @@ public class MiniPaintSwatchRepository : BaseRepository<App.DAL.DTO.MiniPaintSwa
     public override async Task<IEnumerable<App.DAL.DTO.MiniPaintSwatch>> AllAsync(Guid userId)
     {
         return await RepositoryDbSet
-            .Include(x => x.MiniatureCollection)
             .Include(x => x.PersonPaints)
                 .ThenInclude(pp => pp.Paint)
+            .Include(x => x.MiniatureCollection)
             .Where(x => x.UserId == userId)
             .Select(x => Mapper.Map(x)!)
             .ToListAsync();

@@ -25,7 +25,8 @@ public class MiniPaintSwatchMapper : IMapper<App.DTO.v1.MiniPaintSwatch, App.BLL
                 Paint = entity.PersonPaints.Paint == null ? null : new App.DTO.v1.Paint
                 {
                     Id = entity.PersonPaints.Paint.Id,
-                    Name = entity.PersonPaints.Paint.Name
+                    Name = entity.PersonPaints.Paint.Name,
+                    HexCode = entity.PersonPaints.Paint.HexCode
                 }
             }
         };

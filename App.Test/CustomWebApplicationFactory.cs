@@ -24,7 +24,8 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
             // Remove the existing DbContextOptions
             services.RemoveAll(typeof(DbContextOptions<AppDbContext>));
             
-            var connectionString = "Host=localhost;Port=5432;Database=TEST;Username=admin;Password=steady123";
+            var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection") 
+                ?? "Host=localhost;Port=5432;Database=TEST;Username=admin;Password=steady123";
             services.AddDbContext<AppDbContext>(options =>
                 options
                     .UseNpgsql(

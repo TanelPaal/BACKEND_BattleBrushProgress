@@ -1,12 +1,6 @@
 ﻿# icd0024-24-25-s
 **Student Name:** Tanel Paal
 
-**Uni-ID:** tanpaa
-
-**School e-mail:** tanpaa@taltech.ee
-
-**Student Code:** 222775IADB
-
 # Entity Framework Core
 ## EF Core Migrations
 ### Add Migration:
